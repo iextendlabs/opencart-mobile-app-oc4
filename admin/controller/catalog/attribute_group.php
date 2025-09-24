@@ -18,6 +18,7 @@ class AttributeGroup extends \Opencart\System\Engine\Controller {
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
+		
 		$url = '';
 
 		if (isset($this->request->get['sort'])) {
