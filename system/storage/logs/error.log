@@ -1,0 +1,63 @@
+2025-09-24 10:46:42 - PHP Warning:  rename(D:\wamp64\www\opencart\mobile_app\system\storage\cache\template\19\1954556.tmp,D:/wamp64/www/opencart/mobile_app/system/storage/cache/template/19/195ac55d9946a6160ee44ac8276f208c.php): Access is denied (code: 5) in D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Cache\FilesystemCache.php on line 61
+2025-09-24 10:46:43 - Error: Failed to write cache file "D:/wamp64/www/opencart/mobile_app/system/storage/cache/template/19/195ac55d9946a6160ee44ac8276f208c.php".
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Cache\FilesystemCache.php
+Line: 76
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 397
+Class: Twig\Cache\FilesystemCache
+Function: write
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 357
+Class: Twig\Environment
+Function: loadTemplate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 320
+Class: Twig\Environment
+Function: load
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\library\template\twig.php
+Line: 119
+Class: Twig\Environment
+Function: render
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\library\template.php
+Line: 58
+Class: Opencart\System\Library\Template\Twig
+Function: render
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 187
+Class: Opencart\System\Library\Template
+Function: render
+
+Backtrace: 6
+File: D:\wamp64\www\opencart\mobile_app\admin\controller\marketplace\modification.php
+Line: 60
+Class: Opencart\System\Engine\Loader
+Function: view
+
+Backtrace: 7
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Marketplace\Modification
+Function: index
+
+Backtrace: 8
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 9
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
