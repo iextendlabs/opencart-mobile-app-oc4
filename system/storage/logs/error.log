@@ -61,3 +61,654 @@ Backtrace: 9
 File: D:\wamp64\www\opencart\mobile_app\admin\index.php
 Line: 20
 Function: require_once
+2025-09-29 11:34:25 - Error: Unable to find template "admin/view/template/extension/your_extension_name/module/banner.twig" (looked into: .).
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 234
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 138
+Class: Twig\Loader\FilesystemLoader
+Function: findTemplate
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 304
+Class: Twig\Loader\FilesystemLoader
+Function: getCacheKey
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 357
+Class: Twig\Environment
+Function: getTemplateClass
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 320
+Class: Twig\Environment
+Function: load
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\library\template\twig.php
+Line: 119
+Class: Twig\Environment
+Function: render
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\system\library\template.php
+Line: 58
+Class: Opencart\System\Library\Template\Twig
+Function: render
+
+Backtrace: 6
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 187
+Class: Opencart\System\Library\Template
+Function: render
+
+Backtrace: 7
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 115
+Class: Opencart\System\Engine\Loader
+Function: view
+
+Backtrace: 8
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 9
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 10
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 11:35:12 - Error: Unable to find template "admin/view/template/extension/your_extension_name/module/mobile_banner.twig" (looked into: .).
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 234
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 138
+Class: Twig\Loader\FilesystemLoader
+Function: findTemplate
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 304
+Class: Twig\Loader\FilesystemLoader
+Function: getCacheKey
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 357
+Class: Twig\Environment
+Function: getTemplateClass
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 320
+Class: Twig\Environment
+Function: load
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\library\template\twig.php
+Line: 119
+Class: Twig\Environment
+Function: render
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\system\library\template.php
+Line: 58
+Class: Opencart\System\Library\Template\Twig
+Function: render
+
+Backtrace: 6
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 187
+Class: Opencart\System\Library\Template
+Function: render
+
+Backtrace: 7
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 115
+Class: Opencart\System\Engine\Loader
+Function: view
+
+Backtrace: 8
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 9
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 10
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 12:57:38 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:38 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:42 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:42 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:45 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:45 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:46 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:46 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:48 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:48 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:49 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:49 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:51 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:51 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:52 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:52 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:53 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:57:53 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:58:15 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:58:15 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:58:46 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 12:58:46 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 13:14:19 - PHP Warning:  Undefined array key "languages" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 13:14:19 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 105
+2025-09-29 13:28:53 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 143
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 54
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 14:25:35 - PHP Warning:  Undefined array key "file" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 78
+2025-09-29 14:25:35 - PHP Warning:  Undefined array key "line" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 79
+2025-09-29 14:25:35 - Error: Unclosed '{' on line 47
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 137
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\factory.php
+Line: 44
+Function: class_exists
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 81
+Class: Opencart\System\Engine\Factory
+Function: controller
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 14:41:12 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 144
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 55
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 14:42:11 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 144
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 55
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 14:42:44 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 144
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 55
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 14:42:55 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 144
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 55
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 14:46:19 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 143
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 55
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 14:47:27 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 145
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 55
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:09:08 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 147
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 58
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:09:14 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 147
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 58
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:11:48 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 147
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 58
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:11:55 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 147
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 58
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:16:14 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 147
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 58
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:17:35 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 147
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 58
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:18:44 - Error: Error: Could not call registry key error!
+File: D:\wamp64\www\opencart\mobile_app\system\engine\controller.php
+Line: 43
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 148
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 58
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: validate
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: banner
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 15:27:08 - PHP Warning:  Undefined variable $languages in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 118
+2025-09-29 15:27:08 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 118
+2025-09-29 15:31:17 - PHP Warning:  Undefined variable $languages in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 118
+2025-09-29 15:31:17 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 118
