@@ -712,3 +712,588 @@ Function: require_once
 2025-09-29 15:27:08 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 118
 2025-09-29 15:31:17 - PHP Warning:  Undefined variable $languages in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 118
 2025-09-29 15:31:17 - PHP Warning:  foreach() argument must be of type array|object, null given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 118
+2025-09-29 16:16:31 - PHP Warning:  Undefined array key "module_id" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 191
+2025-09-29 16:16:34 - PHP Warning:  Undefined array key "module_id" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 191
+2025-09-29 16:16:38 - PHP Warning:  Undefined array key "module_id" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 191
+2025-09-29 16:16:42 - PHP Warning:  Undefined array key "module_id" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 191
+2025-09-29 16:16:47 - PHP Warning:  Undefined array key "module_id" in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 191
+2025-09-29 16:21:43 - Error: Opencart\Admin\Model\Setting\Module::editModule(): Argument #1 ($module_id) must be of type int, string given, called in D:\wamp64\www\opencart\mobile_app\system\engine\loader.php on line 343
+File: D:\wamp64\www\opencart\mobile_app\admin\model\setting\module.php
+Line: 63
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 343
+Class: Opencart\Admin\Model\Setting\Module
+Function: editModule
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 234
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal_save
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 16:21:46 - Error: Opencart\Admin\Model\Setting\Module::editModule(): Argument #1 ($module_id) must be of type int, string given, called in D:\wamp64\www\opencart\mobile_app\system\engine\loader.php on line 343
+File: D:\wamp64\www\opencart\mobile_app\admin\model\setting\module.php
+Line: 63
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 343
+Class: Opencart\Admin\Model\Setting\Module
+Function: editModule
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 234
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal_save
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 16:21:58 - Error: Opencart\Admin\Model\Setting\Module::editModule(): Argument #1 ($module_id) must be of type int, string given, called in D:\wamp64\www\opencart\mobile_app\system\engine\loader.php on line 343
+File: D:\wamp64\www\opencart\mobile_app\admin\model\setting\module.php
+Line: 63
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 343
+Class: Opencart\Admin\Model\Setting\Module
+Function: editModule
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 234
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal_save
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 16:22:06 - Error: Opencart\Admin\Model\Setting\Module::editModule(): Argument #1 ($module_id) must be of type int, string given, called in D:\wamp64\www\opencart\mobile_app\system\engine\loader.php on line 343
+File: D:\wamp64\www\opencart\mobile_app\admin\model\setting\module.php
+Line: 63
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 343
+Class: Opencart\Admin\Model\Setting\Module
+Function: editModule
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 234
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal_save
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 16:34:10 - PHP Warning:  Array to string conversion in D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Template.php on line 344
+2025-09-29 16:34:22 - Error: Error: Could not load template extension/mobile_app/module/mobile_app_deal!
+File: D:\wamp64\www\opencart\mobile_app\system\library\template\twig.php
+Line: 121
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\library\template.php
+Line: 58
+Class: Opencart\System\Library\Template\Twig
+Function: render
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 187
+Class: Opencart\System\Library\Template
+Function: render
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 222
+Class: Opencart\System\Engine\Loader
+Function: view
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-29 16:34:47 - PHP Warning:  Array to string conversion in D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Template.php on line 344
+2025-09-29 16:36:21 - Error: Error: Could not load template extension/mobile_app/module/mobile_app_deal!
+File: D:\wamp64\www\opencart\mobile_app\system\library\template\twig.php
+Line: 121
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\library\template.php
+Line: 58
+Class: Opencart\System\Library\Template\Twig
+Function: render
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 187
+Class: Opencart\System\Library\Template
+Function: render
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 222
+Class: Opencart\System\Engine\Loader
+Function: view
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 08:08:14 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 179
+2025-09-30 08:08:15 - Error: Unable to find template "admin/view/template/extension/your_extension/module/your_module.twig" (looked into: .).
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 234
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 138
+Class: Twig\Loader\FilesystemLoader
+Function: findTemplate
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 304
+Class: Twig\Loader\FilesystemLoader
+Function: getCacheKey
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 357
+Class: Twig\Environment
+Function: getTemplateClass
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 320
+Class: Twig\Environment
+Function: load
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\library\template\twig.php
+Line: 119
+Class: Twig\Environment
+Function: render
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\system\library\template.php
+Line: 58
+Class: Opencart\System\Library\Template\Twig
+Function: render
+
+Backtrace: 6
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 187
+Class: Opencart\System\Library\Template
+Function: render
+
+Backtrace: 7
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 195
+Class: Opencart\System\Engine\Loader
+Function: view
+
+Backtrace: 8
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal
+
+Backtrace: 9
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 10
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 08:08:18 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 179
+2025-09-30 08:08:19 - Error: Unable to find template "admin/view/template/extension/your_extension/module/your_module.twig" (looked into: .).
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 234
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Loader\FilesystemLoader.php
+Line: 138
+Class: Twig\Loader\FilesystemLoader
+Function: findTemplate
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 304
+Class: Twig\Loader\FilesystemLoader
+Function: getCacheKey
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 357
+Class: Twig\Environment
+Function: getTemplateClass
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\storage\vendor\twig\twig\src\Environment.php
+Line: 320
+Class: Twig\Environment
+Function: load
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\library\template\twig.php
+Line: 119
+Class: Twig\Environment
+Function: render
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\system\library\template.php
+Line: 58
+Class: Opencart\System\Library\Template\Twig
+Function: render
+
+Backtrace: 6
+File: D:\wamp64\www\opencart\mobile_app\system\engine\loader.php
+Line: 187
+Class: Opencart\System\Library\Template
+Function: render
+
+Backtrace: 7
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 195
+Class: Opencart\System\Engine\Loader
+Function: view
+
+Backtrace: 8
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal
+
+Backtrace: 9
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 10
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 08:11:36 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:12:24 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:14:59 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:15:07 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:15:38 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:16:04 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:16:06 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:16:52 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:17:09 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:17:50 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:17:53 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:18:34 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:18:41 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:18:47 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:18:57 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:19:11 - PHP Warning:  foreach() argument must be of type array|object, string given in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 174
+2025-09-30 08:45:25 - PHP Warning:  Undefined variable $module_info in D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php on line 192
+2025-09-30 08:52:09 - PHP Warning:  Undefined array key "file" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 78
+2025-09-30 08:52:09 - PHP Warning:  Undefined array key "line" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 79
+2025-09-30 08:52:09 - Error: syntax error, unexpected token ";", expecting ")"
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 209
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\factory.php
+Line: 44
+Function: class_exists
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 81
+Class: Opencart\System\Engine\Factory
+Function: controller
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 08:57:55 - PHP Warning:  Undefined array key "file" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 78
+2025-09-30 08:57:55 - PHP Warning:  Undefined array key "line" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 79
+2025-09-30 08:57:55 - Error: syntax error, unexpected token "public"
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 19
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\factory.php
+Line: 44
+Function: class_exists
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 81
+Class: Opencart\System\Engine\Factory
+Function: controller
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 09:00:15 - PHP Warning:  Undefined array key "file" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 78
+2025-09-30 09:00:15 - PHP Warning:  Undefined array key "line" in D:\wamp64\www\opencart\mobile_app\admin\controller\startup\error.php on line 79
+2025-09-30 09:00:15 - Error: Unclosed '{' on line 8
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 268
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\system\engine\autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\engine\factory.php
+Line: 44
+Function: class_exists
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 81
+Class: Opencart\System\Engine\Factory
+Function: controller
+
+Backtrace: 4
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 12:57:40 - Error: <b>Notice</b>:  Undefined property: Proxy::setDealDiscount in <b>D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php</b> on line <b>258</b>
+File: D:\wamp64\www\opencart\mobile_app\system\engine\proxy.php
+Line: 91
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 258
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal_save
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 13:30:47 - Error: <b>Notice</b>:  Undefined property: Proxy::setDealDiscount in <b>D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php</b> on line <b>258</b>
+File: D:\wamp64\www\opencart\mobile_app\system\engine\proxy.php
+Line: 91
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 258
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal_save
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once
+2025-09-30 13:31:17 - Error: <b>Notice</b>:  Undefined property: Proxy::setDealDiscount in <b>D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php</b> on line <b>258</b>
+File: D:\wamp64\www\opencart\mobile_app\system\engine\proxy.php
+Line: 91
+
+Backtrace: 0
+File: D:\wamp64\www\opencart\mobile_app\extension\mobile_app\admin\controller\module\mobile_app.php
+Line: 258
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 1
+File: D:\wamp64\www\opencart\mobile_app\system\engine\action.php
+Line: 96
+Class: Opencart\Admin\Controller\Extension\MobileApp\Module\MobileApp
+Function: deal_save
+
+Backtrace: 2
+File: D:\wamp64\www\opencart\mobile_app\system\framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 3
+File: D:\wamp64\www\opencart\mobile_app\admin\index.php
+Line: 20
+Function: require_once

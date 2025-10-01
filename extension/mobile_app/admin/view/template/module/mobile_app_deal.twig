@@ -1,0 +1,141 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="float-end">
+        <button type="button" onclick="location='{{ status }}'" class="btn btn-secondary"><i class="fa-solid fa-forward-fast"></i></button>
+        <button type="submit" form="form-module" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-save"></i></button>
+        <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ text_edit }}</div>
+      <div class="card-body">
+        <form id="form-module" action="{{ save }}" method="post" data-oc-toggle="ajax">
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <div class="btn-group" role="group">
+                <input type="radio" class="btn-check" name="module_mobile_app_deal_status" id="deal-paused" value="0" {% if module_mobile_app_deal_status == '0' %}checked{% endif %}>
+                <label class="btn btn-outline-warning" for="deal-paused"><i class="fa fa-pause"></i> {{ text_pause }}</label>
+
+                <input type="radio" class="btn-check" name="module_mobile_app_deal_status" id="deal-ended" value="ended" {% if module_mobile_app_deal_status == 'ended' %}checked{% endif %}>
+                <label class="btn btn-outline-danger" for="deal-ended"><i class="fa fa-stop"></i> {{ text_end }}</label>
+              </div>
+            </div>
+          </div> 
+          <div class="row mb-3">
+            <label for="input-end-date" class="col-sm-2 col-form-label">{{ entry_end_date }}</label>
+            <div class="col-sm-10">
+              <input type="datetime-local" name="module_mobile_app_deal_end_date" value="{{ module_mobile_app_deal_end_date }}" id="input-end-date" class="form-control"/>
+            </div>
+          </div>     
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_product }}</label>
+            <div class="col-sm-10">
+                <input type="text" name="module_mobile_app_product"  value=""  placeholder="{{ entry_product }}" id="input-product" data-oc-target="autocomplete-product"  class="form-control"  autocomplete="off"/>
+                <ul id="autocomplete-product" class="dropdown-menu"></ul>
+                <div class="form-control p-0" style="height: 150px; overflow: auto;">
+                    <table id="deal-product" class="table m-0">
+                        <thead>
+                            <tr>
+                                <th>{{ text_product_name | default('Product Name') }}</th>
+                                <th class="text-start" style="width: 150px;">
+                                    {{ text_discount | default('Discount (%)') }}
+                                </th>
+                                <th class="text-end" style="width: 50px;">
+                                    {{ text_action | default('Action') }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in module_mobile_app_products %}
+                            <tr id="deal-product-{{ product.product_id }}">
+                                <td class="">
+                                    {{ product.name }}:
+                                    <br>
+                                    <small>Price: {{ product.price }}</small>
+                                    {% if product.discount > 0 %}
+                                        
+                                        <small>Discounted: {{ product.discounted_price }}</small>
+                                    {% endif %}
+                                    <input type="hidden" name="module_mobile_app_product[]" value="{{ product.product_id }}"/>
+                                </td>
+                                <td class="text-start">
+                                    <input type="number" name="module_mobile_app_product_discount[{{ product.product_id }}]"  value="{{ product.discount | default('0') }}" placeholder="0" class="form-control" min="0" max="100"/>
+                                </td>
+                                
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        <i class="fa-solid fa-minus-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-text">{{ help_product }}</div>
+            </div>
+          </div>   
+          <input type="hidden" name="module_id" value="{{ module_id }}" id="input-module-id"/>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+  $('#input-product').autocomplete({
+    'source': function(request, response) {
+      $.ajax({
+        url: 'index.php?route=catalog/product.autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return {
+              label: item['name'],
+              value: item['product_id']
+            }
+          }));
+        }
+      });
+    },
+    'select': function(item) {
+      $('#input-product').val('');
+
+      // Check if the product is already in the list and remove it
+      $('#deal-product-' + item['value']).remove();
+
+      var product_id = item['value'];
+      var html = '<tr id="deal-product-' + product_id + '">';
+      
+      // 1. Product Name and Hidden Product ID
+      html += ' <td>' + item['label'] + '<input type="hidden" name="module_mobile_app_product[]" value="' + product_id + '"/></td>';
+      
+      // 2. NEW Discount Input Field
+      html += ' <td class="text-start">';
+      html += '   <input type="number" name="module_mobile_app_product_discount[' + product_id + ']" value="0" placeholder="0" class="form-control" min="0" max="100"/>';
+      html += ' </td>';
+      
+      // 3. Action Button
+      html += ' <td class="text-end">';
+      html += '   <button type="button" class="btn btn-danger btn-sm"><i class="fa-solid fa-minus-circle"></i></button>';
+      html += ' </td>';
+      html += '</tr>';
+
+      $('#deal-product tbody').append(html);
+    }
+  });
+
+  $('#deal-product').on('click', '.btn', function() {
+    $(this).parent().parent().remove();
+  });
+//--></script>
+{{ footer }}
