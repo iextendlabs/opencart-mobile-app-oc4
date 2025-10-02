@@ -35,8 +35,6 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
-		$data['banner'] = $this->url->link('extension/mobile_app/module/mobile_app.banner', 'user_token=' . $this->session->data['user_token']);
-		$data['deal'] = $this->url->link('extension/mobile_app/module/mobile_app.deal', 'user_token=' . $this->session->data['user_token']);
 
 		$data['module_mobile_app_status'] = $this->config->get('module_mobile_app_status');
 
@@ -73,42 +71,35 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
-	
+	/**
+	 * Banner
+	 *
+	 * @return void
+	 */
 	public function banner(): void {
 
-        $this->load->language('extension/mobile_app/module/mobile_banner');
+		$this->load->language('extension/mobile_app/module/mobile_banner');
 
-        $this->document->setTitle($this->language->get('heading_title'));
+		$this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('setting/setting');
-        $this->load->model('localisation/language');
-        $this->load->model('tool/image');
+		$this->load->model('tool/image');
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-            $this->model_setting_setting->editSetting('module_mobile_app', $this->request->post);
+		$data['breadcrumbs'] = [];
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'])
+		];
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module')
+		];
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/mobile_app/module/mobile_banner', 'user_token=' . $this->session->data['user_token'])
+		];
 
-            $this->session->data['success'] = $this->language->get('text_success');
-
-            $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module'));
-        }
-   
-        $data['breadcrumbs'] = [];
-        $data['breadcrumbs'][] = [
-            'text' => $this->language->get('text_home'),
-            'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'])
-        ];
-        $data['breadcrumbs'][] = [
-            'text' => $this->language->get('text_extension'),
-            'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module')
-        ];
-        $data['breadcrumbs'][] = [
-            'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/mobile_app/module/mobile_banner', 'user_token=' . $this->session->data['user_token'])
-        ];
-
-        $data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.banner_save', 'user_token=' . $this->session->data['user_token']);
-        $data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
-        $data['status'] = $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token']);
+		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.banner_save', 'user_token=' . $this->session->data['user_token']);
+		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
 
 		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 300, 300);
 		$data['module_mobile_app_banner_status'] = $this->config->get('module_mobile_app_banner_status') ?? '0';
@@ -134,13 +125,17 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 			}
 		}
 
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['footer'] = $this->load->controller('common/footer');
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('extension/mobile_app/module/mobile_banner', $data));
-    }
-
+		$this->response->setOutput($this->load->view('extension/mobile_app/module/mobile_banner', $data));
+	}
+	/**
+	 * Banner Save
+	 *
+	 * @return void
+	 */
 	public function banner_save(): void {
 		$this->load->language('extension/mobile_app/module/mobile_banner');
 
@@ -152,14 +147,18 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 
 		if (!$json) {
 			$this->load->model('setting/setting');
-			$this->model_setting_setting->editSetting('module_mobile_app', $this->request->post);
+			$this->model_setting_setting->editSetting('module_mobile_app_banner', $this->request->post);
 			$json['success'] = $this->language->get('text_success');
 		}
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
-	}	
-
+	}
+	/**
+	 * Deal
+	 *
+	 * @return void
+	 */
 	public function deal(): void {
 		$this->load->language('extension/mobile_app/module/mobile_app_deal');
 
@@ -191,47 +190,34 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.deal_save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
-        $data['status'] = $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token']);
 
 		$data['module_mobile_app_deal_end_date']   = $this->config->get('module_mobile_app_deal_end_date') ?? '';
-		$data['module_mobile_app_deal_product']   = $this->config->get('module_mobile_app_deal_product') ?? '';
 		$data['module_mobile_app_deal_status']     = $this->config->get('module_mobile_app_deal_status') ?? '0';
-		$data['module_mobile_app_product'] = $this->config->get('module_mobile_app_product') ?? [];
+		$data['module_mobile_app_deal_product'] = $this->config->get('module_mobile_app_deal_product') ?? [];
 
-		if (isset($this->request->post['module_mobile_app_product'])) {
-			$product_ids = $this->request->post['module_mobile_app_product'];
-		} elseif ($this->config->get('module_mobile_app_product')) {
-			$product_ids = $this->config->get('module_mobile_app_product');
+		if ($this->config->get('module_mobile_app_deal_product')) {
+			$product_ids = $this->config->get('module_mobile_app_deal_product');
 		} else {
 			$product_ids = [];
 		}
 
-		if (isset($this->request->post['module_mobile_app_product_discount'])) {
-			$product_discounts = $this->request->post['module_mobile_app_product_discount'];
-		} elseif ($this->config->get('module_mobile_app_product_discount')) {
-			$product_discounts = $this->config->get('module_mobile_app_product_discount');
+		if ($this->config->get('module_mobile_app_deal_product_discount')) {
+			$product_discounts = $this->config->get('module_mobile_app_deal_product_discount');
 		} else {
 			$product_discounts = [];
 		}
 		$this->load->model('catalog/product');
-		$data['module_mobile_app_products'] = [];
+		$data['module_mobile_app_deal_products'] = [];
 
 		foreach ($product_ids as $product_id) {
 			$product_info = $this->model_catalog_product->getProduct($product_id);
 			if ($product_info) {
 				$discount_value = isset($product_discounts[$product_id]) ? (float)$product_discounts[$product_id] : 0;
-				$price = isset($product_info['price']) ? (float)$product_info['price'] : 0;
-				// Calculate discounted price
-				$discounted_price = $price;
-				if ($discount_value > 0) {
-					$discounted_price = $price - ($price * ($discount_value / 100));
-				}
-				$data['module_mobile_app_products'][] = [
+				
+				$data['module_mobile_app_deal_products'][] = [
 					'product_id'      => $product_info['product_id'],
 					'name'            => $product_info['name'],
-					'price'           => $price,
 					'discount'        => $discount_value,
-					'discounted_price'=> $discounted_price
 				];
 			}
 		}
@@ -243,27 +229,28 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 
 		$this->response->setOutput($this->load->view('extension/mobile_app/module/mobile_app_deal', $data));
 	}
-
+	/**
+	 * Deal Save
+	 *
+	 * @return void
+	 */
 	public function deal_save(): void {
 		$this->load->language('extension/mobile_app/module/mobile_app_deal');
 		$json = [];
 		$this->load->model('setting/setting');
-		$this->model_setting_setting->editSetting('module_mobile_app', $this->request->post);
+		$this->load->model('catalog/product');
+		$this->model_setting_setting->editSetting('module_mobile_app_deal', $this->request->post);
 
-		// Update product discounts in product_discount table
-		if (isset($this->request->post['module_mobile_app_product']) && isset($this->request->post['module_mobile_app_product_discount'])) {
-			$this->load->model('catalog/product');
-			foreach ($this->request->post['module_mobile_app_product'] as $product_id) {
-				$discount = (float)($this->request->post['module_mobile_app_product_discount'][$product_id] ?? 0);
+		if (isset($this->request->post['module_mobile_app_deal_product']) && isset($this->request->post['module_mobile_app_deal_product_discount'])) {
+			
+			foreach ($this->request->post['module_mobile_app_deal_product'] as $product_id) {
+				$discount = (float)($this->request->post['module_mobile_app_deal_product_discount'][$product_id] ?? 0);
 				if ($discount > 0) {
-					// Get original price
 					$product_info = $this->model_catalog_product->getProduct($product_id);
 					if ($product_info && isset($product_info['price'])) {
 						$original_price = (float)$product_info['price'];
 						$discounted_price = $original_price - ($original_price * ($discount / 100));
-						// Remove existing discount for this product/customer group
 						$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
-						// Insert new discount
 						$this->db->query("INSERT INTO `" . DB_PREFIX . "product_discount`
 							SET `product_id` = '" . (int)$product_id . "',
 								`customer_group_id` = 1,
@@ -271,11 +258,11 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 								`priority` = 1,
 								`price` = '" . (float)$discounted_price . "',
 								`type` = 'fixed',
+								`special` = 1,
 								`date_start` = '0000-00-00',
 								`date_end` = '0000-00-00'");
 					}
 				} else {
-					// Remove discount if discount is 0 or not set
 					$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
 				}
 			}
@@ -285,5 +272,136 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
-	
+	/**
+	 * Feature Category
+	 *
+	 * @return void
+	 */
+	public function feature_category(): void
+	{
+		$this->load->language('extension/mobile_app/module/mobile_feature_categories');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('catalog/category');
+		$this->load->model('catalog/product');
+
+		$data['breadcrumbs'] = [];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'])
+		];
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module')
+		];
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/mobile_app/module/mobile_app.feature_category', 'user_token=' . $this->session->data['user_token'])
+		];
+
+		$data['module_mobile_app_feature_category_status'] = $this->config->get('module_mobile_app_feature_category_status');
+
+		$data['home_page_categories'] = [];
+		$home_page_categories = $this->config->get('module_mobile_app_feature_category_items');
+
+		if (!empty($home_page_categories)) {
+			foreach ($home_page_categories as $item) {
+				if (empty($item['category_id'])) {
+					continue;
+				}
+				$category_info = $this->model_catalog_category->getCategory($item['category_id']);
+				if ($category_info) {
+					$products = [];
+					if (!empty($item['product'])) {
+						foreach ($item['product'] as $product_id) {
+							$product_info = $this->model_catalog_product->getProduct($product_id);
+							if ($product_info) {
+								$products[] = [
+									'product_id' => $product_info['product_id'],
+									'name'       => $product_info['name']
+								];
+							}
+						}
+					}
+					$data['home_page_categories'][] = [
+						'category_id'   => $category_info['category_id'],
+						'name'          => $category_info['name'],
+						'products'      => $products
+					];
+				}
+			}
+		}
+
+
+		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.feature_category_save', 'user_token=' . $this->session->data['user_token']);
+		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
+		$data['user_token'] = $this->session->data['user_token'];
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		$this->response->setOutput($this->load->view('extension/mobile_app/module/mobile_feature_categories', $data));
+	}
+	/**
+	 * Category Save
+	 *
+	 * @return void
+	 */
+	public function feature_category_save(): void
+	{
+		$this->load->language('extension/mobile_app/module/mobile_feature_categories');
+
+		$json = [];
+
+		if (!$this->user->hasPermission('modify', 'extension/mobile_app/module/mobile_app')) {
+			$json['error'] = $this->language->get('error_permission');
+		}
+
+		if (!$json) {
+			$this->load->model('setting/setting');
+			$this->model_setting_setting->editSetting('module_mobile_app_feature_category', $this->request->post);
+			$json['success'] = $this->language->get('text_success');
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+	/**
+	 * Product Autocomplete
+	 *
+	 * @return void
+	 */
+	public function product_autocomplete(): void
+	{
+		$json = [];
+
+		if (isset($this->request->get['filter_name'])) {
+			$this->load->model('catalog/product');
+
+			$filter_data = [
+				'filter_name' => $this->request->get['filter_name'],
+				'start'       => 0,
+				'limit'       => 5
+			];
+
+			if (isset($this->request->get['filter_category_id']) && !empty($this->request->get['filter_category_id'])) {
+				$filter_data['filter_category_id'] = $this->request->get['filter_category_id'];
+				$filter_data['filter_sub_category'] = true;
+			}
+
+			$results = $this->model_catalog_product->getProducts($filter_data);
+
+			foreach ($results as $result) {
+				$json[] = [
+					'product_id' => $result['product_id'],
+					'name'       => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8'))
+				];
+			}
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 }

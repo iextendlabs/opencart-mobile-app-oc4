@@ -3,7 +3,6 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="float-end">
-        <button type="button" onclick="location='{{ status }}'" class="btn btn-secondary"><i class="fa-solid fa-forward-fast"></i></button>
         <button type="submit" form="form-module" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-save"></i></button>
         <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a></div>
       <h1>{{ heading_title }}</h1>
@@ -40,7 +39,7 @@
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label">{{ entry_product }}</label>
             <div class="col-sm-10">
-                <input type="text" name="module_mobile_app_product"  value=""  placeholder="{{ entry_product }}" id="input-product" data-oc-target="autocomplete-product"  class="form-control"  autocomplete="off"/>
+                <input type="text" name="module_mobile_app_deal_product"  value=""  placeholder="{{ entry_product }}" id="input-product" data-oc-target="autocomplete-product"  class="form-control"  autocomplete="off"/>
                 <ul id="autocomplete-product" class="dropdown-menu"></ul>
                 <div class="form-control p-0" style="height: 150px; overflow: auto;">
                     <table id="deal-product" class="table m-0">
@@ -56,20 +55,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for product in module_mobile_app_products %}
+                            {% for product in module_mobile_app_deal_products %}
                             <tr id="deal-product-{{ product.product_id }}">
                                 <td class="">
-                                    {{ product.name }}:
+                                    {{ product.name }}
                                     <br>
-                                    <small>Price: {{ product.price }}</small>
-                                    {% if product.discount > 0 %}
-                                        
-                                        <small>Discounted: {{ product.discounted_price }}</small>
-                                    {% endif %}
-                                    <input type="hidden" name="module_mobile_app_product[]" value="{{ product.product_id }}"/>
+                                    <input type="hidden" name="module_mobile_app_deal_product[]" value="{{ product.product_id }}"/>
                                 </td>
                                 <td class="text-start">
-                                    <input type="number" name="module_mobile_app_product_discount[{{ product.product_id }}]"  value="{{ product.discount | default('0') }}" placeholder="0" class="form-control" min="0" max="100"/>
+                                    <input type="number" name="module_mobile_app_deal_product_discount[{{ product.product_id }}]"  value="{{ product.discount | default('0') }}" placeholder="0" class="form-control" min="0" max="100"/>
                                 </td>
                                 
                                 <td class="text-end">
@@ -117,11 +111,11 @@
       var html = '<tr id="deal-product-' + product_id + '">';
       
       // 1. Product Name and Hidden Product ID
-      html += ' <td>' + item['label'] + '<input type="hidden" name="module_mobile_app_product[]" value="' + product_id + '"/></td>';
+      html += ' <td>' + item['label'] + '<input type="hidden" name="module_mobile_app_deal_product[]" value="' + product_id + '"/></td>';
       
       // 2. NEW Discount Input Field
       html += ' <td class="text-start">';
-      html += '   <input type="number" name="module_mobile_app_product_discount[' + product_id + ']" value="0" placeholder="0" class="form-control" min="0" max="100"/>';
+      html += '   <input type="number" name="module_mobile_app_deal_product_discount[' + product_id + ']" value="0" placeholder="0" class="form-control" min="0" max="100"/>';
       html += ' </td>';
       
       // 3. Action Button
