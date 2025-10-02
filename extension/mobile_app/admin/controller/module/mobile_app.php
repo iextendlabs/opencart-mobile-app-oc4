@@ -404,4 +404,94 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+	/**
+	 * Trust Badges
+	 *
+	 * @return void
+	 */
+
+	public function trust_badges(): void {
+		$this->load->language('extension/mobile_app/module/mobile_trust_badges');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('tool/image');
+
+		$data['breadcrumbs'] = [];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'])
+		];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module')
+		];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/mobile_app/module/mobile_app.trust_badges', 'user_token=' . $this->session->data['user_token'])
+		];
+
+		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.trust_badges_save', 'user_token=' . $this->session->data['user_token']);
+		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
+		$data['user_token'] = $this->session->data['user_token'];
+
+		$data['module_mobile_app_trust_badges_status'] = $this->config->get('module_mobile_app_trust_badges_status');
+
+		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
+
+		$data['trust_badges_items'] = [];
+		$trust_badges = $this->config->get('module_mobile_app_trust_badges_items');
+
+		if (!empty($trust_badges)) {
+			foreach ($trust_badges as $item) {
+				if (isset($item['image']) && is_file(DIR_IMAGE . $item['image'])) {
+					$thumb = $this->model_tool_image->resize($item['image'], 100, 100);
+				} else {
+					$thumb = $data['placeholder'];
+				}
+				$data['trust_badges_items'][] = [
+					'image'             => $item['image'] ?? '',
+					'thumb'             => $thumb,
+					'title'             => $item['title'] ?? '',
+					'short_description' => $item['short_description'] ?? ''
+				];
+			}
+		}
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		$this->response->setOutput($this->load->view('extension/mobile_app/module/mobile_trust_badges', $data));
+	}
+	/**
+	 * Trust Badges Save
+	 *
+	 * @return void
+	 */
+
+	public function trust_badges_save(): void
+	{
+		$this->load->language('extension/mobile_app/module/mobile_trust_badges');
+
+		$json = [];
+
+		if (!$this->user->hasPermission('modify', 'extension/mobile_app/module/mobile_app')) {
+			$json['error'] = $this->language->get('error_permission');
+		}
+
+		if (!$json) {
+			// Setting
+			$this->load->model('setting/setting');
+
+			$this->model_setting_setting->editSetting('module_mobile_app_trust_badges', $this->request->post);
+
+			$json['success'] = $this->language->get('text_success');
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));	
+}
 }
