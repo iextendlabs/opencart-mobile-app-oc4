@@ -745,6 +745,7 @@ class App extends \Opencart\System\Engine\Controller
 
     public function changePassword(): void
     {
+        $this->load->language('extension/mobile_app/api/app');
         $this->load->language('account/password');
         $json = [];
 
