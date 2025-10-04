@@ -768,7 +768,7 @@ class App extends \Opencart\System\Engine\Controller
         $customer_info = $this->model_account_customer->getCustomerByEmail($email);
 
         if (!$customer_info || !$this->customer->login($email, $currentPassword)) {
-            $json['error']['currentPassword'] = $this->language->get('error_password');
+            $json['error']['currentPassword'] = $this->language->get('error_current_password');
         }
 
         $password_length = (int)$this->config->get('config_password_length');
