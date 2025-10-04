@@ -15,3 +15,4 @@ $_['error_password_number'] = 'at least one number';
 $_['error_password_symbol'] = 'at least one symbol';
 $_['error_confirm'] = 'Password confirmation does not match password!';
 $_['error_exists']       = 'Warning: E-Mail Address is already registered!';
+$_['error_current_password']     = 'Current password is incorrect!';
