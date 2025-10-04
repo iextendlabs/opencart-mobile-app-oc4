@@ -211,6 +211,58 @@ class ColumnLeft extends \Opencart\System\Engine\Controller {
 				];
 			}
 
+			$app_module = [];
+
+			if ($this->user->hasPermission('access', 'extension/mobile_app/module/mobile_app')) {
+				$app_module[] = [
+					'name'     => $this->language->get('text_app_setting'),
+					'href'     => $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'extension/mobile_app/module/mobile_app')) {
+				$app_module[] = [
+					'name'     => $this->language->get('text_app_banner'),
+					'href'     => $this->url->link('extension/mobile_app/module/mobile_app.banner', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'extension/mobile_app/module/mobile_app')) {
+				$app_module[] = [
+					'name'     => $this->language->get('text_app_deals'),
+					'href'     => $this->url->link('extension/mobile_app/module/mobile_app.deal', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'extension/mobile_app/module/mobile_app')) {
+				$app_module[] = [
+					'name'     => $this->language->get('text_app_category'),
+					'href'     => $this->url->link('extension/mobile_app/module/mobile_app.feature_category', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'extension/mobile_app/module/mobile_app')) {
+				$app_module[] = [
+					'name'     => $this->language->get('text_app_trust_badge'),
+					'href'     => $this->url->link('extension/mobile_app/module/mobile_app.trust_badges', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($app_module) {
+				$data['menus'][] = [
+					'id'       => 'menu-app',
+					'icon'     => 'fa-regular fa-mobile-screen-button',
+					'name'     => $this->language->get('text_app_setting'),
+					'href'     => '',
+					'children' => $app_module
+				];
+			}
+
 			// Extension
 			$marketplace = [];
 

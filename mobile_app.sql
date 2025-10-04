@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 24, 2025 at 10:54 AM
+-- Generation Time: Oct 04, 2025 at 01:45 PM
 -- Server version: 9.1.0
--- PHP Version: 8.3.14
+-- PHP Version: 8.2.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,20 +31,20 @@ DROP TABLE IF EXISTS `oc_address`;
 CREATE TABLE IF NOT EXISTS `oc_address` (
   `address_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
-  `firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `company` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_1` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `postcode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firstname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_1` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_2` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `postcode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `country_id` int DEFAULT '0',
   `zone_id` int DEFAULT '0',
-  `custom_field` text COLLATE utf8mb4_unicode_ci,
+  `custom_field` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `default` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`address_id`),
   KEY `customer_id` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS `oc_address` (
 DROP TABLE IF EXISTS `oc_address_format`;
 CREATE TABLE IF NOT EXISTS `oc_address_format` (
   `address_format_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_format` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_format` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`address_format_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -76,7 +76,7 @@ INSERT INTO `oc_address_format` (`address_format_id`, `name`, `address_format`) 
 DROP TABLE IF EXISTS `oc_antispam`;
 CREATE TABLE IF NOT EXISTS `oc_antispam` (
   `antispam_id` int NOT NULL AUTO_INCREMENT,
-  `keyword` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`antispam_id`),
   KEY `keyword` (`keyword`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -90,8 +90,8 @@ CREATE TABLE IF NOT EXISTS `oc_antispam` (
 DROP TABLE IF EXISTS `oc_api`;
 CREATE TABLE IF NOT EXISTS `oc_api` (
   `api_id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `key` text COLLATE utf8mb4_unicode_ci,
+  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `key` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
@@ -115,8 +115,8 @@ DROP TABLE IF EXISTS `oc_api_history`;
 CREATE TABLE IF NOT EXISTS `oc_api_history` (
   `api_history_id` int NOT NULL AUTO_INCREMENT,
   `api_id` int DEFAULT NULL,
-  `call` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `call` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`api_history_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -131,7 +131,7 @@ DROP TABLE IF EXISTS `oc_api_ip`;
 CREATE TABLE IF NOT EXISTS `oc_api_ip` (
   `api_ip_id` int NOT NULL AUTO_INCREMENT,
   `api_id` int DEFAULT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`api_ip_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -145,7 +145,7 @@ DROP TABLE IF EXISTS `oc_article`;
 CREATE TABLE IF NOT EXISTS `oc_article` (
   `article_id` int NOT NULL AUTO_INCREMENT,
   `topic_id` int DEFAULT '0',
-  `author` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rating` int DEFAULT '0',
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
@@ -165,10 +165,10 @@ CREATE TABLE IF NOT EXISTS `oc_article_comment` (
   `article_id` int DEFAULT NULL,
   `parent_id` int DEFAULT '0',
   `customer_id` int DEFAULT '0',
-  `author` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `author` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `rating` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`article_comment_id`),
@@ -187,13 +187,13 @@ DROP TABLE IF EXISTS `oc_article_description`;
 CREATE TABLE IF NOT EXISTS `oc_article_description` (
   `article_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tag` text COLLATE utf8mb4_unicode_ci,
-  `meta_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_keyword` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tag` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meta_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`article_id`,`language_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `oc_article_rating` (
   `store_id` int DEFAULT '0',
   `customer_id` int DEFAULT '0',
   `rating` tinyint(1) DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`article_rating_id`),
   KEY `article_comment_id` (`article_comment_id`),
@@ -289,7 +289,7 @@ DROP TABLE IF EXISTS `oc_attribute_description`;
 CREATE TABLE IF NOT EXISTS `oc_attribute_description` (
   `attribute_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`attribute_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -343,7 +343,7 @@ DROP TABLE IF EXISTS `oc_attribute_group_description`;
 CREATE TABLE IF NOT EXISTS `oc_attribute_group_description` (
   `attribute_group_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`attribute_group_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -366,7 +366,7 @@ INSERT INTO `oc_attribute_group_description` (`attribute_group_id`, `language_id
 DROP TABLE IF EXISTS `oc_banner`;
 CREATE TABLE IF NOT EXISTS `oc_banner` (
   `banner_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`banner_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -391,9 +391,9 @@ CREATE TABLE IF NOT EXISTS `oc_banner_image` (
   `banner_image_id` int NOT NULL AUTO_INCREMENT,
   `banner_id` int DEFAULT NULL,
   `language_id` int DEFAULT NULL,
-  `title` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`banner_image_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -429,17 +429,25 @@ CREATE TABLE IF NOT EXISTS `oc_cart` (
   `cart_id` int NOT NULL AUTO_INCREMENT,
   `store_id` int DEFAULT '0',
   `customer_id` int DEFAULT '0',
-  `session_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `session_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_id` int DEFAULT NULL,
   `subscription_plan_id` int DEFAULT '0',
-  `option` text COLLATE utf8mb4_unicode_ci,
+  `option` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `quantity` int DEFAULT NULL,
-  `override` text COLLATE utf8mb4_unicode_ci,
+  `override` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `price` decimal(15,4) DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`cart_id`),
   KEY `cart_id` (`customer_id`,`session_id`,`product_id`,`subscription_plan_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_cart`
+--
+
+INSERT INTO `oc_cart` (`cart_id`, `store_id`, `customer_id`, `session_id`, `product_id`, `subscription_plan_id`, `option`, `quantity`, `override`, `price`, `date_added`) VALUES
+(15, 0, 6, 'c82ebe10670043c65f4e91d39e', 43, 0, '[]', 14, '[]', NULL, '2025-10-03 12:07:27'),
+(16, 0, 6, 'c82ebe10670043c65f4e91d39e', 40, 0, '[]', 12, '[]', NULL, '2025-10-03 12:07:27');
 
 -- --------------------------------------------------------
 
@@ -450,7 +458,7 @@ CREATE TABLE IF NOT EXISTS `oc_cart` (
 DROP TABLE IF EXISTS `oc_category`;
 CREATE TABLE IF NOT EXISTS `oc_category` (
   `category_id` int NOT NULL AUTO_INCREMENT,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_id` int DEFAULT '0',
   `sort_order` int DEFAULT '0',
   `status` tinyint(1) DEFAULT '0',
@@ -512,11 +520,11 @@ DROP TABLE IF EXISTS `oc_category_description`;
 CREATE TABLE IF NOT EXISTS `oc_category_description` (
   `category_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `meta_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_keyword` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meta_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`category_id`,`language_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -749,8 +757,8 @@ INSERT INTO `oc_category_to_store` (`category_id`, `store_id`) VALUES
 DROP TABLE IF EXISTS `oc_country`;
 CREATE TABLE IF NOT EXISTS `oc_country` (
   `country_id` int NOT NULL AUTO_INCREMENT,
-  `iso_code_2` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `iso_code_3` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `iso_code_2` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `iso_code_3` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_format_id` int DEFAULT '0',
   `postcode_required` tinyint(1) DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1',
@@ -1026,7 +1034,7 @@ DROP TABLE IF EXISTS `oc_country_description`;
 CREATE TABLE IF NOT EXISTS `oc_country_description` (
   `country_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`country_id`,`language_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1299,9 +1307,9 @@ INSERT INTO `oc_country_description` (`country_id`, `language_id`, `name`) VALUE
 DROP TABLE IF EXISTS `oc_coupon`;
 CREATE TABLE IF NOT EXISTS `oc_coupon` (
   `coupon_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `discount` decimal(15,4) DEFAULT NULL,
   `logged` tinyint(1) DEFAULT '0',
   `shipping` tinyint(1) DEFAULT '0',
@@ -1377,10 +1385,10 @@ CREATE TABLE IF NOT EXISTS `oc_coupon_product` (
 DROP TABLE IF EXISTS `oc_cron`;
 CREATE TABLE IF NOT EXISTS `oc_cron` (
   `cron_id` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `cycle` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `action` text COLLATE utf8mb4_unicode_ci,
+  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `cycle` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
@@ -1405,10 +1413,10 @@ INSERT INTO `oc_cron` (`cron_id`, `code`, `description`, `cycle`, `action`, `sta
 DROP TABLE IF EXISTS `oc_currency`;
 CREATE TABLE IF NOT EXISTS `oc_currency` (
   `currency_id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `symbol_left` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `symbol_right` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `symbol_left` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `symbol_right` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `decimal_place` int DEFAULT '2',
   `value` double(15,8) DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
@@ -1421,14 +1429,14 @@ CREATE TABLE IF NOT EXISTS `oc_currency` (
 --
 
 INSERT INTO `oc_currency` (`currency_id`, `title`, `code`, `symbol_left`, `symbol_right`, `decimal_place`, `value`, `status`, `date_modified`) VALUES
-(1, 'Pound Sterling', 'GBP', '£', '', 2, 0.74018486, 1, '2025-09-24 10:47:48'),
-(2, 'US Dollar', 'USD', '$', '', 2, 1.00000000, 1, '2025-09-24 10:47:48'),
-(3, 'Euro', 'EUR', '', '€', 2, 0.84796065, 1, '2025-09-24 10:47:48'),
-(4, 'Hong Kong Dollar', 'HKD', 'HK$', '', 2, 7.77546002, 0, '2025-09-24 10:47:48'),
-(5, 'Indian Rupee', 'INR', '₹', '', 2, 88.77452726, 0, '2025-09-24 10:47:48'),
+(1, 'Pound Sterling', 'GBP', '£', '', 2, 0.74365093, 1, '2025-10-04 13:29:19'),
+(2, 'US Dollar', 'USD', '$', '', 2, 1.00000000, 1, '2025-10-04 13:29:19'),
+(3, 'Euro', 'EUR', '', '€', 2, 0.85222431, 1, '2025-10-04 13:29:19'),
+(4, 'Hong Kong Dollar', 'HKD', 'HK$', '', 2, 7.78234191, 0, '2025-10-04 13:29:19'),
+(5, 'Indian Rupee', 'INR', '₹', '', 2, 88.78728481, 0, '2025-10-04 13:29:19'),
 (6, 'Russian Ruble', 'RUB', '', '₽', 2, 56.40360000, 0, '2018-02-16 12:00:00'),
-(7, 'Chinese Yuan Renminbi', 'CNY', '¥', '', 2, 7.11176121, 0, '2025-09-24 10:47:48'),
-(8, 'Australian Dollar', 'AUD', '$', '', 2, 1.51394895, 0, '2025-09-24 10:47:48');
+(7, 'Chinese Yuan Renminbi', 'CNY', '¥', '', 2, 7.11956707, 0, '2025-10-04 13:29:19'),
+(8, 'Australian Dollar', 'AUD', '$', '', 2, 1.51448781, 0, '2025-10-04 13:29:19');
 
 -- --------------------------------------------------------
 
@@ -1442,23 +1450,30 @@ CREATE TABLE IF NOT EXISTS `oc_customer` (
   `customer_group_id` int DEFAULT '0',
   `store_id` int DEFAULT '0',
   `language_id` int DEFAULT '0',
-  `firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telephone` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `custom_field` text COLLATE utf8mb4_unicode_ci,
+  `firstname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telephone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `custom_field` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `newsletter` tinyint(1) DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `safe` tinyint(1) DEFAULT '0',
   `commenter` tinyint(1) DEFAULT '0',
-  `token` text COLLATE utf8mb4_unicode_ci,
-  `code` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `token` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `code` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_id`),
   KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_customer`
+--
+
+INSERT INTO `oc_customer` (`customer_id`, `customer_group_id`, `store_id`, `language_id`, `firstname`, `lastname`, `email`, `telephone`, `password`, `custom_field`, `newsletter`, `ip`, `status`, `safe`, `commenter`, `token`, `code`, `date_added`) VALUES
+(6, 1, 0, 1, 'Ali', 'Hamza', 'miangdpp@gmail.com', '', '$2y$10$exnwyipUMsr9.xbF.qXbLeK2eWuNk.UryFs6tSxxiFSJHqHj4ZF1a', '[]', 0, '::1', 1, 0, 0, NULL, NULL, '2025-10-03 10:58:22');
 
 -- --------------------------------------------------------
 
@@ -1470,9 +1485,9 @@ DROP TABLE IF EXISTS `oc_customer_activity`;
 CREATE TABLE IF NOT EXISTS `oc_customer_activity` (
   `customer_activity_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
-  `key` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `data` text COLLATE utf8mb4_unicode_ci,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1486,21 +1501,21 @@ CREATE TABLE IF NOT EXISTS `oc_customer_activity` (
 DROP TABLE IF EXISTS `oc_customer_affiliate`;
 CREATE TABLE IF NOT EXISTS `oc_customer_affiliate` (
   `customer_id` int NOT NULL,
-  `company` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tracking` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tracking` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `balance` decimal(15,4) DEFAULT NULL,
   `commission` decimal(4,2) DEFAULT '0.00',
-  `tax` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_method` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cheque` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `paypal` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bank_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bank_branch_number` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bank_swift_code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bank_account_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bank_account_number` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `custom_field` text COLLATE utf8mb4_unicode_ci,
+  `tax` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_method` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cheque` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `paypal` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank_branch_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank_swift_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank_account_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank_account_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `custom_field` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_id`)
@@ -1517,8 +1532,8 @@ CREATE TABLE IF NOT EXISTS `oc_customer_affiliate_report` (
   `customer_affiliate_report_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
   `store_id` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_affiliate_report_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1533,7 +1548,7 @@ DROP TABLE IF EXISTS `oc_customer_approval`;
 CREATE TABLE IF NOT EXISTS `oc_customer_approval` (
   `customer_approval_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
-  `type` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_approval_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1548,10 +1563,10 @@ DROP TABLE IF EXISTS `oc_customer_authorize`;
 CREATE TABLE IF NOT EXISTS `oc_customer_authorize` (
   `customer_authorize_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
-  `token` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `token` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `total` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   `date_expire` datetime DEFAULT NULL,
@@ -1591,8 +1606,8 @@ DROP TABLE IF EXISTS `oc_customer_group_description`;
 CREATE TABLE IF NOT EXISTS `oc_customer_group_description` (
   `customer_group_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`customer_group_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -1615,7 +1630,7 @@ DROP TABLE IF EXISTS `oc_customer_history`;
 CREATE TABLE IF NOT EXISTS `oc_customer_history` (
   `customer_history_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_history_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1631,12 +1646,19 @@ CREATE TABLE IF NOT EXISTS `oc_customer_ip` (
   `customer_ip_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
   `store_id` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_ip_id`),
   KEY `ip` (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_customer_ip`
+--
+
+INSERT INTO `oc_customer_ip` (`customer_ip_id`, `customer_id`, `store_id`, `ip`, `country`, `date_added`) VALUES
+(4, 6, 0, '::1', '', '2025-10-03 10:58:22');
 
 -- --------------------------------------------------------
 
@@ -1647,15 +1669,15 @@ CREATE TABLE IF NOT EXISTS `oc_customer_ip` (
 DROP TABLE IF EXISTS `oc_customer_login`;
 CREATE TABLE IF NOT EXISTS `oc_customer_login` (
   `customer_login_id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `total` int DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_login_id`),
   KEY `email` (`email`),
   KEY `ip` (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -1665,10 +1687,10 @@ CREATE TABLE IF NOT EXISTS `oc_customer_login` (
 
 DROP TABLE IF EXISTS `oc_customer_online`;
 CREATE TABLE IF NOT EXISTS `oc_customer_online` (
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `customer_id` int DEFAULT '0',
-  `url` text COLLATE utf8mb4_unicode_ci,
-  `referer` text COLLATE utf8mb4_unicode_ci,
+  `url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `referer` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1684,7 +1706,7 @@ CREATE TABLE IF NOT EXISTS `oc_customer_reward` (
   `customer_reward_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT '0',
   `order_id` int DEFAULT '0',
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `points` int DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_reward_id`)
@@ -1702,12 +1724,12 @@ CREATE TABLE IF NOT EXISTS `oc_customer_search` (
   `store_id` int DEFAULT '0',
   `language_id` int DEFAULT NULL,
   `customer_id` int DEFAULT '0',
-  `keyword` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `category_id` int DEFAULT NULL,
   `sub_category` tinyint(1) DEFAULT NULL,
   `description` tinyint(1) DEFAULT NULL,
   `products` int DEFAULT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_search_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1722,11 +1744,20 @@ DROP TABLE IF EXISTS `oc_customer_token`;
 CREATE TABLE IF NOT EXISTS `oc_customer_token` (
   `customer_token_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
-  `code` text COLLATE utf8mb4_unicode_ci,
-  `type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_token_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_customer_token`
+--
+
+INSERT INTO `oc_customer_token` (`customer_token_id`, `customer_id`, `code`, `type`, `date_added`) VALUES
+(4, 1, 'd4791eca3d5b51ec2c532b07d4b5e2dc23515af7', 'password', '2025-10-02 09:35:17'),
+(6, 3, '58cedbd8496e7a1e98b4000c0e893cc0bafbca75', 'password', '2025-10-02 11:20:55'),
+(7, 5, '7feb010a0c020248cd3f0196b5ccfd9ce287044e', 'password', '2025-10-02 12:06:55');
 
 -- --------------------------------------------------------
 
@@ -1739,7 +1770,7 @@ CREATE TABLE IF NOT EXISTS `oc_customer_transaction` (
   `customer_transaction_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
   `order_id` int DEFAULT '0',
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `amount` decimal(15,4) DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`customer_transaction_id`)
@@ -1769,10 +1800,10 @@ CREATE TABLE IF NOT EXISTS `oc_customer_wishlist` (
 DROP TABLE IF EXISTS `oc_custom_field`;
 CREATE TABLE IF NOT EXISTS `oc_custom_field` (
   `custom_field_id` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci,
-  `validation` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `location` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `validation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`custom_field_id`)
@@ -1868,7 +1899,7 @@ DROP TABLE IF EXISTS `oc_custom_field_description`;
 CREATE TABLE IF NOT EXISTS `oc_custom_field_description` (
   `custom_field_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`custom_field_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -1963,7 +1994,7 @@ CREATE TABLE IF NOT EXISTS `oc_custom_field_value_description` (
   `custom_field_value_id` int NOT NULL,
   `language_id` int NOT NULL,
   `custom_field_id` int DEFAULT NULL,
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`custom_field_value_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -2009,8 +2040,8 @@ INSERT INTO `oc_custom_field_value_description` (`custom_field_value_id`, `langu
 DROP TABLE IF EXISTS `oc_download`;
 CREATE TABLE IF NOT EXISTS `oc_download` (
   `download_id` int NOT NULL AUTO_INCREMENT,
-  `filename` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mask` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `filename` varchar(160) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mask` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`download_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2025,7 +2056,7 @@ DROP TABLE IF EXISTS `oc_download_description`;
 CREATE TABLE IF NOT EXISTS `oc_download_description` (
   `download_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`download_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -2040,8 +2071,8 @@ CREATE TABLE IF NOT EXISTS `oc_download_report` (
   `download_report_id` int NOT NULL AUTO_INCREMENT,
   `download_id` int DEFAULT NULL,
   `store_id` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`download_report_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2055,10 +2086,10 @@ CREATE TABLE IF NOT EXISTS `oc_download_report` (
 DROP TABLE IF EXISTS `oc_event`;
 CREATE TABLE IF NOT EXISTS `oc_event` (
   `event_id` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `trigger` text COLLATE utf8mb4_unicode_ci,
-  `action` text COLLATE utf8mb4_unicode_ci,
+  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `trigger` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `action` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `sort_order` int DEFAULT '1',
   PRIMARY KEY (`event_id`)
@@ -2124,11 +2155,11 @@ INSERT INTO `oc_event` (`event_id`, `code`, `description`, `trigger`, `action`, 
 DROP TABLE IF EXISTS `oc_extension`;
 CREATE TABLE IF NOT EXISTS `oc_extension` (
   `extension_id` int NOT NULL AUTO_INCREMENT,
-  `extension` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `extension` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`extension_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `oc_extension`
@@ -2144,7 +2175,6 @@ INSERT INTO `oc_extension` (`extension_id`, `extension`, `type`, `code`) VALUES
 (7, 'opencart', 'module', 'account'),
 (8, 'opencart', 'module', 'topic'),
 (9, 'opencart', 'shipping', 'flat'),
-(10, 'opencart', 'theme', 'basic'),
 (11, 'opencart', 'total', 'credit'),
 (12, 'opencart', 'total', 'shipping'),
 (13, 'opencart', 'total', 'sub_total'),
@@ -2177,7 +2207,8 @@ INSERT INTO `oc_extension` (`extension_id`, `extension`, `type`, `code`) VALUES
 (40, 'opencart', 'report', 'marketing'),
 (41, 'opencart', 'report', 'subscription'),
 (42, 'opencart', 'report', 'customer'),
-(43, 'mobile_app', 'module', 'mobile_app');
+(45, 'mobile_app', 'module', 'mobile_app'),
+(48, 'opencart', 'theme', 'basic');
 
 -- --------------------------------------------------------
 
@@ -2190,16 +2221,16 @@ CREATE TABLE IF NOT EXISTS `oc_extension_install` (
   `extension_install_id` int NOT NULL AUTO_INCREMENT,
   `extension_id` int DEFAULT '0',
   `extension_download_id` int DEFAULT '0',
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `version` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`extension_install_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `oc_extension_install`
@@ -2211,7 +2242,7 @@ INSERT INTO `oc_extension_install` (`extension_install_id`, `extension_id`, `ext
 (3, 0, 0, 'OpenCart OCMOD Example', '', 'oc_ocmod_example', '1.0', 'OpenCart Ltd', 'https://www.opencart.com', 0, '2025-09-24 10:46:56'),
 (4, 0, 0, 'OpenCart Payment Example', 'This extension is only here for so developers can see how to create a payment extension for OpenCart.', 'oc_payment_example', '1.0', 'OpenCart Ltd', 'https://www.opencart.com', 0, '2025-09-24 10:46:56'),
 (5, 0, 0, 'OpenCart Theme Example', 'This extension is only here for so developers can see how to create a theme extension for OpenCart.', 'oc_theme_example', '1.0', 'OpenCart Ltd', 'https://www.opencart.com', 0, '2025-09-24 10:46:57'),
-(6, 0, 0, 'Mobile App Extensions', 'Mobile App module.', 'mobile_app', '1.0', 'IExtend Labs', 'iextendlabs.com', 1, '2025-09-24 10:47:11');
+(8, 0, 0, 'Mobile App Extensions', 'Mobile App module.', 'mobile_app', '1.0', 'IExtend Labs', 'iextendlabs.com', 1, '2025-09-26 13:07:42');
 
 -- --------------------------------------------------------
 
@@ -2223,10 +2254,10 @@ DROP TABLE IF EXISTS `oc_extension_path`;
 CREATE TABLE IF NOT EXISTS `oc_extension_path` (
   `extension_path_id` int NOT NULL AUTO_INCREMENT,
   `extension_install_id` int DEFAULT NULL,
-  `path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`extension_path_id`),
   KEY `path` (`path`)
-) ENGINE=InnoDB AUTO_INCREMENT=410 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=490 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `oc_extension_path`
@@ -2628,20 +2659,28 @@ INSERT INTO `oc_extension_path` (`extension_path_id`, `extension_install_id`, `p
 (393, 1, 'opencart/catalog/view/template/total/reward.twig'),
 (394, 1, 'opencart/catalog/view/template/total/shipping.twig'),
 (395, 1, 'opencart/install.json'),
-(396, 6, 'mobile_app'),
-(397, 6, 'mobile_app/admin'),
-(398, 6, 'mobile_app/admin/controller'),
-(399, 6, 'mobile_app/admin/controller/module'),
-(400, 6, 'mobile_app/admin/controller/module/mobile_app.php'),
-(401, 6, 'mobile_app/admin/language'),
-(402, 6, 'mobile_app/admin/language/en-gb'),
-(403, 6, 'mobile_app/admin/language/en-gb/module'),
-(404, 6, 'mobile_app/admin/language/en-gb/module/mobile_app.php'),
-(405, 6, 'mobile_app/admin/view'),
-(406, 6, 'mobile_app/admin/view/template'),
-(407, 6, 'mobile_app/admin/view/template/module'),
-(408, 6, 'mobile_app/admin/view/template/module/mobile_app.twig'),
-(409, 6, 'mobile_app/install.json');
+(432, 8, 'mobile_app'),
+(433, 8, 'mobile_app/admin'),
+(434, 8, 'mobile_app/admin/controller'),
+(435, 8, 'mobile_app/admin/controller/module'),
+(436, 8, 'mobile_app/admin/controller/module/mobile_app.php'),
+(437, 8, 'mobile_app/admin/language'),
+(438, 8, 'mobile_app/admin/language/en-gb'),
+(439, 8, 'mobile_app/admin/language/en-gb/module'),
+(440, 8, 'mobile_app/admin/language/en-gb/module/mobile_app.php'),
+(441, 8, 'mobile_app/admin/view'),
+(442, 8, 'mobile_app/admin/view/template'),
+(443, 8, 'mobile_app/admin/view/template/module'),
+(444, 8, 'mobile_app/admin/view/template/module/mobile_app.twig'),
+(445, 8, 'mobile_app/catalog'),
+(446, 8, 'mobile_app/catalog/controller'),
+(447, 8, 'mobile_app/catalog/controller/api'),
+(448, 8, 'mobile_app/catalog/controller/api/app.php'),
+(449, 8, 'mobile_app/catalog/language'),
+(450, 8, 'mobile_app/catalog/language/en-gb'),
+(451, 8, 'mobile_app/catalog/language/en-gb/module'),
+(452, 8, 'mobile_app/catalog/language/en-gb/module/app_api.php'),
+(453, 8, 'mobile_app/install.json');
 
 -- --------------------------------------------------------
 
@@ -2667,7 +2706,7 @@ DROP TABLE IF EXISTS `oc_filter_description`;
 CREATE TABLE IF NOT EXISTS `oc_filter_description` (
   `filter_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`filter_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -2694,7 +2733,7 @@ DROP TABLE IF EXISTS `oc_filter_group_description`;
 CREATE TABLE IF NOT EXISTS `oc_filter_group_description` (
   `filter_group_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`filter_group_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -2709,9 +2748,9 @@ CREATE TABLE IF NOT EXISTS `oc_gdpr` (
   `gdpr_id` int NOT NULL AUTO_INCREMENT,
   `store_id` int DEFAULT '0',
   `language_id` int DEFAULT NULL,
-  `code` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `action` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`gdpr_id`)
@@ -2726,8 +2765,8 @@ CREATE TABLE IF NOT EXISTS `oc_gdpr` (
 DROP TABLE IF EXISTS `oc_geo_zone`;
 CREATE TABLE IF NOT EXISTS `oc_geo_zone` (
   `geo_zone_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`geo_zone_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -2748,9 +2787,9 @@ INSERT INTO `oc_geo_zone` (`geo_zone_id`, `name`, `description`) VALUES
 DROP TABLE IF EXISTS `oc_identifier`;
 CREATE TABLE IF NOT EXISTS `oc_identifier` (
   `identifier_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(48) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `validation` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`identifier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2801,11 +2840,11 @@ DROP TABLE IF EXISTS `oc_information_description`;
 CREATE TABLE IF NOT EXISTS `oc_information_description` (
   `information_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `title` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `meta_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_keyword` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meta_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`information_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -2865,10 +2904,10 @@ INSERT INTO `oc_information_to_store` (`information_id`, `store_id`) VALUES
 DROP TABLE IF EXISTS `oc_language`;
 CREATE TABLE IF NOT EXISTS `oc_language` (
   `language_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `locale` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `extension` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `locale` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `extension` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   `status` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`language_id`),
@@ -2891,7 +2930,7 @@ INSERT INTO `oc_language` (`language_id`, `name`, `code`, `locale`, `extension`,
 DROP TABLE IF EXISTS `oc_layout`;
 CREATE TABLE IF NOT EXISTS `oc_layout` (
   `layout_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`layout_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -2925,8 +2964,8 @@ DROP TABLE IF EXISTS `oc_layout_module`;
 CREATE TABLE IF NOT EXISTS `oc_layout_module` (
   `layout_module_id` int NOT NULL AUTO_INCREMENT,
   `layout_id` int DEFAULT '0',
-  `code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `position` varchar(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `position` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`layout_module_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2956,7 +2995,7 @@ CREATE TABLE IF NOT EXISTS `oc_layout_route` (
   `layout_route_id` int NOT NULL AUTO_INCREMENT,
   `layout_id` int DEFAULT NULL,
   `store_id` int DEFAULT '0',
-  `route` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `route` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`layout_route_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3014,8 +3053,8 @@ DROP TABLE IF EXISTS `oc_length_class_description`;
 CREATE TABLE IF NOT EXISTS `oc_length_class_description` (
   `length_class_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `title` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `unit` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unit` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`length_class_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3037,13 +3076,13 @@ INSERT INTO `oc_length_class_description` (`length_class_id`, `language_id`, `ti
 DROP TABLE IF EXISTS `oc_location`;
 CREATE TABLE IF NOT EXISTS `oc_location` (
   `location_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci,
-  `telephone` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `geocode` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `open` text COLLATE utf8mb4_unicode_ci,
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `telephone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `geocode` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `open` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`location_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3057,8 +3096,8 @@ CREATE TABLE IF NOT EXISTS `oc_location` (
 DROP TABLE IF EXISTS `oc_manufacturer`;
 CREATE TABLE IF NOT EXISTS `oc_manufacturer` (
   `manufacturer_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3123,9 +3162,9 @@ INSERT INTO `oc_manufacturer_to_store` (`manufacturer_id`, `store_id`) VALUES
 DROP TABLE IF EXISTS `oc_marketing`;
 CREATE TABLE IF NOT EXISTS `oc_marketing` (
   `marketing_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `clicks` int DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`marketing_id`)
@@ -3142,8 +3181,8 @@ CREATE TABLE IF NOT EXISTS `oc_marketing_report` (
   `marketing_report_id` int NOT NULL AUTO_INCREMENT,
   `marketing_id` int DEFAULT NULL,
   `store_id` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`marketing_report_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3158,13 +3197,13 @@ DROP TABLE IF EXISTS `oc_modification`;
 CREATE TABLE IF NOT EXISTS `oc_modification` (
   `modification_id` int NOT NULL AUTO_INCREMENT,
   `extension_install_id` int NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `version` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `xml` mediumtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `version` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `xml` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`modification_id`)
@@ -3179,9 +3218,9 @@ CREATE TABLE IF NOT EXISTS `oc_modification` (
 DROP TABLE IF EXISTS `oc_module`;
 CREATE TABLE IF NOT EXISTS `oc_module` (
   `module_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `setting` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `setting` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`module_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3204,8 +3243,8 @@ INSERT INTO `oc_module` (`module_id`, `name`, `code`, `setting`) VALUES
 DROP TABLE IF EXISTS `oc_notification`;
 CREATE TABLE IF NOT EXISTS `oc_notification` (
   `notification_id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `text` text COLLATE utf8mb4_unicode_ci,
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`notification_id`)
@@ -3220,8 +3259,8 @@ CREATE TABLE IF NOT EXISTS `oc_notification` (
 DROP TABLE IF EXISTS `oc_option`;
 CREATE TABLE IF NOT EXISTS `oc_option` (
   `option_id` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `validation` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`option_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3253,7 +3292,7 @@ DROP TABLE IF EXISTS `oc_option_description`;
 CREATE TABLE IF NOT EXISTS `oc_option_description` (
   `option_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`option_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3284,7 +3323,7 @@ DROP TABLE IF EXISTS `oc_option_value`;
 CREATE TABLE IF NOT EXISTS `oc_option_value` (
   `option_value_id` int NOT NULL AUTO_INCREMENT,
   `option_id` int DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`option_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3320,7 +3359,7 @@ CREATE TABLE IF NOT EXISTS `oc_option_value_description` (
   `option_value_id` int NOT NULL,
   `language_id` int NOT NULL,
   `option_id` int DEFAULT NULL,
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`option_value_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3355,69 +3394,76 @@ CREATE TABLE IF NOT EXISTS `oc_order` (
   `order_id` int NOT NULL AUTO_INCREMENT,
   `subscription_id` int DEFAULT '0',
   `invoice_no` int DEFAULT '0',
-  `invoice_prefix` varchar(26) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `transaction_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `invoice_prefix` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `transaction_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `store_id` int DEFAULT '0',
-  `store_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `store_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `customer_id` int DEFAULT '0',
   `customer_group_id` int DEFAULT '0',
-  `firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telephone` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `custom_field` text COLLATE utf8mb4_unicode_ci,
+  `firstname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telephone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `custom_field` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `payment_address_id` int DEFAULT '0',
-  `payment_firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_company` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_address_1` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_address_2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_city` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_postcode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_country` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_firstname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_lastname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_company` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_address_1` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_address_2` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_city` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_postcode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_country` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `payment_country_id` int DEFAULT '0',
-  `payment_zone` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_zone` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `payment_zone_id` int DEFAULT '0',
-  `payment_address_format` text COLLATE utf8mb4_unicode_ci,
-  `payment_custom_field` text COLLATE utf8mb4_unicode_ci,
-  `payment_method` text COLLATE utf8mb4_unicode_ci,
+  `payment_address_format` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `payment_custom_field` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `payment_method` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `shipping_address_id` int DEFAULT NULL,
-  `shipping_firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_company` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_address_1` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_address_2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_city` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_postcode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_country` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_firstname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_lastname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_company` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_address_1` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_address_2` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_city` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_postcode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_country` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shipping_country_id` int DEFAULT '0',
-  `shipping_zone` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_zone` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shipping_zone_id` int DEFAULT '0',
-  `shipping_address_format` text COLLATE utf8mb4_unicode_ci,
-  `shipping_custom_field` text COLLATE utf8mb4_unicode_ci,
-  `shipping_method` text COLLATE utf8mb4_unicode_ci,
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `shipping_address_format` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `shipping_custom_field` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `shipping_method` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `total` decimal(15,4) DEFAULT '0.0000',
   `order_status_id` int DEFAULT '0',
   `affiliate_id` int DEFAULT '0',
   `commission` decimal(15,4) DEFAULT NULL,
   `marketing_id` int DEFAULT '0',
-  `tracking` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tracking` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `language_id` int DEFAULT NULL,
-  `language_code` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `language_code` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `currency_id` int DEFAULT NULL,
-  `currency_code` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `currency_code` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `currency_value` decimal(15,8) DEFAULT '1.00000000',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `forwarded_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `accept_language` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `forwarded_ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accept_language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_order`
+--
+
+INSERT INTO `oc_order` (`order_id`, `subscription_id`, `invoice_no`, `invoice_prefix`, `transaction_id`, `store_id`, `store_name`, `store_url`, `customer_id`, `customer_group_id`, `firstname`, `lastname`, `email`, `telephone`, `custom_field`, `payment_address_id`, `payment_firstname`, `payment_lastname`, `payment_company`, `payment_address_1`, `payment_address_2`, `payment_city`, `payment_postcode`, `payment_country`, `payment_country_id`, `payment_zone`, `payment_zone_id`, `payment_address_format`, `payment_custom_field`, `payment_method`, `shipping_address_id`, `shipping_firstname`, `shipping_lastname`, `shipping_company`, `shipping_address_1`, `shipping_address_2`, `shipping_city`, `shipping_postcode`, `shipping_country`, `shipping_country_id`, `shipping_zone`, `shipping_zone_id`, `shipping_address_format`, `shipping_custom_field`, `shipping_method`, `comment`, `total`, `order_status_id`, `affiliate_id`, `commission`, `marketing_id`, `tracking`, `language_id`, `language_code`, `currency_id`, `currency_code`, `currency_value`, `ip`, `forwarded_ip`, `user_agent`, `accept_language`, `date_added`, `date_modified`) VALUES
+(1, 0, 0, 'INV-2025-00', NULL, 0, 'Your Store', 'http://localhost/opencart-mobile-app-oc4/', 4, 1, 'Ali', 'Hamza', 'testing12@gmail.com', '', '[]', 0, '', '', '', '', '', '', '', '', 0, '', 0, '', '[]', '{\"code\":\"cod.cod\",\"name\":\"Cash On Delivery\"}', 1, 'Ali', 'Hamza', '', 'lahore', '', 'Lahore', '0003', 'Pakistan', 162, 'Islamabad Capital Territory', 2459, '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{city}, {zone} {postcode}\r\n{country}', '[]', '{\"code\":\"flat.flat\",\"name\":\"Flat Shipping Rate\",\"cost\":\"5.00\",\"tax_class_id\":\"9\",\"text\":\"4.26\\u20ac\"}', '', 106.0000, 1, 0, 0.0000, 0, '', 1, 'en-gb', 3, 'EUR', 0.85295121, '::1', '', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'en-PK,en;q=0.9,ur-PK;q=0.8,ur;q=0.7,en-GB;q=0.6,en-US;q=0.5', '2025-10-02 09:37:04', '2025-10-02 09:37:04');
 
 -- --------------------------------------------------------
 
@@ -3431,10 +3477,17 @@ CREATE TABLE IF NOT EXISTS `oc_order_history` (
   `order_id` int DEFAULT NULL,
   `order_status_id` int DEFAULT '0',
   `notify` tinyint(1) DEFAULT '0',
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`order_history_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_order_history`
+--
+
+INSERT INTO `oc_order_history` (`order_history_id`, `order_id`, `order_status_id`, `notify`, `comment`, `date_added`) VALUES
+(1, 1, 1, 0, '', '2025-10-02 09:37:05');
 
 -- --------------------------------------------------------
 
@@ -3449,9 +3502,9 @@ CREATE TABLE IF NOT EXISTS `oc_order_option` (
   `order_product_id` int DEFAULT NULL,
   `product_option_id` int DEFAULT NULL,
   `product_option_value_id` int DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci,
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`order_option_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3467,8 +3520,8 @@ CREATE TABLE IF NOT EXISTS `oc_order_product` (
   `order_id` int DEFAULT NULL,
   `product_id` int DEFAULT NULL,
   `master_id` int DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `model` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `model` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int DEFAULT '1',
   `price` decimal(15,4) DEFAULT '0.0000',
   `total` decimal(15,4) DEFAULT '0.0000',
@@ -3476,7 +3529,14 @@ CREATE TABLE IF NOT EXISTS `oc_order_product` (
   `reward` int DEFAULT '0',
   PRIMARY KEY (`order_product_id`),
   KEY `order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_order_product`
+--
+
+INSERT INTO `oc_order_product` (`order_product_id`, `order_id`, `product_id`, `master_id`, `name`, `model`, `quantity`, `price`, `total`, `tax`, `reward`) VALUES
+(1, 1, 40, 0, 'iPhone', 'product 11', 1, 101.0000, 101.0000, 0.0000, 0);
 
 -- --------------------------------------------------------
 
@@ -3488,7 +3548,7 @@ DROP TABLE IF EXISTS `oc_order_status`;
 CREATE TABLE IF NOT EXISTS `oc_order_status` (
   `order_status_id` int NOT NULL AUTO_INCREMENT,
   `language_id` int NOT NULL,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`order_status_id`,`language_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3528,13 +3588,13 @@ CREATE TABLE IF NOT EXISTS `oc_order_subscription` (
   `subscription_plan_id` int DEFAULT NULL,
   `trial_price` decimal(10,4) DEFAULT NULL,
   `trial_tax` decimal(15,4) DEFAULT NULL,
-  `trial_frequency` enum('day','week','semi_month','month','year') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trial_frequency` enum('day','week','semi_month','month','year') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `trial_cycle` smallint DEFAULT NULL,
   `trial_duration` smallint DEFAULT NULL,
   `trial_status` tinyint(1) DEFAULT '0',
   `price` decimal(10,4) DEFAULT NULL,
   `tax` decimal(15,4) DEFAULT NULL,
-  `frequency` enum('day','week','semi_month','month','year') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `frequency` enum('day','week','semi_month','month','year') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cycle` smallint DEFAULT '1',
   `duration` smallint DEFAULT '0',
   PRIMARY KEY (`order_subscription_id`),
@@ -3551,14 +3611,23 @@ DROP TABLE IF EXISTS `oc_order_total`;
 CREATE TABLE IF NOT EXISTS `oc_order_total` (
   `order_total_id` int NOT NULL AUTO_INCREMENT,
   `order_id` int DEFAULT NULL,
-  `extension` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `extension` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` decimal(15,4) DEFAULT '0.0000',
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`order_total_id`),
   KEY `order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_order_total`
+--
+
+INSERT INTO `oc_order_total` (`order_total_id`, `order_id`, `extension`, `code`, `title`, `value`, `sort_order`) VALUES
+(1, 1, 'opencart', 'sub_total', 'Sub-Total', 101.0000, 1),
+(2, 1, 'opencart', 'shipping', 'Flat Shipping Rate', 5.0000, 3),
+(3, 1, 'opencart', 'total', 'Total', 106.0000, 9);
 
 -- --------------------------------------------------------
 
@@ -3570,19 +3639,19 @@ DROP TABLE IF EXISTS `oc_product`;
 CREATE TABLE IF NOT EXISTS `oc_product` (
   `product_id` int NOT NULL AUTO_INCREMENT,
   `master_id` int DEFAULT '0',
-  `model` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sku` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `upc` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ean` varchar(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jan` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `isbn` varchar(17) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mpn` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `location` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `variant` text COLLATE utf8mb4_unicode_ci,
-  `override` text COLLATE utf8mb4_unicode_ci,
+  `model` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sku` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upc` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ean` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jan` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isbn` varchar(17) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mpn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `variant` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `override` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `quantity` int DEFAULT '0',
   `stock_status_id` int DEFAULT '0',
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `manufacturer_id` int DEFAULT '0',
   `shipping` tinyint(1) DEFAULT '1',
   `price` decimal(15,4) DEFAULT '0.0000',
@@ -3619,7 +3688,7 @@ INSERT INTO `oc_product` (`product_id`, `master_id`, `model`, `sku`, `upc`, `ean
 (34, 0, 'Product 7', '', '', '', '', '', '', '', '', '', 1000, 6, 'catalog/demo/ipod_shuffle_1.jpg', 8, 1, 100.0000, 0, 9, '2009-02-03', 5.00000000, 1, 0.00000000, 0.00000000, 0.00000000, 2, 1, 1, 0, 0, 1, '2009-02-03 18:07:54', '2011-09-30 01:07:17'),
 (35, 0, 'Product 8', '', '', '', '', '', '', '', '', '', 1000, 5, '', 0, 0, 100.0000, 0, 9, '2009-02-03', 5.00000000, 1, 0.00000000, 0.00000000, 0.00000000, 1, 1, 1, 0, 0, 1, '2009-02-03 18:08:31', '2011-09-30 01:06:17'),
 (36, 0, 'Product 9', '', '', '', '', '', '', '', '', '', 994, 6, 'catalog/demo/ipod_nano_1.jpg', 8, 0, 100.0000, 100, 9, '2009-02-03', 5.00000000, 1, 0.00000000, 0.00000000, 0.00000000, 2, 1, 1, 0, 0, 1, '2009-02-03 18:09:19', '2011-09-30 01:07:12'),
-(40, 0, 'product 11', '', '', '', '', '', '', '', '', '', 970, 5, 'catalog/demo/iphone_1.jpg', 8, 1, 101.0000, 0, 9, '2009-02-03', 10.00000000, 1, 0.00000000, 0.00000000, 0.00000000, 1, 1, 1, 0, 0, 1, '2009-02-03 21:07:12', '2011-09-30 01:06:53'),
+(40, 0, 'product 11', '', '', '', '', '', '', '', '', '', 969, 5, 'catalog/demo/iphone_1.jpg', 8, 1, 101.0000, 0, 9, '2009-02-03', 10.00000000, 1, 0.00000000, 0.00000000, 0.00000000, 1, 1, 1, 0, 0, 1, '2009-02-03 21:07:12', '2011-09-30 01:06:53'),
 (41, 0, 'Product 14', '', '', '', '', '', '', '', '', '', 977, 5, 'catalog/demo/imac_1.jpg', 8, 1, 100.0000, 0, 9, '2009-02-03', 5.00000000, 1, 0.00000000, 0.00000000, 0.00000000, 1, 1, 1, 0, 0, 1, '2009-02-03 21:07:26', '2011-09-30 01:06:44'),
 (42, 0, 'Product 15', '', '', '', '', '', '', '', '', '', 990, 5, 'catalog/demo/apple_cinema_30.jpg', 8, 1, 100.0000, 400, 9, '2009-02-04', 12.50000000, 1, 1.00000000, 2.00000000, 3.00000000, 1, 1, 2, 0, 0, 1, '2009-02-03 21:07:37', '2011-09-30 00:46:19'),
 (43, 0, 'Product 16', '', '', '', '', '', '', '', '', '', 929, 5, 'catalog/demo/macbook_1.jpg', 8, 0, 500.0000, 0, 9, '2009-02-03', 0.00000000, 1, 0.00000000, 0.00000000, 0.00000000, 2, 1, 1, 0, 0, 1, '2009-02-03 21:07:49', '2011-09-30 01:05:46'),
@@ -3641,7 +3710,7 @@ CREATE TABLE IF NOT EXISTS `oc_product_attribute` (
   `product_id` int NOT NULL,
   `attribute_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `text` text COLLATE utf8mb4_unicode_ci,
+  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`product_id`,`attribute_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3666,8 +3735,8 @@ DROP TABLE IF EXISTS `oc_product_code`;
 CREATE TABLE IF NOT EXISTS `oc_product_code` (
   `product_code_id` int NOT NULL AUTO_INCREMENT,
   `product_id` int DEFAULT NULL,
-  `code` varchar(48) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`product_code_id`),
   KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3682,12 +3751,12 @@ DROP TABLE IF EXISTS `oc_product_description`;
 CREATE TABLE IF NOT EXISTS `oc_product_description` (
   `product_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `tag` text COLLATE utf8mb4_unicode_ci,
-  `meta_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_keyword` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `tag` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meta_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`product_id`,`language_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3731,22 +3800,21 @@ CREATE TABLE IF NOT EXISTS `oc_product_discount` (
   `quantity` int DEFAULT '0',
   `priority` int DEFAULT '1',
   `price` decimal(15,4) DEFAULT '0.0000',
-  `type` char(1) COLLATE utf8mb4_unicode_ci DEFAULT 'P',
+  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'P',
   `special` tinyint(1) DEFAULT '0',
   `date_start` date DEFAULT NULL,
   `date_end` date DEFAULT NULL,
   PRIMARY KEY (`product_discount_id`),
   KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=441 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=445 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `oc_product_discount`
 --
 
 INSERT INTO `oc_product_discount` (`product_discount_id`, `product_id`, `customer_group_id`, `quantity`, `priority`, `price`, `type`, `special`, `date_start`, `date_end`) VALUES
-(438, 42, 1, 10, 1, 88.0000, 'P', 0, '0000-00-00', '0000-00-00'),
-(439, 42, 1, 20, 1, 77.0000, 'P', 0, '0000-00-00', '0000-00-00'),
-(440, 42, 1, 30, 1, 66.0000, 'P', 0, '0000-00-00', '0000-00-00');
+(443, 42, 1, 1, 1, 50.0000, 'f', 1, '0000-00-00', '0000-00-00'),
+(444, 47, 1, 1, 1, 70.0000, 'f', 1, '0000-00-00', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -3771,7 +3839,7 @@ DROP TABLE IF EXISTS `oc_product_image`;
 CREATE TABLE IF NOT EXISTS `oc_product_image` (
   `product_image_id` int NOT NULL AUTO_INCREMENT,
   `product_id` int DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`product_image_id`),
   KEY `product_id` (`product_id`)
@@ -3855,7 +3923,7 @@ CREATE TABLE IF NOT EXISTS `oc_product_option` (
   `product_option_id` int NOT NULL AUTO_INCREMENT,
   `product_id` int DEFAULT NULL,
   `option_id` int DEFAULT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `required` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`product_option_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3894,11 +3962,11 @@ CREATE TABLE IF NOT EXISTS `oc_product_option_value` (
   `quantity` int DEFAULT '0',
   `subtract` tinyint(1) DEFAULT '0',
   `price` decimal(15,4) DEFAULT NULL,
-  `price_prefix` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `price_prefix` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `points` int DEFAULT '0',
-  `points_prefix` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `points_prefix` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `weight` decimal(15,8) DEFAULT NULL,
-  `weight_prefix` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `weight_prefix` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`product_option_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -3958,8 +4026,8 @@ CREATE TABLE IF NOT EXISTS `oc_product_report` (
   `product_report_id` int NOT NULL AUTO_INCREMENT,
   `product_id` int DEFAULT NULL,
   `store_id` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`product_report_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -4159,19 +4227,19 @@ CREATE TABLE IF NOT EXISTS `oc_return` (
   `return_id` int NOT NULL AUTO_INCREMENT,
   `order_id` int DEFAULT '0',
   `customer_id` int DEFAULT '0',
-  `firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telephone` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firstname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telephone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_id` int DEFAULT '0',
-  `product` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `model` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `model` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int DEFAULT '0',
   `opened` tinyint(1) DEFAULT '0',
   `return_reason_id` int DEFAULT '0',
   `return_action_id` int DEFAULT '0',
   `return_status_id` int DEFAULT '0',
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_ordered` date DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
@@ -4188,7 +4256,7 @@ DROP TABLE IF EXISTS `oc_return_action`;
 CREATE TABLE IF NOT EXISTS `oc_return_action` (
   `return_action_id` int NOT NULL AUTO_INCREMENT,
   `language_id` int NOT NULL DEFAULT '0',
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`return_action_id`,`language_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4214,7 +4282,7 @@ CREATE TABLE IF NOT EXISTS `oc_return_history` (
   `return_id` int DEFAULT NULL,
   `return_status_id` int DEFAULT '0',
   `notify` tinyint(1) DEFAULT NULL,
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`return_history_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -4229,7 +4297,7 @@ DROP TABLE IF EXISTS `oc_return_reason`;
 CREATE TABLE IF NOT EXISTS `oc_return_reason` (
   `return_reason_id` int NOT NULL AUTO_INCREMENT,
   `language_id` int NOT NULL DEFAULT '0',
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`return_reason_id`,`language_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4254,7 +4322,7 @@ DROP TABLE IF EXISTS `oc_return_status`;
 CREATE TABLE IF NOT EXISTS `oc_return_status` (
   `return_status_id` int NOT NULL AUTO_INCREMENT,
   `language_id` int NOT NULL DEFAULT '0',
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`return_status_id`,`language_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4278,15 +4346,23 @@ CREATE TABLE IF NOT EXISTS `oc_review` (
   `review_id` int NOT NULL AUTO_INCREMENT,
   `product_id` int DEFAULT '0',
   `customer_id` int DEFAULT '0',
-  `author` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `text` text COLLATE utf8mb4_unicode_ci,
+  `author` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `rating` int DEFAULT '0',
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
   PRIMARY KEY (`review_id`),
   KEY `product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `oc_review`
+--
+
+INSERT INTO `oc_review` (`review_id`, `product_id`, `customer_id`, `author`, `text`, `rating`, `status`, `date_added`, `date_modified`) VALUES
+(1, 42, 0, 'test', 'test9inbsdfsdkjfhlsdhfasdfasdf', 5, 1, '2025-10-04 13:34:22', '2025-10-04 13:34:22'),
+(2, 42, 0, 'asdasd', 'asdasdasdfasdfasdfasdfasdfasdfasdf', 3, 1, '2025-10-04 13:34:41', '2025-10-04 13:34:41');
 
 -- --------------------------------------------------------
 
@@ -4299,9 +4375,9 @@ CREATE TABLE IF NOT EXISTS `oc_seo_url` (
   `seo_url_id` int NOT NULL AUTO_INCREMENT,
   `store_id` int DEFAULT '0',
   `language_id` int DEFAULT NULL,
-  `key` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(768) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(768) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`seo_url_id`),
   KEY `store` (`store_id`),
@@ -4399,8 +4475,8 @@ INSERT INTO `oc_seo_url` (`seo_url_id`, `store_id`, `language_id`, `key`, `value
 
 DROP TABLE IF EXISTS `oc_session`;
 CREATE TABLE IF NOT EXISTS `oc_session` (
-  `session_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `data` text COLLATE utf8mb4_unicode_ci,
+  `session_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `expire` datetime DEFAULT NULL,
   PRIMARY KEY (`session_id`),
   KEY `expire` (`expire`)
@@ -4411,7 +4487,9 @@ CREATE TABLE IF NOT EXISTS `oc_session` (
 --
 
 INSERT INTO `oc_session` (`session_id`, `data`, `expire`) VALUES
-('ef3f2289003236f0e126c63558', '{\"user_id\":\"1\",\"user_token\":\"ff2456c1394363da0243263a1c96fd53\"}', '2025-09-25 10:47:51');
+('6446fcf808f7bb0780d439f28b', '{\"currency\":\"EUR\",\"upload_token\":\"01d5524dee50a61a40536044f42f79e3\",\"review_token\":\"6e6cf5b62a12af98fbdf9cab72094d9d\",\"wishlist\":[42],\"login_token\":\"96838ea7a1fcc01492cbbaa703\",\"customer\":{\"customer_id\":\"5\",\"customer_group_id\":\"1\",\"firstname\":\"Hamza\",\"lastname\":\"Ali\",\"email\":\"miangdpp@gmail.com\",\"telephone\":\"\",\"custom_field\":[]}}', '2025-10-05 13:34:44'),
+('7a6c2b639c684ef8ce5eb26492', '{\"currency\":\"USD\"}', '2025-10-05 13:43:14'),
+('a5a8a2405ed8596c14674de8d9', '{\"user_id\":\"1\",\"user_token\":\"0482100007b0d623b1d109e0c9653247\"}', '2025-10-05 13:29:19');
 
 -- --------------------------------------------------------
 
@@ -4423,146 +4501,18 @@ DROP TABLE IF EXISTS `oc_setting`;
 CREATE TABLE IF NOT EXISTS `oc_setting` (
   `setting_id` int NOT NULL AUTO_INCREMENT,
   `store_id` int DEFAULT '0',
-  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `key` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci,
+  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `key` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `serialized` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`setting_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=381 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `oc_setting`
 --
 
 INSERT INTO `oc_setting` (`setting_id`, `store_id`, `code`, `key`, `value`, `serialized`) VALUES
-(1, 0, 'config', 'config_shared', '0', 0),
-(2, 0, 'config', 'config_fraud_detection', '0', 0),
-(3, 0, 'config', 'config_description', '{\"1\":{\"meta_title\":\"Your Store\",\"meta_description\":\"\",\"meta_keyword\":\"\"}}', 1),
-(4, 0, 'config', 'config_session_expire', '86400', 0),
-(5, 0, 'config', 'config_session_samesite', 'Strict', 0),
-(6, 0, 'config', 'config_theme', 'basic', 0),
-(7, 0, 'config', 'config_layout_id', '4', 0),
-(8, 0, 'config', 'config_country_id', '222', 0),
-(9, 0, 'config', 'config_zone_id', '3563', 0),
-(10, 0, 'config', 'config_timezone', 'UTC', 0),
-(11, 0, 'config', 'config_language_catalog', 'en-gb', 0),
-(12, 0, 'config', 'config_language_admin', 'en-gb', 0),
-(13, 0, 'config', 'config_currency', 'USD', 0),
-(14, 0, 'config', 'config_currency_auto', '1', 0),
-(15, 0, 'config', 'config_currency_engine', 'ecb', 0),
-(16, 0, 'config', 'config_length_class_id', '1', 0),
-(17, 0, 'config', 'config_weight_class_id', '1', 0),
-(18, 0, 'config', 'config_product_description_length', '100', 0),
-(19, 0, 'config', 'config_article_description_length', '600', 0),
-(20, 0, 'config', 'config_pagination', '10', 0),
-(21, 0, 'config', 'config_pagination_admin', '10', 0),
-(22, 0, 'config', 'config_autocomplete_limit', '5', 0),
-(23, 0, 'config', 'config_product_count', '1', 0),
-(24, 0, 'config', 'config_review_status', '1', 0),
-(25, 0, 'config', 'config_review_guest', '1', 0),
-(26, 0, 'config', 'config_cookie_id', '0', 0),
-(27, 0, 'config', 'config_gdpr_id', '0', 0),
-(28, 0, 'config', 'config_gdpr_limit', '180', 0),
-(29, 0, 'config', 'config_tax', '1', 0),
-(30, 0, 'config', 'config_tax_default', 'shipping', 0),
-(31, 0, 'config', 'config_tax_customer', 'shipping', 0),
-(32, 0, 'config', 'config_customer_online', '0', 0),
-(33, 0, 'config', 'config_customer_online_expire', '1', 0),
-(34, 0, 'config', 'config_customer_activity', '0', 0),
-(35, 0, 'config', 'config_customer_search', '0', 0),
-(36, 0, 'config', 'config_customer_group_id', '1', 0),
-(37, 0, 'config', 'config_customer_group_display', '[\"1\"]', 1),
-(38, 0, 'config', 'config_customer_price', '0', 0),
-(39, 0, 'config', 'config_address_format_id', '1', 0),
-(40, 0, 'config', 'config_account_id', '3', 0),
-(41, 0, 'config', 'config_invoice_prefix', 'INV-2025-00', 0),
-(43, 0, 'config', 'config_cart_weight', '1', 0),
-(44, 0, 'config', 'config_checkout_guest', '1', 0),
-(45, 0, 'config', 'config_checkout_id', '0', 0),
-(46, 0, 'config', 'config_order_status_id', '1', 0),
-(47, 0, 'config', 'config_processing_status', '[\"5\",\"1\",\"2\",\"12\",\"3\"]', 1),
-(48, 0, 'config', 'config_complete_status', '[\"5\",\"3\"]', 1),
-(49, 0, 'config', 'config_void_status_id', '16', 0),
-(50, 0, 'config', 'config_fraud_status_id', '8', 0),
-(51, 0, 'config', 'config_subscription_status_id', '1', 0),
-(52, 0, 'config', 'config_subscription_active_status_id', '2', 0),
-(53, 0, 'config', 'config_subscription_expired_status_id', '3', 0),
-(54, 0, 'config', 'config_subscription_suspended_status_id', '4', 0),
-(55, 0, 'config', 'config_subscription_canceled_status_id', '5', 0),
-(56, 0, 'config', 'config_subscription_failed_status_id', '6', 0),
-(57, 0, 'config', 'config_subscription_denied_status_id', '7', 0),
-(58, 0, 'config', 'config_stock_display', '0', 0),
-(59, 0, 'config', 'config_stock_warning', '0', 0),
-(60, 0, 'config', 'config_stock_checkout', '0', 0),
-(61, 0, 'config', 'config_stock_status_id', '7', 0),
-(62, 0, 'config', 'config_affiliate_status', '1', 0),
-(63, 0, 'config', 'config_affiliate_approval', '0', 0),
-(64, 0, 'config', 'config_affiliate_auto', '0', 0),
-(65, 0, 'config', 'config_affiliate_commission', '5', 0),
-(66, 0, 'config', 'config_affiliate_id', '4', 0),
-(67, 0, 'config', 'config_return_id', '0', 0),
-(68, 0, 'config', 'config_return_status_id', '2', 0),
-(69, 0, 'config', 'config_logo', 'catalog/opencart-logo.png', 0),
-(70, 0, 'config', 'config_icon', 'catalog/opencart.ico', 0),
-(71, 0, 'config', 'config_image_default_width', '300', 0),
-(72, 0, 'config', 'config_image_default_height', '300', 0),
-(73, 0, 'config', 'config_image_thumb_width', '500', 0),
-(74, 0, 'config', 'config_image_thumb_height', '500', 0),
-(75, 0, 'config', 'config_image_popup_width', '800', 0),
-(76, 0, 'config', 'config_image_popup_height', '800', 0),
-(77, 0, 'config', 'config_image_category_width', '300', 0),
-(78, 0, 'config', 'config_image_category_height', '300', 0),
-(79, 0, 'config', 'config_image_article_width', '1140', 0),
-(80, 0, 'config', 'config_image_article_height', '380', 0),
-(81, 0, 'config', 'config_image_topic_width', '1140', 0),
-(82, 0, 'config', 'config_image_topic_height', '380', 0),
-(83, 0, 'config', 'config_image_product_width', '250', 0),
-(84, 0, 'config', 'config_image_product_height', '250', 0),
-(85, 0, 'config', 'config_image_additional_width', '74', 0),
-(86, 0, 'config', 'config_image_additional_height', '74', 0),
-(87, 0, 'config', 'config_image_related_width', '250', 0),
-(88, 0, 'config', 'config_image_related_height', '250', 0),
-(89, 0, 'config', 'config_image_compare_width', '90', 0),
-(90, 0, 'config', 'config_image_compare_height', '90', 0),
-(91, 0, 'config', 'config_image_wishlist_width', '47', 0),
-(92, 0, 'config', 'config_image_wishlist_height', '47', 0),
-(93, 0, 'config', 'config_image_cart_height', '47', 0),
-(94, 0, 'config', 'config_image_cart_width', '47', 0),
-(95, 0, 'config', 'config_image_location_height', '268', 0),
-(96, 0, 'config', 'config_image_location_width', '268', 0),
-(97, 0, 'config', 'config_open', '', 0),
-(98, 0, 'config', 'config_image', '', 0),
-(99, 0, 'config', 'config_fax', '', 0),
-(100, 0, 'config', 'config_telephone', '123456789', 0),
-(101, 0, 'config', 'config_email', 'admin@gmail.com', 0),
-(102, 0, 'config', 'config_geocode', '', 0),
-(103, 0, 'config', 'config_owner', 'Your Name', 0),
-(104, 0, 'config', 'config_address', 'Address 1', 0),
-(105, 0, 'config', 'config_name', 'Your Store', 0),
-(106, 0, 'config', 'config_seo_url', '0', 0),
-(107, 0, 'config', 'config_file_max_size', '20', 0),
-(108, 0, 'config', 'config_file_ext_allowed', 'zip\r\ntxt\r\npng\r\njpe\r\njpeg\r\nwebp\r\njpg\r\ngif\r\nbmp\r\nico\r\ntiff\r\ntif\r\nsvg\r\nsvgz\r\nzip\r\nrar\r\nmsi\r\ncab\r\nmp3\r\nmp4\r\nqt\r\nmov\r\npdf\r\npsd\r\nai\r\neps\r\nps\r\ndoc', 0),
-(109, 0, 'config', 'config_file_mime_allowed', 'text/plain\r\nimage/png\r\nimage/webp\r\nimage/jpeg\r\nimage/gif\r\nimage/bmp\r\nimage/tiff\r\nimage/svg+xml\r\napplication/zip\r\napplication/x-zip\r\napplication/x-zip-compressed\r\napplication/rar\r\napplication/x-rar\r\napplication/x-rar-compressed\r\napplication/octet-stream\r\naudio/mpeg\r\nvideo/mp4\r\nvideo/quicktime\r\napplication/pdf', 0),
-(110, 0, 'config', 'config_maintenance', '0', 0),
-(111, 0, 'config', 'config_encryption', '', 0),
-(112, 0, 'config', 'config_compression', '0', 0),
-(113, 0, 'config', 'config_error_display', '1', 0),
-(114, 0, 'config', 'config_error_log', '1', 0),
-(115, 0, 'config', 'config_error_filename', 'error.log', 0),
-(116, 0, 'config', 'config_mail_engine', '', 0),
-(117, 0, 'config', 'config_mail_parameter', '', 0),
-(118, 0, 'config', 'config_mail_smtp_hostname', '', 0),
-(119, 0, 'config', 'config_mail_smtp_username', '', 0),
-(120, 0, 'config', 'config_mail_smtp_password', '', 0),
-(121, 0, 'config', 'config_mail_smtp_port', '25', 0),
-(122, 0, 'config', 'config_mail_smtp_timeout', '5', 0),
-(123, 0, 'config', 'config_mail_alert_email', '', 0),
-(124, 0, 'config', 'config_mail_alert', '[\"order\"]', 1),
-(125, 0, 'config', 'config_captcha', 'basic', 0),
-(126, 0, 'config', 'config_captcha_page', '[\"review\",\"return\",\"contact\"]', 1),
-(127, 0, 'config', 'config_2fa_expire', '90', 0),
-(128, 0, 'config', 'config_login_attempts', '5', 0),
-(129, 0, 'config', 'config_password_length', '6', 0),
 (130, 0, 'currency_ecb', 'currency_ecb_status', '1', 0),
 (131, 0, 'dashboard_activity', 'dashboard_activity_status', '1', 0),
 (132, 0, 'dashboard_activity', 'dashboard_activity_sort_order', '7', 0),
@@ -4635,7 +4585,6 @@ INSERT INTO `oc_setting` (`setting_id`, `store_id`, `code`, `key`, `value`, `ser
 (199, 0, 'shipping_flat', 'shipping_flat_geo_zone_id', '0', 0),
 (200, 0, 'shipping_flat', 'shipping_flat_tax_class_id', '9', 0),
 (201, 0, 'shipping_flat', 'shipping_flat_cost', '5.00', 0),
-(202, 0, 'theme_basic', 'theme_basic_status', '1', 0),
 (203, 0, 'total_shipping', 'total_shipping_sort_order', '3', 0),
 (204, 0, 'total_sub_total', 'total_sub_total_sort_order', '1', 0),
 (205, 0, 'total_sub_total', 'total_sub_total_status', '1', 0),
@@ -4651,8 +4600,159 @@ INSERT INTO `oc_setting` (`setting_id`, `store_id`, `code`, `key`, `value`, `ser
 (215, 0, 'total_shipping', 'total_shipping_estimator', '1', 0),
 (216, 0, 'total_coupon', 'total_coupon_sort_order', '4', 0),
 (217, 0, 'total_coupon', 'total_coupon_status', '1', 0),
-(218, 0, 'config', 'config_api_id', '1', 0),
-(219, 0, 'module_mobile_app', 'module_mobile_app_status', '1', 0);
+(221, 0, 'module_mobile_app', 'module_mobile_app_status', '1', 0),
+(225, 0, 'config', 'config_name', 'Your Store', 0),
+(226, 0, 'config', 'config_theme', 'basic', 0),
+(227, 0, 'config', 'config_layout_id', '4', 0),
+(228, 0, 'config', 'config_logo', 'catalog/opencart-logo.png', 0),
+(229, 0, 'config', 'config_icon', 'catalog/opencart.ico', 0),
+(230, 0, 'config', 'config_description', '{\"1\":{\"meta_title\":\"Your Store\",\"meta_description\":\"\",\"meta_keyword\":\"\"}}', 1),
+(231, 0, 'config', 'config_owner', 'Your Name', 0),
+(232, 0, 'config', 'config_address', 'Address 1', 0),
+(233, 0, 'config', 'config_geocode', '', 0),
+(234, 0, 'config', 'config_email', 'admin@gmail.com', 0),
+(235, 0, 'config', 'config_telephone', '123456789', 0),
+(236, 0, 'config', 'config_image', '', 0),
+(237, 0, 'config', 'config_open', '', 0),
+(238, 0, 'config', 'config_comment', '', 0),
+(239, 0, 'config', 'config_country_id', '222', 0),
+(240, 0, 'config', 'config_zone_id', '3563', 0),
+(241, 0, 'config', 'config_timezone', 'UTC', 0),
+(242, 0, 'config', 'config_language_catalog', 'en-gb', 0),
+(243, 0, 'config', 'config_language_admin', 'en-gb', 0),
+(244, 0, 'config', 'config_currency', 'USD', 0),
+(245, 0, 'config', 'config_currency_engine', 'ecb', 0),
+(246, 0, 'config', 'config_currency_auto', '1', 0),
+(247, 0, 'config', 'config_length_class_id', '1', 0),
+(248, 0, 'config', 'config_weight_class_id', '1', 0),
+(249, 0, 'config', 'config_product_description_length', '100', 0),
+(250, 0, 'config', 'config_pagination', '10', 0),
+(251, 0, 'config', 'config_product_count', '1', 0),
+(252, 0, 'config', 'config_pagination_admin', '10', 0),
+(253, 0, 'config', 'config_autocomplete_limit', '5', 0),
+(254, 0, 'config', 'config_product_report_status', '0', 0),
+(255, 0, 'config', 'config_review_status', '1', 0),
+(256, 0, 'config', 'config_review_purchased', '0', 0),
+(257, 0, 'config', 'config_review_guest', '1', 0),
+(258, 0, 'config', 'config_article_description_length', '600', 0),
+(259, 0, 'config', 'config_comment_status', '0', 0),
+(260, 0, 'config', 'config_comment_approve', '0', 0),
+(261, 0, 'config', 'config_comment_interval', '', 0),
+(262, 0, 'config', 'config_cookie_id', '0', 0),
+(263, 0, 'config', 'config_gdpr_id', '0', 0),
+(264, 0, 'config', 'config_gdpr_limit', '180', 0),
+(265, 0, 'config', 'config_tax', '1', 0),
+(266, 0, 'config', 'config_tax_default', 'shipping', 0),
+(267, 0, 'config', 'config_tax_customer', 'shipping', 0),
+(268, 0, 'config', 'config_customer_online', '0', 0),
+(269, 0, 'config', 'config_customer_online_expire', '1', 0),
+(270, 0, 'config', 'config_customer_activity', '0', 0),
+(271, 0, 'config', 'config_customer_search', '0', 0),
+(272, 0, 'config', 'config_customer_group_id', '1', 0),
+(273, 0, 'config', 'config_customer_group_display', '[\"1\"]', 1),
+(274, 0, 'config', 'config_customer_price', '0', 0),
+(275, 0, 'config', 'config_telephone_display', '0', 0),
+(276, 0, 'config', 'config_telephone_required', '0', 0),
+(277, 0, 'config', 'config_account_id', '3', 0),
+(278, 0, 'config', 'config_2fa', '0', 0),
+(279, 0, 'config', 'config_login_attempts', '5', 0),
+(280, 0, 'config', 'config_password_length', '6', 0),
+(281, 0, 'config', 'config_invoice_prefix', 'INV-2025-00', 0),
+(282, 0, 'config', 'config_cart_weight', '1', 0),
+(283, 0, 'config', 'config_checkout_guest', '1', 0),
+(284, 0, 'config', 'config_checkout_payment_address', '0', 0),
+(285, 0, 'config', 'config_checkout_shipping_address', '0', 0),
+(286, 0, 'config', 'config_checkout_id', '0', 0),
+(287, 0, 'config', 'config_order_status_id', '1', 0),
+(288, 0, 'config', 'config_processing_status', '[\"5\",\"1\",\"2\",\"12\",\"3\"]', 1),
+(289, 0, 'config', 'config_complete_status', '[\"5\",\"3\"]', 1),
+(290, 0, 'config', 'config_failed_status_id', '7', 0),
+(291, 0, 'config', 'config_void_status_id', '16', 0),
+(292, 0, 'config', 'config_fraud_status_id', '8', 0),
+(293, 0, 'config', 'config_api_id', '1', 0),
+(294, 0, 'config', 'config_subscription_status_id', '1', 0),
+(295, 0, 'config', 'config_subscription_active_status_id', '2', 0),
+(296, 0, 'config', 'config_subscription_expired_status_id', '3', 0),
+(297, 0, 'config', 'config_subscription_suspended_status_id', '4', 0),
+(298, 0, 'config', 'config_subscription_canceled_status_id', '5', 0),
+(299, 0, 'config', 'config_subscription_failed_status_id', '6', 0),
+(300, 0, 'config', 'config_subscription_denied_status_id', '7', 0),
+(301, 0, 'config', 'config_stock_display', '0', 0),
+(302, 0, 'config', 'config_stock_warning', '0', 0),
+(303, 0, 'config', 'config_stock_checkout', '0', 0),
+(304, 0, 'config', 'config_stock_status_id', '7', 0),
+(305, 0, 'config', 'config_affiliate_status', '1', 0),
+(306, 0, 'config', 'config_affiliate_group_id', '1', 0),
+(307, 0, 'config', 'config_affiliate_approval', '0', 0),
+(308, 0, 'config', 'config_affiliate_auto', '0', 0),
+(309, 0, 'config', 'config_affiliate_commission', '5', 0),
+(310, 0, 'config', 'config_affiliate_expire', '', 0),
+(311, 0, 'config', 'config_affiliate_id', '4', 0),
+(312, 0, 'config', 'config_return_status_id', '2', 0),
+(313, 0, 'config', 'config_return_id', '0', 0),
+(314, 0, 'config', 'config_captcha', '', 0),
+(315, 0, 'config', 'config_captcha_page', '[\"review\",\"contact\"]', 1),
+(316, 0, 'config', 'config_image_default_width', '300', 0),
+(317, 0, 'config', 'config_image_default_height', '300', 0),
+(318, 0, 'config', 'config_image_category_width', '300', 0),
+(319, 0, 'config', 'config_image_category_height', '300', 0),
+(320, 0, 'config', 'config_image_thumb_width', '500', 0),
+(321, 0, 'config', 'config_image_thumb_height', '500', 0),
+(322, 0, 'config', 'config_image_popup_width', '800', 0),
+(323, 0, 'config', 'config_image_popup_height', '800', 0),
+(324, 0, 'config', 'config_image_product_width', '250', 0),
+(325, 0, 'config', 'config_image_product_height', '250', 0),
+(326, 0, 'config', 'config_image_additional_width', '74', 0),
+(327, 0, 'config', 'config_image_additional_height', '74', 0),
+(328, 0, 'config', 'config_image_related_width', '250', 0),
+(329, 0, 'config', 'config_image_related_height', '250', 0),
+(330, 0, 'config', 'config_image_article_width', '1140', 0),
+(331, 0, 'config', 'config_image_article_height', '380', 0),
+(332, 0, 'config', 'config_image_topic_width', '1140', 0),
+(333, 0, 'config', 'config_image_topic_height', '380', 0),
+(334, 0, 'config', 'config_image_compare_width', '90', 0),
+(335, 0, 'config', 'config_image_compare_height', '90', 0),
+(336, 0, 'config', 'config_image_wishlist_width', '47', 0),
+(337, 0, 'config', 'config_image_wishlist_height', '47', 0),
+(338, 0, 'config', 'config_image_cart_width', '47', 0),
+(339, 0, 'config', 'config_image_cart_height', '47', 0),
+(340, 0, 'config', 'config_image_location_width', '268', 0),
+(341, 0, 'config', 'config_image_location_height', '268', 0),
+(342, 0, 'config', 'config_mail_engine', '', 0),
+(343, 0, 'config', 'config_mail_parameter', '', 0),
+(344, 0, 'config', 'config_mail_smtp_hostname', 'sandbox.smtp.mailtrap.io', 0),
+(345, 0, 'config', 'config_mail_smtp_username', 'c7f2343d55b1e9', 0),
+(346, 0, 'config', 'config_mail_smtp_password', '4682f7f50f2ab1', 0),
+(347, 0, 'config', 'config_mail_smtp_port', '2525', 0),
+(348, 0, 'config', 'config_mail_smtp_timeout', '5', 0),
+(349, 0, 'config', 'config_mail_alert', '[\"account\",\"order\"]', 1),
+(350, 0, 'config', 'config_mail_alert_email', '', 0),
+(351, 0, 'config', 'config_maintenance', '0', 0),
+(352, 0, 'config', 'config_session_expire', '86400', 0),
+(353, 0, 'config', 'config_session_samesite', 'Strict', 0),
+(354, 0, 'config', 'config_seo_url', '0', 0),
+(355, 0, 'config', 'config_compression', '0', 0),
+(356, 0, 'config', 'config_user_2fa', '0', 0),
+(357, 0, 'config', 'config_2fa_expire', '90', 0),
+(358, 0, 'config', 'config_user_password_length', '', 0),
+(359, 0, 'config', 'config_shared', '0', 0),
+(360, 0, 'config', 'config_file_max_size', '20', 0),
+(361, 0, 'config', 'config_file_ext_allowed', 'zip\r\ntxt\r\npng\r\njpe\r\njpeg\r\nwebp\r\njpg\r\ngif\r\nbmp\r\nico\r\ntiff\r\ntif\r\nsvg\r\nsvgz\r\nzip\r\nrar\r\nmsi\r\ncab\r\nmp3\r\nmp4\r\nqt\r\nmov\r\npdf\r\npsd\r\nai\r\neps\r\nps\r\ndoc', 0),
+(362, 0, 'config', 'config_file_mime_allowed', 'text/plain\r\nimage/png\r\nimage/webp\r\nimage/jpeg\r\nimage/gif\r\nimage/bmp\r\nimage/tiff\r\nimage/svg+xml\r\napplication/zip\r\napplication/x-zip\r\napplication/x-zip-compressed\r\napplication/rar\r\napplication/x-rar\r\napplication/x-rar-compressed\r\napplication/octet-stream\r\naudio/mpeg\r\nvideo/mp4\r\nvideo/quicktime\r\napplication/pdf', 0),
+(363, 0, 'config', 'config_error_display', '1', 0),
+(364, 0, 'config', 'config_error_log', '1', 0),
+(365, 0, 'config', 'config_error_filename', 'error.log', 0),
+(366, 0, 'module_mobile_app_banner', 'module_mobile_app_banner_status', '1', 0),
+(367, 0, 'module_mobile_app_banner', 'module_mobile_app_banner_image', '[{\"title\":\"Test\",\"link\":\"http:\\/\\/localhost\\/opencart-mobile-app-oc4\\/index.php?route=product\\/product&amp;language=en-gb&amp;product_id=40\",\"image\":\"catalog\\/demo\\/banners\\/iPhone6.jpg\",\"sort_order\":\"1\"},{\"title\":\"test\",\"link\":\"http:\\/\\/localhost\\/opencart-mobile-app-oc4\\/index.php?route=product\\/product&amp;language=en-gb&amp;product_id=43\",\"image\":\"catalog\\/demo\\/banners\\/MacBookAir.jpg\",\"sort_order\":\"2\"}]', 1),
+(368, 0, 'module_mobile_app_banner', 'module_mobile_app_banner_id', '', 0),
+(373, 0, 'module_mobile_app_feature_category', 'module_mobile_app_feature_category_status', '1', 0),
+(374, 0, 'module_mobile_app_feature_category', 'module_mobile_app_feature_category_items', '[{\"category_name\":\"Cameras\",\"category_id\":\"33\",\"product\":[\"30\",\"31\"]},{\"category_name\":\"Desktops\",\"category_id\":\"20\",\"product\":[\"40\",\"42\",\"47\",\"28\"]}]', 1),
+(375, 0, 'module_mobile_app_trust_badges', 'module_mobile_app_trust_badges_status', '1', 0),
+(376, 0, 'module_mobile_app_trust_badges', 'module_mobile_app_trust_badges_items', '[{\"image\":\"catalog\\/badges\\/down-payment.png\",\"title\":\"Secure Payment\",\"short_description\":\"100% Protected\"},{\"image\":\"catalog\\/badges\\/free-delivery.png\",\"title\":\"Free Shipping\",\"short_description\":\"Order over $50\"},{\"image\":\"catalog\\/badges\\/easy-return.png\",\"title\":\"Easy Returns\",\"short_description\":\"30-Dat Returns\"},{\"image\":\"catalog\\/badges\\/support.png\",\"title\":\"24\\/7 Support\",\"short_description\":\"Ready to Help\"}]', 1),
+(377, 0, 'module_mobile_app_deal', 'module_mobile_app_deal_status', '1', 0),
+(378, 0, 'module_mobile_app_deal', 'module_mobile_app_deal_end_date', '2025-10-04T12:16', 0),
+(379, 0, 'module_mobile_app_deal', 'module_mobile_app_deal_product', '[\"42\",\"47\"]', 1),
+(380, 0, 'module_mobile_app_deal', 'module_mobile_app_deal_product_discount', '{\"42\":\"50\",\"47\":\"30\"}', 1);
 
 -- --------------------------------------------------------
 
@@ -4663,13 +4763,13 @@ INSERT INTO `oc_setting` (`setting_id`, `store_id`, `code`, `key`, `value`, `ser
 DROP TABLE IF EXISTS `oc_startup`;
 CREATE TABLE IF NOT EXISTS `oc_startup` (
   `startup_id` int NOT NULL AUTO_INCREMENT,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `action` text COLLATE utf8mb4_unicode_ci,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `sort_order` int DEFAULT '0',
   PRIMARY KEY (`startup_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -4680,7 +4780,7 @@ CREATE TABLE IF NOT EXISTS `oc_startup` (
 DROP TABLE IF EXISTS `oc_statistics`;
 CREATE TABLE IF NOT EXISTS `oc_statistics` (
   `statistics_id` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` decimal(15,4) DEFAULT NULL,
   PRIMARY KEY (`statistics_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -4690,13 +4790,13 @@ CREATE TABLE IF NOT EXISTS `oc_statistics` (
 --
 
 INSERT INTO `oc_statistics` (`statistics_id`, `code`, `value`) VALUES
-(1, 'order_sale', 0.0000),
-(2, 'order_processing', 0.0000),
+(1, 'order_sale', 106.0000),
+(2, 'order_processing', 1.0000),
 (3, 'order_complete', 0.0000),
 (4, 'order_other', 0.0000),
 (5, 'returns', 0.0000),
 (6, 'product', 0.0000),
-(7, 'review', 0.0000);
+(7, 'review', 2.0000);
 
 -- --------------------------------------------------------
 
@@ -4708,7 +4808,7 @@ DROP TABLE IF EXISTS `oc_stock_status`;
 CREATE TABLE IF NOT EXISTS `oc_stock_status` (
   `stock_status_id` int NOT NULL AUTO_INCREMENT,
   `language_id` int NOT NULL,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`stock_status_id`,`language_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4731,8 +4831,8 @@ INSERT INTO `oc_stock_status` (`stock_status_id`, `language_id`, `name`) VALUES
 DROP TABLE IF EXISTS `oc_store`;
 CREATE TABLE IF NOT EXISTS `oc_store` (
   `store_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4749,28 +4849,28 @@ CREATE TABLE IF NOT EXISTS `oc_subscription` (
   `store_id` int DEFAULT '0',
   `customer_id` int DEFAULT NULL,
   `payment_address_id` int DEFAULT '0',
-  `payment_method` text COLLATE utf8mb4_unicode_ci,
+  `payment_method` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `shipping_address_id` int DEFAULT '0',
-  `shipping_method` text COLLATE utf8mb4_unicode_ci,
+  `shipping_method` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `subscription_plan_id` int DEFAULT '0',
   `trial_price` decimal(10,4) DEFAULT NULL,
   `trial_tax` decimal(10,4) DEFAULT NULL,
-  `trial_frequency` enum('day','week','semi_month','month','year') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trial_frequency` enum('day','week','semi_month','month','year') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `trial_cycle` smallint DEFAULT '0',
   `trial_duration` smallint DEFAULT '0',
   `trial_remaining` smallint DEFAULT '0',
   `trial_status` tinyint(1) DEFAULT '0',
   `price` decimal(10,4) DEFAULT NULL,
   `tax` decimal(10,4) DEFAULT NULL,
-  `frequency` enum('day','week','semi_month','month','year') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `frequency` enum('day','week','semi_month','month','year') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cycle` smallint DEFAULT '0',
   `duration` smallint DEFAULT '0',
   `remaining` smallint DEFAULT '0',
   `date_next` datetime DEFAULT NULL,
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `subscription_status_id` int DEFAULT '0',
-  `language` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `currency` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `language` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `currency` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
   PRIMARY KEY (`subscription_id`),
@@ -4789,7 +4889,7 @@ CREATE TABLE IF NOT EXISTS `oc_subscription_history` (
   `subscription_id` int DEFAULT NULL,
   `subscription_status_id` int DEFAULT '0',
   `notify` tinyint(1) DEFAULT '0',
-  `comment` text COLLATE utf8mb4_unicode_ci,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`subscription_history_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -4804,8 +4904,8 @@ DROP TABLE IF EXISTS `oc_subscription_log`;
 CREATE TABLE IF NOT EXISTS `oc_subscription_log` (
   `subscription_log_id` int NOT NULL AUTO_INCREMENT,
   `subscription_id` int DEFAULT NULL,
-  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`subscription_log_id`)
@@ -4824,9 +4924,9 @@ CREATE TABLE IF NOT EXISTS `oc_subscription_option` (
   `subscription_product_id` int DEFAULT NULL,
   `product_option_id` int DEFAULT NULL,
   `product_option_value_id` int DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci,
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`subscription_option_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4839,11 +4939,11 @@ CREATE TABLE IF NOT EXISTS `oc_subscription_option` (
 DROP TABLE IF EXISTS `oc_subscription_plan`;
 CREATE TABLE IF NOT EXISTS `oc_subscription_plan` (
   `subscription_plan_id` int NOT NULL AUTO_INCREMENT,
-  `trial_frequency` enum('day','week','semi_month','month','year') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trial_frequency` enum('day','week','semi_month','month','year') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `trial_duration` int DEFAULT '0',
   `trial_cycle` int DEFAULT '0',
   `trial_status` tinyint DEFAULT '0',
-  `frequency` enum('day','week','semi_month','month','year') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `frequency` enum('day','week','semi_month','month','year') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `duration` int DEFAULT '0',
   `cycle` int DEFAULT '0',
   `status` tinyint(1) DEFAULT '0',
@@ -4870,7 +4970,7 @@ DROP TABLE IF EXISTS `oc_subscription_plan_description`;
 CREATE TABLE IF NOT EXISTS `oc_subscription_plan_description` (
   `subscription_plan_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`subscription_plan_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4896,8 +4996,8 @@ CREATE TABLE IF NOT EXISTS `oc_subscription_product` (
   `order_id` int DEFAULT '0',
   `order_product_id` int DEFAULT '0',
   `product_id` int DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `model` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `model` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int DEFAULT '0',
   `trial_price` decimal(10,4) DEFAULT NULL,
   `trial_tax` decimal(15,4) DEFAULT '0.0000',
@@ -4917,7 +5017,7 @@ DROP TABLE IF EXISTS `oc_subscription_status`;
 CREATE TABLE IF NOT EXISTS `oc_subscription_status` (
   `subscription_status_id` int NOT NULL AUTO_INCREMENT,
   `language_id` int NOT NULL,
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`subscription_status_id`,`language_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4943,8 +5043,8 @@ INSERT INTO `oc_subscription_status` (`subscription_status_id`, `language_id`, `
 DROP TABLE IF EXISTS `oc_tax_class`;
 CREATE TABLE IF NOT EXISTS `oc_tax_class` (
   `tax_class_id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`tax_class_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -4966,9 +5066,9 @@ DROP TABLE IF EXISTS `oc_tax_rate`;
 CREATE TABLE IF NOT EXISTS `oc_tax_rate` (
   `tax_rate_id` int NOT NULL AUTO_INCREMENT,
   `geo_zone_id` int DEFAULT '0',
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rate` decimal(15,4) DEFAULT '0.0000',
-  `type` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`tax_rate_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -5012,7 +5112,7 @@ CREATE TABLE IF NOT EXISTS `oc_tax_rule` (
   `tax_rule_id` int NOT NULL AUTO_INCREMENT,
   `tax_class_id` int DEFAULT NULL,
   `tax_rate_id` int DEFAULT NULL,
-  `based` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `based` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `priority` int DEFAULT '1',
   PRIMARY KEY (`tax_rule_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -5037,8 +5137,8 @@ DROP TABLE IF EXISTS `oc_theme`;
 CREATE TABLE IF NOT EXISTS `oc_theme` (
   `theme_id` int NOT NULL AUTO_INCREMENT,
   `store_id` int DEFAULT '0',
-  `route` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` mediumtext COLLATE utf8mb4_unicode_ci,
+  `route` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`theme_id`)
@@ -5068,12 +5168,12 @@ DROP TABLE IF EXISTS `oc_topic_description`;
 CREATE TABLE IF NOT EXISTS `oc_topic_description` (
   `topic_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_keyword` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`topic_id`,`language_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -5116,9 +5216,9 @@ CREATE TABLE IF NOT EXISTS `oc_translation` (
   `translation_id` int NOT NULL AUTO_INCREMENT,
   `store_id` int DEFAULT '0',
   `language_id` int DEFAULT NULL,
-  `route` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `key` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci,
+  `route` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`translation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -5132,9 +5232,9 @@ CREATE TABLE IF NOT EXISTS `oc_translation` (
 DROP TABLE IF EXISTS `oc_upload`;
 CREATE TABLE IF NOT EXISTS `oc_upload` (
   `upload_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`upload_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -5149,13 +5249,13 @@ DROP TABLE IF EXISTS `oc_user`;
 CREATE TABLE IF NOT EXISTS `oc_user` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `user_group_id` int DEFAULT '0',
-  `username` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firstname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`)
@@ -5178,10 +5278,10 @@ DROP TABLE IF EXISTS `oc_user_authorize`;
 CREATE TABLE IF NOT EXISTS `oc_user_authorize` (
   `user_authorize_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `token` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `token` varchar(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `total` int DEFAULT '0',
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `date_added` datetime DEFAULT NULL,
   `date_expire` datetime DEFAULT NULL,
@@ -5197,8 +5297,8 @@ CREATE TABLE IF NOT EXISTS `oc_user_authorize` (
 DROP TABLE IF EXISTS `oc_user_group`;
 CREATE TABLE IF NOT EXISTS `oc_user_group` (
   `user_group_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `permission` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `permission` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`user_group_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -5207,7 +5307,7 @@ CREATE TABLE IF NOT EXISTS `oc_user_group` (
 --
 
 INSERT INTO `oc_user_group` (`user_group_id`, `name`, `permission`) VALUES
-(1, 'Administrator', '{\"access\":[\"catalog\\/attribute\",\"catalog\\/attribute_group\",\"catalog\\/category\",\"catalog\\/download\",\"catalog\\/filter\",\"catalog\\/filter_group\",\"catalog\\/identifier\",\"catalog\\/information\",\"catalog\\/manufacturer\",\"catalog\\/option\",\"catalog\\/product\",\"catalog\\/review\",\"catalog\\/subscription_plan\",\"cms\\/antispam\",\"cms\\/article\",\"cms\\/comment\",\"cms\\/topic\",\"common\\/developer\",\"common\\/filemanager\",\"common\\/security\",\"customer\\/address\",\"customer\\/custom_field\",\"customer\\/customer\",\"customer\\/customer_approval\",\"customer\\/customer_group\",\"customer\\/gdpr\",\"design\\/banner\",\"design\\/layout\",\"design\\/seo_url\",\"design\\/theme\",\"design\\/translation\",\"error\\/exception\",\"event\\/modification\",\"extension\\/analytics\",\"extension\\/captcha\",\"extension\\/currency\",\"extension\\/dashboard\",\"extension\\/feed\",\"extension\\/fraud\",\"extension\\/language\",\"extension\\/marketplace\",\"extension\\/module\",\"extension\\/other\",\"extension\\/payment\",\"extension\\/report\",\"extension\\/shipping\",\"extension\\/theme\",\"extension\\/total\",\"localisation\\/address_format\",\"localisation\\/country\",\"localisation\\/currency\",\"localisation\\/geo_zone\",\"localisation\\/language\",\"localisation\\/length_class\",\"localisation\\/location\",\"localisation\\/order_status\",\"localisation\\/return_action\",\"localisation\\/return_reason\",\"localisation\\/return_status\",\"localisation\\/stock_status\",\"localisation\\/subscription_status\",\"localisation\\/tax_class\",\"localisation\\/tax_rate\",\"localisation\\/weight_class\",\"localisation\\/zone\",\"mail\\/affiliate\",\"mail\\/authorize\",\"mail\\/customer\",\"mail\\/forgotten\",\"mail\\/gdpr\",\"mail\\/returns\",\"mail\\/reward\",\"mail\\/subscription\",\"mail\\/transaction\",\"marketing\\/affiliate\",\"marketing\\/contact\",\"marketing\\/coupon\",\"marketing\\/marketing\",\"marketplace\\/api\",\"marketplace\\/cron\",\"marketplace\\/event\",\"marketplace\\/extension\",\"marketplace\\/installer\",\"marketplace\\/marketplace\",\"marketplace\\/modification\",\"marketplace\\/promotion\",\"marketplace\\/startup\",\"report\\/online\",\"report\\/report\",\"report\\/statistics\",\"sale\\/order\",\"sale\\/returns\",\"sale\\/subscription\",\"setting\\/setting\",\"setting\\/store\",\"tool\\/backup\",\"tool\\/log\",\"tool\\/notification\",\"tool\\/upgrade\",\"tool\\/upload\",\"user\\/api\",\"user\\/profile\",\"user\\/user\",\"user\\/user_permission\",\"extension\\/opencart\\/api\\/coupon\",\"extension\\/opencart\\/api\\/reward\",\"extension\\/opencart\\/captcha\\/basic\",\"extension\\/opencart\\/currency\\/ecb\",\"extension\\/opencart\\/currency\\/fixer\",\"extension\\/opencart\\/dashboard\\/activity\",\"extension\\/opencart\\/dashboard\\/chart\",\"extension\\/opencart\\/dashboard\\/customer\",\"extension\\/opencart\\/dashboard\\/map\",\"extension\\/opencart\\/dashboard\\/online\",\"extension\\/opencart\\/dashboard\\/order\",\"extension\\/opencart\\/dashboard\\/recent\",\"extension\\/opencart\\/dashboard\\/sale\",\"extension\\/opencart\\/fraud\\/ddos\",\"extension\\/opencart\\/fraud\\/ip\",\"extension\\/opencart\\/module\\/account\",\"extension\\/opencart\\/module\\/banner\",\"extension\\/opencart\\/module\\/bestseller\",\"extension\\/opencart\\/module\\/blog\",\"extension\\/opencart\\/module\\/category\",\"extension\\/opencart\\/module\\/featured\",\"extension\\/opencart\\/module\\/filter\",\"extension\\/opencart\\/module\\/html\",\"extension\\/opencart\\/module\\/information\",\"extension\\/opencart\\/module\\/latest\",\"extension\\/opencart\\/module\\/special\",\"extension\\/opencart\\/module\\/store\",\"extension\\/opencart\\/module\\/topic\",\"extension\\/opencart\\/payment\\/bank_transfer\",\"extension\\/opencart\\/payment\\/cheque\",\"extension\\/opencart\\/payment\\/cod\",\"extension\\/opencart\\/payment\\/free_checkout\",\"extension\\/opencart\\/report\\/customer\",\"extension\\/opencart\\/report\\/customer_activity\",\"extension\\/opencart\\/report\\/customer_order\",\"extension\\/opencart\\/report\\/customer_reward\",\"extension\\/opencart\\/report\\/customer_search\",\"extension\\/opencart\\/report\\/customer_transaction\",\"extension\\/opencart\\/report\\/marketing\",\"extension\\/opencart\\/report\\/product_purchased\",\"extension\\/opencart\\/report\\/product_viewed\",\"extension\\/opencart\\/report\\/sale_coupon\",\"extension\\/opencart\\/report\\/sale_order\",\"extension\\/opencart\\/report\\/sale_return\",\"extension\\/opencart\\/report\\/sale_shipping\",\"extension\\/opencart\\/report\\/sale_tax\",\"extension\\/opencart\\/report\\/subscription\",\"extension\\/opencart\\/shipping\\/flat\",\"extension\\/opencart\\/shipping\\/free\",\"extension\\/opencart\\/shipping\\/item\",\"extension\\/opencart\\/shipping\\/pickup\",\"extension\\/opencart\\/shipping\\/weight\",\"extension\\/opencart\\/theme\\/basic\",\"extension\\/opencart\\/total\\/coupon\",\"extension\\/opencart\\/total\\/credit\",\"extension\\/opencart\\/total\\/handling\",\"extension\\/opencart\\/total\\/low_order_fee\",\"extension\\/opencart\\/total\\/reward\",\"extension\\/opencart\\/total\\/shipping\",\"extension\\/opencart\\/total\\/sub_total\",\"extension\\/opencart\\/total\\/tax\",\"extension\\/opencart\\/total\\/total\",\"extension\\/mobile_app\\/module\\/mobile_app\"],\"modify\":[\"catalog\\/attribute\",\"catalog\\/attribute_group\",\"catalog\\/category\",\"catalog\\/download\",\"catalog\\/filter\",\"catalog\\/filter_group\",\"catalog\\/identifier\",\"catalog\\/information\",\"catalog\\/manufacturer\",\"catalog\\/option\",\"catalog\\/product\",\"catalog\\/review\",\"catalog\\/subscription_plan\",\"cms\\/antispam\",\"cms\\/article\",\"cms\\/comment\",\"cms\\/topic\",\"common\\/developer\",\"common\\/filemanager\",\"common\\/security\",\"customer\\/address\",\"customer\\/custom_field\",\"customer\\/customer\",\"customer\\/customer_approval\",\"customer\\/customer_group\",\"customer\\/gdpr\",\"design\\/banner\",\"design\\/layout\",\"design\\/seo_url\",\"design\\/theme\",\"design\\/translation\",\"error\\/exception\",\"event\\/modification\",\"extension\\/analytics\",\"extension\\/captcha\",\"extension\\/currency\",\"extension\\/dashboard\",\"extension\\/feed\",\"extension\\/fraud\",\"extension\\/language\",\"extension\\/marketplace\",\"extension\\/module\",\"extension\\/other\",\"extension\\/payment\",\"extension\\/report\",\"extension\\/shipping\",\"extension\\/theme\",\"extension\\/total\",\"localisation\\/address_format\",\"localisation\\/country\",\"localisation\\/currency\",\"localisation\\/geo_zone\",\"localisation\\/language\",\"localisation\\/length_class\",\"localisation\\/location\",\"localisation\\/order_status\",\"localisation\\/return_action\",\"localisation\\/return_reason\",\"localisation\\/return_status\",\"localisation\\/stock_status\",\"localisation\\/subscription_status\",\"localisation\\/tax_class\",\"localisation\\/tax_rate\",\"localisation\\/weight_class\",\"localisation\\/zone\",\"mail\\/affiliate\",\"mail\\/authorize\",\"mail\\/customer\",\"mail\\/forgotten\",\"mail\\/gdpr\",\"mail\\/returns\",\"mail\\/reward\",\"mail\\/subscription\",\"mail\\/transaction\",\"marketing\\/affiliate\",\"marketing\\/contact\",\"marketing\\/coupon\",\"marketing\\/marketing\",\"marketplace\\/api\",\"marketplace\\/cron\",\"marketplace\\/event\",\"marketplace\\/extension\",\"marketplace\\/installer\",\"marketplace\\/marketplace\",\"marketplace\\/modification\",\"marketplace\\/promotion\",\"marketplace\\/startup\",\"report\\/online\",\"report\\/report\",\"report\\/statistics\",\"sale\\/order\",\"sale\\/returns\",\"sale\\/subscription\",\"setting\\/setting\",\"setting\\/store\",\"tool\\/backup\",\"tool\\/log\",\"tool\\/notification\",\"tool\\/upgrade\",\"tool\\/upload\",\"user\\/api\",\"user\\/profile\",\"user\\/user\",\"user\\/user_permission\",\"extension\\/opencart\\/api\\/coupon\",\"extension\\/opencart\\/api\\/reward\",\"extension\\/opencart\\/captcha\\/basic\",\"extension\\/opencart\\/currency\\/ecb\",\"extension\\/opencart\\/currency\\/fixer\",\"extension\\/opencart\\/dashboard\\/activity\",\"extension\\/opencart\\/dashboard\\/chart\",\"extension\\/opencart\\/dashboard\\/customer\",\"extension\\/opencart\\/dashboard\\/map\",\"extension\\/opencart\\/dashboard\\/online\",\"extension\\/opencart\\/dashboard\\/order\",\"extension\\/opencart\\/dashboard\\/recent\",\"extension\\/opencart\\/dashboard\\/sale\",\"extension\\/opencart\\/fraud\\/ddos\",\"extension\\/opencart\\/fraud\\/ip\",\"extension\\/opencart\\/module\\/account\",\"extension\\/opencart\\/module\\/banner\",\"extension\\/opencart\\/module\\/bestseller\",\"extension\\/opencart\\/module\\/blog\",\"extension\\/opencart\\/module\\/category\",\"extension\\/opencart\\/module\\/featured\",\"extension\\/opencart\\/module\\/filter\",\"extension\\/opencart\\/module\\/html\",\"extension\\/opencart\\/module\\/information\",\"extension\\/opencart\\/module\\/latest\",\"extension\\/opencart\\/module\\/special\",\"extension\\/opencart\\/module\\/store\",\"extension\\/opencart\\/module\\/topic\",\"extension\\/opencart\\/payment\\/bank_transfer\",\"extension\\/opencart\\/payment\\/cheque\",\"extension\\/opencart\\/payment\\/cod\",\"extension\\/opencart\\/payment\\/free_checkout\",\"extension\\/opencart\\/report\\/customer\",\"extension\\/opencart\\/report\\/customer_activity\",\"extension\\/opencart\\/report\\/customer_order\",\"extension\\/opencart\\/report\\/customer_reward\",\"extension\\/opencart\\/report\\/customer_search\",\"extension\\/opencart\\/report\\/customer_transaction\",\"extension\\/opencart\\/report\\/marketing\",\"extension\\/opencart\\/report\\/product_purchased\",\"extension\\/opencart\\/report\\/product_viewed\",\"extension\\/opencart\\/report\\/sale_coupon\",\"extension\\/opencart\\/report\\/sale_order\",\"extension\\/opencart\\/report\\/sale_return\",\"extension\\/opencart\\/report\\/sale_shipping\",\"extension\\/opencart\\/report\\/sale_tax\",\"extension\\/opencart\\/report\\/subscription\",\"extension\\/opencart\\/shipping\\/flat\",\"extension\\/opencart\\/shipping\\/free\",\"extension\\/opencart\\/shipping\\/item\",\"extension\\/opencart\\/shipping\\/pickup\",\"extension\\/opencart\\/shipping\\/weight\",\"extension\\/opencart\\/theme\\/basic\",\"extension\\/opencart\\/total\\/coupon\",\"extension\\/opencart\\/total\\/credit\",\"extension\\/opencart\\/total\\/handling\",\"extension\\/opencart\\/total\\/low_order_fee\",\"extension\\/opencart\\/total\\/reward\",\"extension\\/opencart\\/total\\/shipping\",\"extension\\/opencart\\/total\\/sub_total\",\"extension\\/opencart\\/total\\/tax\",\"extension\\/opencart\\/total\\/total\",\"extension\\/mobile_app\\/module\\/mobile_app\"]}'),
+(1, 'Administrator', '{\"access\":[\"catalog\\/attribute\",\"catalog\\/attribute_group\",\"catalog\\/category\",\"catalog\\/download\",\"catalog\\/filter\",\"catalog\\/filter_group\",\"catalog\\/identifier\",\"catalog\\/information\",\"catalog\\/manufacturer\",\"catalog\\/option\",\"catalog\\/product\",\"catalog\\/review\",\"catalog\\/subscription_plan\",\"cms\\/antispam\",\"cms\\/article\",\"cms\\/comment\",\"cms\\/topic\",\"common\\/developer\",\"common\\/filemanager\",\"common\\/security\",\"customer\\/address\",\"customer\\/custom_field\",\"customer\\/customer\",\"customer\\/customer_approval\",\"customer\\/customer_group\",\"customer\\/gdpr\",\"design\\/banner\",\"design\\/layout\",\"design\\/seo_url\",\"design\\/theme\",\"design\\/translation\",\"error\\/exception\",\"event\\/modification\",\"extension\\/analytics\",\"extension\\/captcha\",\"extension\\/currency\",\"extension\\/dashboard\",\"extension\\/feed\",\"extension\\/fraud\",\"extension\\/language\",\"extension\\/marketplace\",\"extension\\/module\",\"extension\\/other\",\"extension\\/payment\",\"extension\\/report\",\"extension\\/shipping\",\"extension\\/theme\",\"extension\\/total\",\"localisation\\/address_format\",\"localisation\\/country\",\"localisation\\/currency\",\"localisation\\/geo_zone\",\"localisation\\/language\",\"localisation\\/length_class\",\"localisation\\/location\",\"localisation\\/order_status\",\"localisation\\/return_action\",\"localisation\\/return_reason\",\"localisation\\/return_status\",\"localisation\\/stock_status\",\"localisation\\/subscription_status\",\"localisation\\/tax_class\",\"localisation\\/tax_rate\",\"localisation\\/weight_class\",\"localisation\\/zone\",\"mail\\/affiliate\",\"mail\\/authorize\",\"mail\\/customer\",\"mail\\/forgotten\",\"mail\\/gdpr\",\"mail\\/returns\",\"mail\\/reward\",\"mail\\/subscription\",\"mail\\/transaction\",\"marketing\\/affiliate\",\"marketing\\/contact\",\"marketing\\/coupon\",\"marketing\\/marketing\",\"marketplace\\/api\",\"marketplace\\/cron\",\"marketplace\\/event\",\"marketplace\\/extension\",\"marketplace\\/installer\",\"marketplace\\/marketplace\",\"marketplace\\/modification\",\"marketplace\\/promotion\",\"marketplace\\/startup\",\"report\\/online\",\"report\\/report\",\"report\\/statistics\",\"sale\\/order\",\"sale\\/returns\",\"sale\\/subscription\",\"setting\\/setting\",\"setting\\/store\",\"tool\\/backup\",\"tool\\/log\",\"tool\\/notification\",\"tool\\/upgrade\",\"tool\\/upload\",\"user\\/api\",\"user\\/profile\",\"user\\/user\",\"user\\/user_permission\",\"extension\\/opencart\\/api\\/coupon\",\"extension\\/opencart\\/api\\/reward\",\"extension\\/opencart\\/captcha\\/basic\",\"extension\\/opencart\\/currency\\/ecb\",\"extension\\/opencart\\/currency\\/fixer\",\"extension\\/opencart\\/dashboard\\/activity\",\"extension\\/opencart\\/dashboard\\/chart\",\"extension\\/opencart\\/dashboard\\/customer\",\"extension\\/opencart\\/dashboard\\/map\",\"extension\\/opencart\\/dashboard\\/online\",\"extension\\/opencart\\/dashboard\\/order\",\"extension\\/opencart\\/dashboard\\/recent\",\"extension\\/opencart\\/dashboard\\/sale\",\"extension\\/opencart\\/fraud\\/ddos\",\"extension\\/opencart\\/fraud\\/ip\",\"extension\\/opencart\\/module\\/account\",\"extension\\/opencart\\/module\\/banner\",\"extension\\/opencart\\/module\\/bestseller\",\"extension\\/opencart\\/module\\/blog\",\"extension\\/opencart\\/module\\/category\",\"extension\\/opencart\\/module\\/featured\",\"extension\\/opencart\\/module\\/filter\",\"extension\\/opencart\\/module\\/html\",\"extension\\/opencart\\/module\\/information\",\"extension\\/opencart\\/module\\/latest\",\"extension\\/opencart\\/module\\/special\",\"extension\\/opencart\\/module\\/store\",\"extension\\/opencart\\/module\\/topic\",\"extension\\/opencart\\/payment\\/bank_transfer\",\"extension\\/opencart\\/payment\\/cheque\",\"extension\\/opencart\\/payment\\/cod\",\"extension\\/opencart\\/payment\\/free_checkout\",\"extension\\/opencart\\/report\\/customer\",\"extension\\/opencart\\/report\\/customer_activity\",\"extension\\/opencart\\/report\\/customer_order\",\"extension\\/opencart\\/report\\/customer_reward\",\"extension\\/opencart\\/report\\/customer_search\",\"extension\\/opencart\\/report\\/customer_transaction\",\"extension\\/opencart\\/report\\/marketing\",\"extension\\/opencart\\/report\\/product_purchased\",\"extension\\/opencart\\/report\\/product_viewed\",\"extension\\/opencart\\/report\\/sale_coupon\",\"extension\\/opencart\\/report\\/sale_order\",\"extension\\/opencart\\/report\\/sale_return\",\"extension\\/opencart\\/report\\/sale_shipping\",\"extension\\/opencart\\/report\\/sale_tax\",\"extension\\/opencart\\/report\\/subscription\",\"extension\\/opencart\\/shipping\\/flat\",\"extension\\/opencart\\/shipping\\/free\",\"extension\\/opencart\\/shipping\\/item\",\"extension\\/opencart\\/shipping\\/pickup\",\"extension\\/opencart\\/shipping\\/weight\",\"extension\\/opencart\\/theme\\/basic\",\"extension\\/opencart\\/total\\/coupon\",\"extension\\/opencart\\/total\\/credit\",\"extension\\/opencart\\/total\\/handling\",\"extension\\/opencart\\/total\\/low_order_fee\",\"extension\\/opencart\\/total\\/reward\",\"extension\\/opencart\\/total\\/shipping\",\"extension\\/opencart\\/total\\/sub_total\",\"extension\\/opencart\\/total\\/tax\",\"extension\\/opencart\\/total\\/total\",\"extension\\/mobile_app\\/module\\/mobile_app\",\"extension\\/mobile_app\\/module\\/mobile_app\",\"extension\\/mobile_app\\/module\\/mobile_app\",\"extension\\/yootheme\\/theme\\/standard\",\"extension\\/yootheme\\/theme\\/standard\",\"extension\\/opencart\\/theme\\/basic\"],\"modify\":[\"catalog\\/attribute\",\"catalog\\/attribute_group\",\"catalog\\/category\",\"catalog\\/download\",\"catalog\\/filter\",\"catalog\\/filter_group\",\"catalog\\/identifier\",\"catalog\\/information\",\"catalog\\/manufacturer\",\"catalog\\/option\",\"catalog\\/product\",\"catalog\\/review\",\"catalog\\/subscription_plan\",\"cms\\/antispam\",\"cms\\/article\",\"cms\\/comment\",\"cms\\/topic\",\"common\\/developer\",\"common\\/filemanager\",\"common\\/security\",\"customer\\/address\",\"customer\\/custom_field\",\"customer\\/customer\",\"customer\\/customer_approval\",\"customer\\/customer_group\",\"customer\\/gdpr\",\"design\\/banner\",\"design\\/layout\",\"design\\/seo_url\",\"design\\/theme\",\"design\\/translation\",\"error\\/exception\",\"event\\/modification\",\"extension\\/analytics\",\"extension\\/captcha\",\"extension\\/currency\",\"extension\\/dashboard\",\"extension\\/feed\",\"extension\\/fraud\",\"extension\\/language\",\"extension\\/marketplace\",\"extension\\/module\",\"extension\\/other\",\"extension\\/payment\",\"extension\\/report\",\"extension\\/shipping\",\"extension\\/theme\",\"extension\\/total\",\"localisation\\/address_format\",\"localisation\\/country\",\"localisation\\/currency\",\"localisation\\/geo_zone\",\"localisation\\/language\",\"localisation\\/length_class\",\"localisation\\/location\",\"localisation\\/order_status\",\"localisation\\/return_action\",\"localisation\\/return_reason\",\"localisation\\/return_status\",\"localisation\\/stock_status\",\"localisation\\/subscription_status\",\"localisation\\/tax_class\",\"localisation\\/tax_rate\",\"localisation\\/weight_class\",\"localisation\\/zone\",\"mail\\/affiliate\",\"mail\\/authorize\",\"mail\\/customer\",\"mail\\/forgotten\",\"mail\\/gdpr\",\"mail\\/returns\",\"mail\\/reward\",\"mail\\/subscription\",\"mail\\/transaction\",\"marketing\\/affiliate\",\"marketing\\/contact\",\"marketing\\/coupon\",\"marketing\\/marketing\",\"marketplace\\/api\",\"marketplace\\/cron\",\"marketplace\\/event\",\"marketplace\\/extension\",\"marketplace\\/installer\",\"marketplace\\/marketplace\",\"marketplace\\/modification\",\"marketplace\\/promotion\",\"marketplace\\/startup\",\"report\\/online\",\"report\\/report\",\"report\\/statistics\",\"sale\\/order\",\"sale\\/returns\",\"sale\\/subscription\",\"setting\\/setting\",\"setting\\/store\",\"tool\\/backup\",\"tool\\/log\",\"tool\\/notification\",\"tool\\/upgrade\",\"tool\\/upload\",\"user\\/api\",\"user\\/profile\",\"user\\/user\",\"user\\/user_permission\",\"extension\\/opencart\\/api\\/coupon\",\"extension\\/opencart\\/api\\/reward\",\"extension\\/opencart\\/captcha\\/basic\",\"extension\\/opencart\\/currency\\/ecb\",\"extension\\/opencart\\/currency\\/fixer\",\"extension\\/opencart\\/dashboard\\/activity\",\"extension\\/opencart\\/dashboard\\/chart\",\"extension\\/opencart\\/dashboard\\/customer\",\"extension\\/opencart\\/dashboard\\/map\",\"extension\\/opencart\\/dashboard\\/online\",\"extension\\/opencart\\/dashboard\\/order\",\"extension\\/opencart\\/dashboard\\/recent\",\"extension\\/opencart\\/dashboard\\/sale\",\"extension\\/opencart\\/fraud\\/ddos\",\"extension\\/opencart\\/fraud\\/ip\",\"extension\\/opencart\\/module\\/account\",\"extension\\/opencart\\/module\\/banner\",\"extension\\/opencart\\/module\\/bestseller\",\"extension\\/opencart\\/module\\/blog\",\"extension\\/opencart\\/module\\/category\",\"extension\\/opencart\\/module\\/featured\",\"extension\\/opencart\\/module\\/filter\",\"extension\\/opencart\\/module\\/html\",\"extension\\/opencart\\/module\\/information\",\"extension\\/opencart\\/module\\/latest\",\"extension\\/opencart\\/module\\/special\",\"extension\\/opencart\\/module\\/store\",\"extension\\/opencart\\/module\\/topic\",\"extension\\/opencart\\/payment\\/bank_transfer\",\"extension\\/opencart\\/payment\\/cheque\",\"extension\\/opencart\\/payment\\/cod\",\"extension\\/opencart\\/payment\\/free_checkout\",\"extension\\/opencart\\/report\\/customer\",\"extension\\/opencart\\/report\\/customer_activity\",\"extension\\/opencart\\/report\\/customer_order\",\"extension\\/opencart\\/report\\/customer_reward\",\"extension\\/opencart\\/report\\/customer_search\",\"extension\\/opencart\\/report\\/customer_transaction\",\"extension\\/opencart\\/report\\/marketing\",\"extension\\/opencart\\/report\\/product_purchased\",\"extension\\/opencart\\/report\\/product_viewed\",\"extension\\/opencart\\/report\\/sale_coupon\",\"extension\\/opencart\\/report\\/sale_order\",\"extension\\/opencart\\/report\\/sale_return\",\"extension\\/opencart\\/report\\/sale_shipping\",\"extension\\/opencart\\/report\\/sale_tax\",\"extension\\/opencart\\/report\\/subscription\",\"extension\\/opencart\\/shipping\\/flat\",\"extension\\/opencart\\/shipping\\/free\",\"extension\\/opencart\\/shipping\\/item\",\"extension\\/opencart\\/shipping\\/pickup\",\"extension\\/opencart\\/shipping\\/weight\",\"extension\\/opencart\\/theme\\/basic\",\"extension\\/opencart\\/total\\/coupon\",\"extension\\/opencart\\/total\\/credit\",\"extension\\/opencart\\/total\\/handling\",\"extension\\/opencart\\/total\\/low_order_fee\",\"extension\\/opencart\\/total\\/reward\",\"extension\\/opencart\\/total\\/shipping\",\"extension\\/opencart\\/total\\/sub_total\",\"extension\\/opencart\\/total\\/tax\",\"extension\\/opencart\\/total\\/total\",\"extension\\/mobile_app\\/module\\/mobile_app\",\"extension\\/mobile_app\\/module\\/mobile_app\",\"extension\\/mobile_app\\/module\\/mobile_app\",\"extension\\/yootheme\\/theme\\/standard\",\"extension\\/yootheme\\/theme\\/standard\",\"extension\\/opencart\\/theme\\/basic\"]}'),
 (2, 'Demonstration', ''),
 (3, 'Marketing', ''),
 (4, 'Product Data Entry', ''),
@@ -5227,18 +5327,24 @@ DROP TABLE IF EXISTS `oc_user_login`;
 CREATE TABLE IF NOT EXISTS `oc_user_login` (
   `user_login_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`user_login_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `oc_user_login`
 --
 
 INSERT INTO `oc_user_login` (`user_login_id`, `user_id`, `ip`, `user_agent`, `date_added`) VALUES
-(1, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-09-24 10:24:57');
+(1, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-09-24 10:24:57'),
+(2, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-09-25 09:41:54'),
+(3, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-09-26 12:50:56'),
+(4, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-09-26 13:51:57'),
+(5, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-09-26 14:05:17'),
+(6, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-09-29 08:41:44'),
+(7, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', '2025-10-02 08:57:02');
 
 -- --------------------------------------------------------
 
@@ -5250,8 +5356,8 @@ DROP TABLE IF EXISTS `oc_user_token`;
 CREATE TABLE IF NOT EXISTS `oc_user_token` (
   `user_token_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `code` text COLLATE utf8mb4_unicode_ci,
-  `type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_added` datetime DEFAULT NULL,
   PRIMARY KEY (`user_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -5289,8 +5395,8 @@ DROP TABLE IF EXISTS `oc_weight_class_description`;
 CREATE TABLE IF NOT EXISTS `oc_weight_class_description` (
   `weight_class_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `title` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `unit` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unit` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`weight_class_id`,`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -5314,7 +5420,7 @@ DROP TABLE IF EXISTS `oc_zone`;
 CREATE TABLE IF NOT EXISTS `oc_zone` (
   `zone_id` int NOT NULL AUTO_INCREMENT,
   `country_id` int DEFAULT NULL,
-  `code` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`zone_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4474 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -9402,7 +9508,7 @@ DROP TABLE IF EXISTS `oc_zone_description`;
 CREATE TABLE IF NOT EXISTS `oc_zone_description` (
   `zone_id` int NOT NULL,
   `language_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`zone_id`,`language_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;

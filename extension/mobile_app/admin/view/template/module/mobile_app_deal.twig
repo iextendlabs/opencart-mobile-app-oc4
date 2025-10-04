@@ -22,10 +22,10 @@
             <label class="col-sm-2 col-form-label">{{ entry_status }}</label>
             <div class="col-sm-10">
               <div class="btn-group" role="group">
-                <input type="radio" class="btn-check" name="module_mobile_app_deal_status" id="deal-paused" value="0" {% if module_mobile_app_deal_status == '0' %}checked{% endif %}>
+                <input type="radio" class="btn-check" name="module_mobile_app_deal_status" id="deal-paused" value="1" {% if module_mobile_app_deal_status == '1' %}checked{% endif %}>
                 <label class="btn btn-outline-warning" for="deal-paused"><i class="fa fa-pause"></i> {{ text_pause }}</label>
 
-                <input type="radio" class="btn-check" name="module_mobile_app_deal_status" id="deal-ended" value="ended" {% if module_mobile_app_deal_status == 'ended' %}checked{% endif %}>
+                <input type="radio" class="btn-check" name="module_mobile_app_deal_status" id="deal-ended" value="0" {% if module_mobile_app_deal_status == '0' %}checked{% endif %}>
                 <label class="btn btn-outline-danger" for="deal-ended"><i class="fa fa-stop"></i> {{ text_end }}</label>
               </div>
             </div>
