@@ -22,9 +22,9 @@ class App extends \Opencart\System\Engine\Controller
         $this->load->model('tool/image');
 
         $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
-        
+
         $json['reviews'] = [];
-        
+
         $sql = "SELECT r.author, r.text, r.rating, r.date_added FROM `" . DB_PREFIX . "review` r WHERE r.status = '1' ORDER BY r.rating DESC, r.date_added DESC LIMIT 5";
         $query = $this->db->query($sql);
         foreach ($query->rows as $review) {
@@ -58,34 +58,56 @@ class App extends \Opencart\System\Engine\Controller
 
         // Deal
         $json['deal'] = null;
-        if ($this->config->get('module_mobile_app_deal_status') == '1') {
-            $deal = [];
-            $deal['end_date'] = $this->config->get('module_mobile_app_deal_end_date') ?? '';
-            $deal['products'] = [];
-            $product_ids = $this->config->get('module_mobile_app_deal_product') ?? [];
-            $product_discounts = $this->config->get('module_mobile_app_deal_product_discount') ?? [];
-            foreach ($product_ids as $product_id) {
-                $product_info = $this->model_catalog_product->getProduct($product_id);
-                if ($product_info) {
-                    $discount_value = isset($product_discounts[$product_id]) ? (float)$product_discounts[$product_id] : 0;
-                    // Product image
-                    if ($product_info['image']) {
-                        $prod_image_path = $this->model_tool_image->resize($product_info['image'], 250, 250);
-                        $prod_image_url = (strpos($prod_image_path, 'http') === 0) ? $prod_image_path : $server . ltrim($prod_image_path, '/');
-                    } else {
-                        $prod_image_url = '';
+        $deal_status = $this->config->get('module_mobile_app_deal_status');
+        $deal_end_date = $this->config->get('module_mobile_app_deal_end_date') ?? '';
+        $product_ids = $this->config->get('module_mobile_app_deal_product');
+        if (!is_array($product_ids)) {
+            $product_ids = $product_ids ? [$product_ids] : [];
+        }
+        $now = date('Y-m-d H:i:s');
+        if ($deal_status == '1') {
+            if ($deal_end_date && strtotime($now) > strtotime($deal_end_date)) {
+                // Expire the deal: remove discounts, set status to 0
+                foreach ($product_ids as $product_id) {
+                    $this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
+                }
+                // Set status to 0
+                // Directly update the setting value in the database (since editSettingValue does not exist)
+                $this->db->query("UPDATE `" . DB_PREFIX . "setting` SET `value` = '0' WHERE `code` = 'module_mobile_app_deal' AND `key` = 'module_mobile_app_deal_status'");
+                $json['deal'] = null;
+            } else {
+                $deal = [];
+                $deal['end_date'] = $deal_end_date;
+                $deal['current_date'] = $now;
+                $deal['products'] = [];
+                $product_discounts = $this->config->get('module_mobile_app_deal_product_discount') ?? [];
+                foreach ($product_ids as $product_id) {
+                    $product_info = $this->model_catalog_product->getProduct($product_id);
+                    if ($product_info) {
+                        $discount_value = isset($product_discounts[$product_id]) ? (float)$product_discounts[$product_id] : 0;
+                        // Product image
+                        if ($product_info['image']) {
+                            $prod_image_path = $this->model_tool_image->resize($product_info['image'], 250, 250);
+                            $prod_image_url = (strpos($prod_image_path, 'http') === 0) ? $prod_image_path : $server . ltrim($prod_image_path, '/');
+                        } else {
+                            $prod_image_url = '';
+                        }
+                        $deal['products'][] = [
+                            'product_id' => $product_info['product_id'],
+                            'name' => $product_info['name'],
+                            'image' => $prod_image_url,
+                            'price' => $this->currency->format($product_info['price'], $this->session->data['currency'] ?? $this->config->get('config_currency')),
+                            'special' => $product_info['special'] ? $this->currency->format($product_info['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null,
+                            'discount' => $discount_value
+                        ];
                     }
-                    $deal['products'][] = [
-                        'product_id' => $product_info['product_id'],
-                        'name' => $product_info['name'],
-                        'image' => $prod_image_url,
-                        'price' => $this->currency->format($product_info['price'], $this->session->data['currency'] ?? $this->config->get('config_currency')),
-                        'special' => $product_info['special'] ? $this->currency->format($product_info['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null,
-                        'discount' => $discount_value
-                    ];
+                }
+                if (empty($deal['products'])) {
+                    $json['deal'] = null;
+                } else {
+                    $json['deal'] = $deal;
                 }
             }
-            $json['deal'] = $deal;
         }
 
         // Feature Category

@@ -1,17 +1,21 @@
 <?php
+
 namespace Opencart\Admin\Controller\Extension\MobileApp\Module;
+
 /**
  * Class MobileApp
  *
  * @package Opencart\Admin\Controller\Extension\MobileApp\Module
  */
-class MobileApp extends \Opencart\System\Engine\Controller {
+class MobileApp extends \Opencart\System\Engine\Controller
+{
 	/**
 	 * Index
 	 *
 	 * @return void
 	 */
-	public function index(): void {
+	public function index(): void
+	{
 		$this->load->language('extension/mobile_app/module/mobile_app');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -50,7 +54,8 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 	 *
 	 * @return void
 	 */
-	public function save(): void {
+	public function save(): void
+	{
 		$this->load->language('extension/mobile_app/module/mobile_app');
 
 		$json = [];
@@ -76,7 +81,8 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 	 *
 	 * @return void
 	 */
-	public function banner(): void {
+	public function banner(): void
+	{
 
 		$this->load->language('extension/mobile_app/module/mobile_banner');
 
@@ -136,7 +142,8 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 	 *
 	 * @return void
 	 */
-	public function banner_save(): void {
+	public function banner_save(): void
+	{
 		$this->load->language('extension/mobile_app/module/mobile_banner');
 
 		$json = [];
@@ -159,7 +166,8 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 	 *
 	 * @return void
 	 */
-	public function deal(): void {
+	public function deal(): void
+	{
 		$this->load->language('extension/mobile_app/module/mobile_app_deal');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -213,7 +221,7 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 			$product_info = $this->model_catalog_product->getProduct($product_id);
 			if ($product_info) {
 				$discount_value = isset($product_discounts[$product_id]) ? (float)$product_discounts[$product_id] : 0;
-				
+
 				$data['module_mobile_app_deal_products'][] = [
 					'product_id'      => $product_info['product_id'],
 					'name'            => $product_info['name'],
@@ -234,41 +242,75 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 	 *
 	 * @return void
 	 */
-	public function deal_save(): void {
+	public function deal_save(): void
+	{
 		$this->load->language('extension/mobile_app/module/mobile_app_deal');
 		$json = [];
 		$this->load->model('setting/setting');
 		$this->load->model('catalog/product');
-		$this->model_setting_setting->editSetting('module_mobile_app_deal', $this->request->post);
 
-		if (isset($this->request->post['module_mobile_app_deal_product']) && isset($this->request->post['module_mobile_app_deal_product_discount'])) {
-			
-			foreach ($this->request->post['module_mobile_app_deal_product'] as $product_id) {
-				$discount = (float)($this->request->post['module_mobile_app_deal_product_discount'][$product_id] ?? 0);
-				if ($discount > 0) {
-					$product_info = $this->model_catalog_product->getProduct($product_id);
-					if ($product_info && isset($product_info['price'])) {
-						$original_price = (float)$product_info['price'];
-						$discounted_price = $original_price - ($original_price * ($discount / 100));
-						$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
-						$this->db->query("INSERT INTO `" . DB_PREFIX . "product_discount`
-							SET `product_id` = '" . (int)$product_id . "',
-								`customer_group_id` = 1,
-								`quantity` = 1,
-								`priority` = 1,
-								`price` = '" . (float)$discounted_price . "',
-								`type` = 'fixed',
-								`special` = 1,
-								`date_start` = '0000-00-00',
-								`date_end` = '0000-00-00'");
-					}
-				} else {
-					$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
-				}
+		// Validate end date
+		if (!empty($this->request->post['module_mobile_app_deal_end_date'])) {
+			$end_date = $this->request->post['module_mobile_app_deal_end_date'];
+			$now = date('Y-m-d H:i:s');
+			if (strtotime($end_date) <= strtotime($now)) {
+				$json['error'] = $this->language->get('error_deal_end_date');
 			}
 		}
 
-		$json['success'] = $this->language->get('text_success');
+		if (!$json) {
+			$this->model_setting_setting->editSetting('module_mobile_app_deal', $this->request->post);
+
+			// Get previous deal products from config
+			$prev_products = $this->config->get('module_mobile_app_deal_product');
+			if (!is_array($prev_products)) {
+				$prev_products = $prev_products ? [$prev_products] : [];
+			}
+			$new_products = $this->request->post['module_mobile_app_deal_product'] ?? [];
+			if (!is_array($new_products)) {
+				$new_products = $new_products ? [$new_products] : [];
+			}
+			
+			// Remove discount from products that were in the deal but are now removed
+			$removed_products = array_diff($prev_products, $new_products);
+			foreach ($removed_products as $product_id) {
+				$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
+			}
+
+			// If status is 0, remove all discounts for current deal products
+			if (isset($this->request->post['module_mobile_app_deal_status']) && $this->request->post['module_mobile_app_deal_status'] == '0') {
+				foreach ($prev_products as $product_id) {
+					$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
+				}
+			} else if (isset($this->request->post['module_mobile_app_deal_product']) && isset($this->request->post['module_mobile_app_deal_product_discount'])) {
+				// Otherwise, update discounts for current products
+				foreach ($this->request->post['module_mobile_app_deal_product'] as $product_id) {
+					$discount = (float)($this->request->post['module_mobile_app_deal_product_discount'][$product_id] ?? 0);
+					if ($discount > 0) {
+						$product_info = $this->model_catalog_product->getProduct($product_id);
+						if ($product_info && isset($product_info['price'])) {
+							$original_price = (float)$product_info['price'];
+							$discounted_price = $original_price - ($original_price * ($discount / 100));
+							$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
+							$this->db->query("INSERT INTO `" . DB_PREFIX . "product_discount`
+								SET `product_id` = '" . (int)$product_id . "',
+									`customer_group_id` = 1,
+									`quantity` = 1,
+									`priority` = 1,
+									`price` = '" . (float)$discounted_price . "',
+									`type` = 'fixed',
+									`special` = 1,
+									`date_start` = '0000-00-00',
+									`date_end` = '0000-00-00'");
+						}
+					} else {
+						$this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
+					}
+				}
+			}
+
+			$json['success'] = $this->language->get('text_success');
+		}
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
@@ -410,7 +452,8 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 	 * @return void
 	 */
 
-	public function trust_badges(): void {
+	public function trust_badges(): void
+	{
 		$this->load->language('extension/mobile_app/module/mobile_trust_badges');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -492,6 +535,6 @@ class MobileApp extends \Opencart\System\Engine\Controller {
 		}
 
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));	
-}
+		$this->response->setOutput(json_encode($json));
+	}
 }

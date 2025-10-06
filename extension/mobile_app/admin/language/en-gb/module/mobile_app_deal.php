@@ -28,3 +28,4 @@ $_['error_permission'] = 'Warning: You do not have permission to modify Mobile A
 $_['error_name']       = 'Module Name must be between 3 and 64 characters!';
 $_['error_width']      = 'Width required!';
 $_['error_height']     = 'Height required!';
+$_['error_deal_end_date'] = 'Deal end date must be greater than the current date and time!';
