@@ -118,13 +118,6 @@ class App extends \Opencart\System\Engine\Controller
                 if (empty($item['category_id'])) continue;
                 $category_info = $this->model_catalog_category->getCategory($item['category_id']);
                 if ($category_info) {
-                    // Category image
-                    if ($category_info['image']) {
-                        $cat_image_path = $this->model_tool_image->resize($category_info['image'], 100, 100);
-                        $cat_image_url = (strpos($cat_image_path, 'http') === 0) ? $cat_image_path : $server . ltrim($cat_image_path, '/');
-                    } else {
-                        $cat_image_url = '';
-                    }
                     $products = [];
                     if (!empty($item['product'])) {
                         foreach ($item['product'] as $product_id) {
@@ -146,12 +139,22 @@ class App extends \Opencart\System\Engine\Controller
                             }
                         }
                     }
-                    $json['feature_category'][] = [
-                        'category_id' => $category_info['category_id'],
-                        'name' => $category_info['name'],
-                        'image' => $cat_image_url,
-                        'products' => $products
-                    ];
+                    // Only add category if it has at least one product
+                    if (!empty($products)) {
+                        // Category image
+                        if ($category_info['image']) {
+                            $cat_image_path = $this->model_tool_image->resize($category_info['image'], 100, 100);
+                            $cat_image_url = (strpos($cat_image_path, 'http') === 0) ? $cat_image_path : $server . ltrim($cat_image_path, '/');
+                        } else {
+                            $cat_image_url = '';
+                        }
+                        $json['feature_category'][] = [
+                            'category_id' => $category_info['category_id'],
+                            'name' => $category_info['name'],
+                            'image' => $cat_image_url,
+                            'products' => $products
+                        ];
+                    }
                 }
             }
         }
