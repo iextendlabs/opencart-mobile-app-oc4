@@ -39,7 +39,10 @@ class App extends \Opencart\System\Engine\Controller
         // Banner
         $json['banner'] = [];
         if ($this->config->get('module_mobile_app_banner_status') == '1') {
-            $banner_images = $this->config->get('module_mobile_app_banner_image') ?? [];
+            $banner_images = $this->config->get('module_mobile_app_banner_image');
+            if (!is_array($banner_images)) {
+                $banner_images = $banner_images ? [$banner_images] : [];
+            }
             foreach ($banner_images as $banner) {
                 if (!empty($banner['image'])) {
                     $image_path = $this->model_tool_image->resize($banner['image'], 300, 300);
@@ -47,12 +50,27 @@ class App extends \Opencart\System\Engine\Controller
                 } else {
                     $image_url = '';
                 }
-                $json['banner'][] = [
+                // Determine unified link value based on link_type
+                $link_type = $banner['link_type'] ?? 'external';
+                if ($link_type === 'product') {
+                    $link_value = isset($banner['product_id']) ? (int)$banner['product_id'] : 0;
+                } elseif ($link_type === 'category') {
+                    $link_value = isset($banner['category_id']) ? (int)$banner['category_id'] : 0;
+                } else {
+                    $link_value = $banner['link'] ?? '';
+                }
+
+                $item = [
                     'title' => $banner['title'] ?? '',
-                    'link' => $banner['link'] ?? '',
-                    'image' => $image_url,
+                    'link_type' => $link_type,
+                    'link' => $link_value,
                     'sort_order' => $banner['sort_order'] ?? ''
                 ];
+
+                if ($image_url !== '') {
+                    $item['image'] = $image_url;
+                    $json['banner'][] = $item;
+                }
             }
         }
 
@@ -114,6 +132,9 @@ class App extends \Opencart\System\Engine\Controller
         $json['feature_category'] = [];
         if ($this->config->get('module_mobile_app_feature_category_status') == '1') {
             $feature_categories = $this->config->get('module_mobile_app_feature_category_items') ?? [];
+            if (!is_array($feature_categories)) {
+                $feature_categories = $feature_categories ? [$feature_categories] : [];
+            }
             foreach ($feature_categories as $item) {
                 if (empty($item['category_id'])) continue;
                 $category_info = $this->model_catalog_category->getCategory($item['category_id']);
@@ -162,7 +183,10 @@ class App extends \Opencart\System\Engine\Controller
         // Trust Badges
         $json['trust_badges'] = [];
         if ($this->config->get('module_mobile_app_trust_badges_status') == '1') {
-            $trust_badges = $this->config->get('module_mobile_app_trust_badges_items') ?? [];
+            $trust_badges = $this->config->get('module_mobile_app_trust_badges_items');
+            if (!is_array($trust_badges)) {
+                $trust_badges = $trust_badges ? [$trust_badges] : [];
+            }
             foreach ($trust_badges as $item) {
                 if (isset($item['image']) && $item['image']) {
                     $image_path = $this->model_tool_image->resize($item['image'], 100, 100);

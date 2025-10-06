@@ -16,6 +16,14 @@ $_['entry_title']      = 'Mobile Banner Title';
 $_['entry_link']       = 'Link';
 $_['entry_image']      = 'Image';
 $_['entry_sort_order'] = 'Sort Order';
+$_['entry_product']     = 'Product';
+$_['entry_category']    = 'Category';
+$_['entry_link_type']   = 'Link Type';
+
+// Link type texts
+$_['text_link_external'] = 'External Link';
+$_['text_link_product']  = 'Product Link';
+$_['text_link_category'] = 'Category Link';
 
 // Button
 $_['button_save']      = 'Save';

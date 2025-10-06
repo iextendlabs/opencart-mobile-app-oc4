@@ -52,7 +52,32 @@
                           <input type="text" name="module_mobile_app_banner_image[{{ image_row }}][title]" value="{{ banner_image.title }}" placeholder="{{ entry_title }}" id="input-image-{{ image_row }}-title" class="form-control"/>
                           <div id="error-image-{{ image_row }}-title" class="invalid-feedback"></div>
                         </td>
-                        <td style="width: 30%;"><input type="text" name="module_mobile_app_banner_image[{{ image_row }}][link]" value="{{ banner_image.link }}" placeholder="{{ entry_link }}" id="input-image-{{ image_row }}-link" class="form-control"/></td>
+                        <td style="width: 30%;">
+                          <div class="mb-2">
+                            <select name="module_mobile_app_banner_image[{{ image_row }}][link_type]" id="input-image-{{ image_row }}-link-type" class="form-select">
+                              <option value="external"{% if banner_image.link_type == 'external' or not banner_image.link_type %} selected{% endif %}>{{ text_link_external }}</option>
+                              <option value="product"{% if banner_image.link_type == 'product' %} selected{% endif %}>{{ text_link_product }}</option>
+                              <option value="category"{% if banner_image.link_type == 'category' %} selected{% endif %}>{{ text_link_category }}</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-2 link-input link-input-external-{{ image_row }}" {% if banner_image.link_type and banner_image.link_type != 'external' %}style="display:none;"{% endif %}>
+                            <input type="text" name="module_mobile_app_banner_image[{{ image_row }}][link]" value="{{ banner_image.link }}" placeholder="{{ entry_link }}" id="input-image-{{ image_row }}-link" class="form-control"/>
+                          </div>
+
+                          <div class="mb-2 link-input link-input-product-{{ image_row }}" {% if banner_image.link_type != 'product' %}style="display:none;"{% endif %}>
+                            <input type="hidden" name="module_mobile_app_banner_image[{{ image_row }}][product_id]" value="{{ banner_image.product_id }}" id="input-image-{{ image_row }}-product-id"/>
+                            <input type="text" id="input-image-{{ image_row }}-product" value="{{ banner_image.product_name }}" data-oc-target="autocomplete-product-{{ image_row }}" class="form-control" placeholder="{{ entry_product }}" autocomplete="off" style="padding:6px 10px;"/>
+                            <ul id="autocomplete-product-{{ image_row }}" class="dropdown-menu"></ul>
+                          </div>
+
+                          <div class="mb-2 link-input link-input-category-{{ image_row }}" {% if banner_image.link_type != 'category' %}style="display:none;"{% endif %}>
+                            <input type="hidden" name="module_mobile_app_banner_image[{{ image_row }}][category_id]" value="{{ banner_image.category_id }}" id="input-image-{{ image_row }}-category-id"/>
+                            <input type="text" id="input-image-{{ image_row }}-category" value="{{ banner_image.category_name }}" data-oc-target="autocomplete-category-{{ image_row }}" class="form-control" placeholder="{{ entry_category }}" autocomplete="off" style="padding:6px 10px;"/>
+                            <ul id="autocomplete-category-{{ image_row }}" class="dropdown-menu"></ul>
+                          </div>
+
+                        </td>
                         <td class="text-center">
                           <div class="border rounded d-block" style="max-width: 300px;">
                             <img src="{{ banner_image.thumb }}" alt="" title="" id="thumb-image-{{ image_row }}" data-oc-placeholder="{{ placeholder }}" class="img-fluid"/>
@@ -94,7 +119,28 @@ $('#button-banner-add').on('click', function() {
   html += '    <input type="text" name="module_mobile_app_banner_image[' + image_row + '][title]" value="" placeholder="{{ entry_title|escape('js') }}" id="input-image-' + image_row + '-title" class="form-control"/>';
   html += '    <div id="error-image-' + image_row + '-title" class="invalid-feedback"></div>';
   html += '  </td>';
-  html += '  <td><input type="text" name="module_mobile_app_banner_image[' + image_row + '][link]" value="" placeholder="{{ entry_link|escape('js') }}" id="input-image-' + image_row + '-link" class="form-control"/></td>';
+  html += '  <td style="width: 30%;">';
+  html += '    <div class="mb-2">';
+  html += '      <select name="module_mobile_app_banner_image[' + image_row + '][link_type]" id="input-image-' + image_row + '-link-type" class="form-select">';
+  html += '        <option value="external">{{ text_link_external|escape('js') }}</option>';
+  html += '        <option value="product">{{ text_link_product|escape('js') }}</option>';
+  html += '        <option value="category">{{ text_link_category|escape('js') }}</option>';
+  html += '      </select>';
+  html += '    </div>';
+  html += '    <div class="mb-2 link-input link-input-external-' + image_row + '">';
+  html += '      <input type="text" name="module_mobile_app_banner_image[' + image_row + '][link]" value="" placeholder="{{ entry_link|escape('js') }}" id="input-image-' + image_row + '-link" class="form-control"/>';
+  html += '    </div>';
+  html += '    <div class="mb-2 link-input link-input-product-' + image_row + '" style="display:none;">';
+  html += '      <input type="hidden" name="module_mobile_app_banner_image[' + image_row + '][product_id]" value="" id="input-image-' + image_row + '-product-id"/>';
+  html += '      <input type="text" id="input-image-' + image_row + '-product" data-oc-target="autocomplete-product-' + image_row + '" class="form-control" placeholder="{{ entry_product|escape('js') }}" autocomplete="off" style="padding:6px 10px;"/>';
+  html += '      <ul id="autocomplete-product-' + image_row + '" class="dropdown-menu mt-5"></ul>';
+  html += '    </div>';
+  html += '    <div class="mb-2 link-input link-input-category-' + image_row + '" style="display:none;">';
+  html += '      <input type="hidden" name="module_mobile_app_banner_image[' + image_row + '][category_id]" value="" id="input-image-' + image_row + '-category-id"/>';
+  html += '      <input type="text" id="input-image-' + image_row + '-category" data-oc-target="autocomplete-category-' + image_row + '" class="form-control" placeholder="{{ entry_category|escape('js') }}" autocomplete="off" style="padding:6px 10px;"/>';
+  html += '      <ul id="autocomplete-category-' + image_row + '" class="dropdown-menu mt-5"></ul>';
+  html += '    </div>';
+  html += '  </td>';
   html += '  <td class="text-center">';
   html += '    <div class="border rounded d-block" style="max-width: 300px;">';
   html += '      <img src="{{ placeholder|escape('js') }}" alt="" title="" id="thumb-image-' + image_row + '" data-oc-placeholder="{{ placeholder|escape('js') }}" class="img-fluid"/>';
@@ -110,7 +156,80 @@ $('#button-banner-add').on('click', function() {
   html += '</tr>';
 
   $('#image-table tbody').append(html);
+  initBannerRow(image_row);
   image_row++;
 });
+
+// Initialize existing rows and setup autocomplete + toggle handlers
+for (var i = 0; i < image_row; i++) {
+  initBannerRow(i);
+}
+
+function initBannerRow(row) {
+  // Toggle link inputs based on select
+  $('#input-image-' + row + '-link-type').on('change', function() {
+    var type = $(this).val();
+    $('.link-input-external-' + row).hide();
+    $('.link-input-product-' + row).hide();
+    $('.link-input-category-' + row).hide();
+    if (type == 'product') {
+      $('.link-input-product-' + row).show();
+    } else if (type == 'category') {
+      $('.link-input-category-' + row).show();
+    } else {
+      $('.link-input-external-' + row).show();
+    }
+  });
+
+  // Product autocomplete
+  $('#input-image-' + row + '-product').autocomplete({
+    'delay': 500,
+    'source': function(request, response) {
+      $.ajax({
+  url: 'index.php?route=extension/mobile_app/module/mobile_app.product_autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return { label: item.name, value: item.product_id };
+          }));
+        }
+      });
+    },
+    'select': function(event, ui) {
+      // Support both (event, ui) and (item) signatures
+      var item = (ui && ui.item) ? ui.item : event;
+      if (item) {
+        $('#input-image-' + row + '-product-id').val(item.value || item.product_id);
+        $(this).val(item.label || item.name);
+      }
+      return false;
+    }
+  });
+
+  // Category autocomplete
+  $('#input-image-' + row + '-category').autocomplete({
+    'delay': 500,
+    'source': function(request, response) {
+      $.ajax({
+  url: 'index.php?route=catalog/category.autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return { label: item.name, value: item.category_id };
+          }));
+        }
+      });
+    },
+    'select': function(event, ui) {
+      // Support both (event, ui) and (item) signatures
+      var item = (ui && ui.item) ? ui.item : event;
+      if (item) {
+        $('#input-image-' + row + '-category-id').val(item.value || item.category_id);
+        $(this).val(item.label || item.name);
+      }
+      return false;
+    }
+  });
+}
 //--></script>
 {{ footer }}

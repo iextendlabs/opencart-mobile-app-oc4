@@ -89,6 +89,8 @@ class MobileApp extends \Opencart\System\Engine\Controller
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('tool/image');
+		$this->load->model('catalog/product');
+		$this->load->model('catalog/category');
 
 		$data['breadcrumbs'] = [];
 		$data['breadcrumbs'][] = [
@@ -107,12 +109,12 @@ class MobileApp extends \Opencart\System\Engine\Controller
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.banner_save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
 
+		$data['user_token'] = $this->session->data['user_token'];
 		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 300, 300);
 		$data['module_mobile_app_banner_status'] = $this->config->get('module_mobile_app_banner_status') ?? '0';
 
 		$banner_images = $this->config->get('module_mobile_app_banner_image') ?? [];
 
-		// Structure banner_images as a flat array for the view
 		$data['banner_images'] = [];
 		if (is_array($banner_images)) {
 			foreach ($banner_images as $banner) {
@@ -121,12 +123,34 @@ class MobileApp extends \Opencart\System\Engine\Controller
 				} else {
 					$thumb = $data['placeholder'];
 				}
+
+				$product_name = '';
+				if (!empty($banner['product_id'])) {
+					$product_info = $this->model_catalog_product->getProduct($banner['product_id']);
+					if ($product_info) {
+						$product_name = $product_info['name'];
+					}
+				}
+
+				$category_name = '';
+				if (!empty($banner['category_id'])) {
+					$category_info = $this->model_catalog_category->getCategory($banner['category_id']);
+					if ($category_info) {
+						$category_name = $category_info['name'];
+					}
+				}
+
 				$data['banner_images'][] = [
-					'title'      => $banner['title'] ?? '',
-					'link'       => $banner['link'] ?? '',
-					'image'      => $banner['image'] ?? '',
-					'thumb'      => $thumb,
-					'sort_order' => $banner['sort_order'] ?? ''
+					'title'        => $banner['title'] ?? '',
+					'link'         => $banner['link'] ?? '',
+					'image'        => $banner['image'] ?? '',
+					'thumb'        => $thumb,
+					'sort_order'   => $banner['sort_order'] ?? '',
+					'link_type'    => $banner['link_type'] ?? 'external',
+					'product_id'   => $banner['product_id'] ?? '',
+					'product_name' => $product_name,
+					'category_id'  => $banner['category_id'] ?? '',
+					'category_name'=> $category_name
 				];
 			}
 		}
@@ -154,6 +178,23 @@ class MobileApp extends \Opencart\System\Engine\Controller
 
 		if (!$json) {
 			$this->load->model('setting/setting');
+
+			if (isset($this->request->post['module_mobile_app_banner_image']) && is_array($this->request->post['module_mobile_app_banner_image'])) {
+				foreach ($this->request->post['module_mobile_app_banner_image'] as $key => $banner) {
+					$link_type = $banner['link_type'] ?? 'external';
+					if ($link_type === 'product') {
+						$this->request->post['module_mobile_app_banner_image'][$key]['link'] = '';
+						$this->request->post['module_mobile_app_banner_image'][$key]['category_id'] = '';
+					} elseif ($link_type === 'category') {
+						$this->request->post['module_mobile_app_banner_image'][$key]['link'] = '';
+						$this->request->post['module_mobile_app_banner_image'][$key]['product_id'] = '';
+					} else {
+						$this->request->post['module_mobile_app_banner_image'][$key]['product_id'] = '';
+						$this->request->post['module_mobile_app_banner_image'][$key]['category_id'] = '';
+					}
+				}
+			}
+
 			$this->model_setting_setting->editSetting('module_mobile_app_banner', $this->request->post);
 			$json['success'] = $this->language->get('text_success');
 		}
