@@ -50,7 +50,7 @@ class App extends \Opencart\System\Engine\Controller
                 } else {
                     $image_url = '';
                 }
-                // Determine unified link value based on link_type
+
                 $link_type = $banner['link_type'] ?? 'external';
                 if ($link_type === 'product') {
                     $link_value = isset($banner['product_id']) ? (int)$banner['product_id'] : 0;
@@ -85,12 +85,9 @@ class App extends \Opencart\System\Engine\Controller
         $now = date('Y-m-d H:i:s');
         if ($deal_status == '1') {
             if ($deal_end_date && strtotime($now) > strtotime($deal_end_date)) {
-                // Expire the deal: remove discounts, set status to 0
                 foreach ($product_ids as $product_id) {
                     $this->db->query("DELETE FROM `" . DB_PREFIX . "product_discount` WHERE `product_id` = '" . (int)$product_id . "' AND `customer_group_id` = 1");
                 }
-                // Set status to 0
-                // Directly update the setting value in the database (since editSettingValue does not exist)
                 $this->db->query("UPDATE `" . DB_PREFIX . "setting` SET `value` = '0' WHERE `code` = 'module_mobile_app_deal' AND `key` = 'module_mobile_app_deal_status'");
                 $json['deal'] = null;
             } else {
@@ -98,26 +95,11 @@ class App extends \Opencart\System\Engine\Controller
                 $deal['end_date'] = $deal_end_date;
                 $deal['current_date'] = $now;
                 $deal['products'] = [];
-                $product_discounts = $this->config->get('module_mobile_app_deal_product_discount') ?? [];
                 foreach ($product_ids as $product_id) {
                     $product_info = $this->model_catalog_product->getProduct($product_id);
                     if ($product_info) {
-                        $discount_value = isset($product_discounts[$product_id]) ? (float)$product_discounts[$product_id] : 0;
-                        // Product image
-                        if ($product_info['image']) {
-                            $prod_image_path = $this->model_tool_image->resize($product_info['image'], 250, 250);
-                            $prod_image_url = (strpos($prod_image_path, 'http') === 0) ? $prod_image_path : $server . ltrim($prod_image_path, '/');
-                        } else {
-                            $prod_image_url = '';
-                        }
-                        $deal['products'][] = [
-                            'product_id' => $product_info['product_id'],
-                            'name' => $product_info['name'],
-                            'image' => $prod_image_url,
-                            'price' => $this->currency->format($product_info['price'], $this->session->data['currency'] ?? $this->config->get('config_currency')),
-                            'special' => $product_info['special'] ? $this->currency->format($product_info['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null,
-                            'discount' => $discount_value
-                        ];
+                        $card = $this->formatProductCard($product_info);
+                        $deal['products'][] = $card;
                     }
                 }
                 if (empty($deal['products'])) {
@@ -144,37 +126,17 @@ class App extends \Opencart\System\Engine\Controller
                         foreach ($item['product'] as $product_id) {
                             $product_info = $this->model_catalog_product->getProduct($product_id);
                             if ($product_info) {
-                                // Product image
-                                if ($product_info['image']) {
-                                    $prod_image_path = $this->model_tool_image->resize($product_info['image'], 250, 250);
-                                    $prod_image_url = (strpos($prod_image_path, 'http') === 0) ? $prod_image_path : $server . ltrim($prod_image_path, '/');
-                                } else {
-                                    $prod_image_url = '';
-                                }
-                                $products[] = [
-                                    'name' => $product_info['name'],
-                                    'image' => $prod_image_url,
-                                    'price' => $this->currency->format($product_info['price'], $this->session->data['currency'] ?? $this->config->get('config_currency')),
-                                    'special' => $product_info['special'] ? $this->currency->format($product_info['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null
-                                ];
+                                $card = $this->formatProductCard($product_info);
+                                $products[] = $card;
                             }
                         }
                     }
-                    // Only add category if it has at least one product
                     if (!empty($products)) {
-                        // Category image
-                        if ($category_info['image']) {
-                            $cat_image_path = $this->model_tool_image->resize($category_info['image'], 100, 100);
-                            $cat_image_url = (strpos($cat_image_path, 'http') === 0) ? $cat_image_path : $server . ltrim($cat_image_path, '/');
-                        } else {
-                            $cat_image_url = '';
-                        }
-                        $json['feature_category'][] = [
-                            'category_id' => $category_info['category_id'],
-                            'name' => $category_info['name'],
-                            'image' => $cat_image_url,
-                            'products' => $products
-                        ];
+                        $catCard = $this->formatCategoryCard($category_info);
+                        $catCard['category_id'] = $catCard['id'];
+                        unset($catCard['id']);
+                        $catCard['products'] = $products;
+                        $json['feature_category'][] = $catCard;
                     }
                 }
             }
@@ -194,10 +156,12 @@ class App extends \Opencart\System\Engine\Controller
                 } else {
                     $image_url = '';
                 }
+                $raw_short = $item['short_description'] ?? '';
+                $short_clean = trim(preg_replace('/\s+/', ' ', strip_tags(html_entity_decode($raw_short, ENT_QUOTES, 'UTF-8'))));
                 $json['trust_badges'][] = [
                     'image' => $image_url,
-                    'title' => $item['title'] ?? '',
-                    'short_description' => $item['short_description'] ?? ''
+                    'title' => html_entity_decode($item['title'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'short_description' => $short_clean
                 ];
             }
         }
@@ -227,22 +191,10 @@ class App extends \Opencart\System\Engine\Controller
             'limit' => 100
         ];
         $products = $this->model_catalog_product->getProducts($filter_data);
-        $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
         $json['products'] = [];
         foreach ($products as $product) {
-            if ($product['image']) {
-                $image_path = $this->model_tool_image->resize($product['image'], 250, 250);
-                $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
-            } else {
-                $image_url = '';
-            }
-            $json['products'][] = [
-                'id' => $product['product_id'],
-                'name' => $product['name'],
-                'image' => $image_url,
-                'price' => $this->currency->format($product['price'], $this->session->data['currency'] ?? $this->config->get('config_currency')),
-                'special' => $product['special'] ? $this->currency->format($product['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null
-            ];
+            $card = $this->formatProductCard($product);
+            $json['products'][] = $card;
         }
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
@@ -302,17 +254,18 @@ class App extends \Opencart\System\Engine\Controller
             if ($cat_info) {
                 $categories[] = [
                     'id' => $cat_info['category_id'],
-                    'name' => $cat_info['name']
+                    'name' => html_entity_decode($cat_info['name'] ?? '', ENT_QUOTES, 'UTF-8')
                 ];
             }
         }
 
         $json['id'] = $product_info['product_id'];
-        $json['name'] = $product_info['name'];
+        $json['name'] = html_entity_decode($product_info['name'] ?? '', ENT_QUOTES, 'UTF-8');
         $json['model'] = $product_info['model'];
         $json['reward'] = $product_info['reward'];
         $json['points'] = $product_info['points'];
-        $json['description'] = html_entity_decode($product_info['description'] ?? '', ENT_QUOTES, 'UTF-8');
+        $raw_description = html_entity_decode($product_info['description'] ?? '', ENT_QUOTES, 'UTF-8');
+        $json['description'] = trim(preg_replace('/\s+/', ' ', strip_tags($raw_description)));
         $json['image'] = $image_url;
         $json['images'] = $images;
         $json['price'] = $this->currency->format($product_info['price'], $this->session->data['currency'] ?? $this->config->get('config_currency'));
@@ -381,7 +334,7 @@ class App extends \Opencart\System\Engine\Controller
                     }
                     $product_option_value_data[] = [
                         'product_option_value_id' => $option_value['product_option_value_id'],
-                        'name' => $option_value['name'],
+                        'name' => html_entity_decode($option_value['name'] ?? '', ENT_QUOTES, 'UTF-8'),
                         'image' => $image ? $this->model_tool_image->resize($image, 50, 50) : '',
                         'price' => $price,
                         'price_prefix' => $option_value['price_prefix'],
@@ -393,7 +346,7 @@ class App extends \Opencart\System\Engine\Controller
             $json['options'][] = [
                 'product_option_id' => $option['product_option_id'],
                 'option_id' => $option['option_id'],
-                'name' => $option['name'],
+                'name' => html_entity_decode($option['name'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'type' => $option['type'],
                 'required' => $option['required'],
                 'product_option_value' => $product_option_value_data
@@ -415,10 +368,8 @@ class App extends \Opencart\System\Engine\Controller
             if ($related_id) {
                 $related_info = $this->model_catalog_product->getProduct($related_id);
                 if ($related_info) {
-                    $json['related'][] = [
-                        'id' => $related_info['product_id'],
-                        'name' => $related_info['name']
-                    ];
+                    $card = $this->formatProductCard($related_info);
+                    $json['related'][] = $card;
                 }
             }
         }
@@ -459,7 +410,6 @@ class App extends \Opencart\System\Engine\Controller
         $this->load->model('tool/image');
 
         $json = [];
-        // Get category_id from GET query string
         $category_id = isset($this->request->get['category_id']) ? (int)$this->request->get['category_id'] : 0;
 
         // Get category info
@@ -471,25 +421,15 @@ class App extends \Opencart\System\Engine\Controller
             return;
         }
 
-        // Description (HTML decoded)
-        $json['description'] = html_entity_decode($category_info['description'] ?? '', ENT_QUOTES, 'UTF-8');
+        // Description (HTML decoded and cleaned)
+        $raw_cat_description = html_entity_decode($category_info['description'] ?? '', ENT_QUOTES, 'UTF-8');
+        $json['description'] = trim(preg_replace('/\s+/', ' ', strip_tags($raw_cat_description)));
 
         // Subcategories
         $subcategories = $this->model_catalog_category->getCategories($category_id);
-        $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
         $json['subcategories'] = [];
         foreach ($subcategories as $subcategory) {
-            if ($subcategory['image']) {
-                $image_path = $this->model_tool_image->resize($subcategory['image'], 100, 100);
-                $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
-            } else {
-                $image_url = '';
-            }
-            $json['subcategories'][] = [
-                'id' => $subcategory['category_id'],
-                'name' => $subcategory['name'],
-                'image' => $image_url
-            ];
+            $json['subcategories'][] = $this->formatCategoryCard($subcategory);
         }
 
         // Products in this category
@@ -502,19 +442,8 @@ class App extends \Opencart\System\Engine\Controller
         $products = $this->model_catalog_product->getProducts($filter_data);
         $json['products'] = [];
         foreach ($products as $product) {
-            if ($product['image']) {
-                $image_path = $this->model_tool_image->resize($product['image'], 250, 250);
-                $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
-            } else {
-                $image_url = '';
-            }
-            $json['products'][] = [
-                'id' => $product['product_id'],
-                'name' => $product['name'],
-                'image' => $image_url,
-                'price' => $this->currency->format($product['price'], $this->session->data['currency'] ?? $this->config->get('config_currency')),
-                'special' => $product['special'] ? $this->currency->format($product['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null
-            ];
+            $card = $this->formatProductCard($product);
+            $json['products'][] = $card;
         }
 
         $this->response->addHeader('Content-Type: application/json');
@@ -530,28 +459,57 @@ class App extends \Opencart\System\Engine\Controller
         $json = [];
         $categories = $this->model_catalog_category->getCategories(0); // 0 = top-level
         $result = [];
-        $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
         foreach ($categories as $category) {
-            if ($category['image']) {
-                $image_path = $this->model_tool_image->resize($category['image'], 100, 100);
-                // If resize returns a relative path, make it absolute
-                if (strpos($image_path, 'http') === 0) {
-                    $image_url = $image_path;
-                } else {
-                    $image_url = $server . ltrim($image_path, '/');
-                }
-            } else {
-                $image_url = '';
-            }
-            $result[] = [
-                'id' => $category['category_id'],
-                'name' => $category['name'],
-                'image' => $image_url
-            ];
+            $result[] = $this->formatCategoryCard($category);
         }
         $json['categories'] = $result;
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
+    }
+
+    protected function formatProductCard(array $product): array
+    {
+        $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
+
+        if (!empty($product['image'])) {
+            $image_path = $this->model_tool_image->resize($product['image'], 250, 250);
+            $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
+        } else {
+            $image_url = '';
+        }
+
+        $master_id = isset($product['master_id']) && $product['master_id'] ? (int)$product['master_id'] : (int)($product['product_id'] ?? $product['id'] ?? 0);
+        $product_options = $this->model_catalog_product->getOptions($master_id);
+        $has_options = !empty($product_options);
+
+        $card = [
+            'id' => (int)$product['product_id'],
+            'name' => html_entity_decode($product['name'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'image' => $image_url,
+            'price' => $this->currency->format($product['price'] ?? 0, $this->session->data['currency'] ?? $this->config->get('config_currency')),
+            'special' => !empty($product['special']) ? $this->currency->format($product['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null,
+            'options' => $has_options
+        ];
+
+        return $card;
+    }
+
+    protected function formatCategoryCard(array $category): array
+    {
+        $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
+
+        if (!empty($category['image'])) {
+            $image_path = $this->model_tool_image->resize($category['image'], 100, 100);
+            $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
+        } else {
+            $image_url = '';
+        }
+
+        return [
+            'id' => (int)$category['category_id'],
+            'name' => html_entity_decode($category['name'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'image' => $image_url
+        ];
     }
 
     public function prepareCheckoutSession(): void
