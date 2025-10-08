@@ -488,7 +488,8 @@ class App extends \Opencart\System\Engine\Controller
             'image' => $image_url,
             'price' => $this->currency->format($product['price'] ?? 0, $this->session->data['currency'] ?? $this->config->get('config_currency')),
             'special' => !empty($product['special']) ? $this->currency->format($product['special'], $this->session->data['currency'] ?? $this->config->get('config_currency')) : null,
-            'options' => $has_options
+            'options' => $has_options,
+            'date_added' => $product['date_added'] ?? ''
         ];
 
         return $card;
