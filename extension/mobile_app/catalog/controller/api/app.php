@@ -537,6 +537,15 @@ class App extends \Opencart\System\Engine\Controller
             } else {
                 // Set customer_token for compatibility with header and other components
                 $this->session->data['customer_token'] = oc_token(26);
+                $this->session->data['customer'] = [
+                    'customer_id'       => $customer_info['customer_id'],
+                    'customer_group_id' => $customer_info['customer_group_id'],
+                    'firstname'         => $customer_info['firstname'],
+                    'lastname'          => $customer_info['lastname'],
+                    'email'             => $customer_info['email'],
+                    'telephone'         => $customer_info['telephone'],
+                    'custom_field'      => $customer_info['custom_field']
+                ];
             }
         }
 
@@ -571,7 +580,7 @@ class App extends \Opencart\System\Engine\Controller
         $session_id = $this->session->getId();
         $json['success'] = true;
         $json['session_id'] = $session_id;
-        $json['message'] = 'Session prepared. Use this session id as PHPSESSID cookie in webview.';
+        $json['message'] = 'Session prepared. Use this session id as OCSESSID cookie in webview.';
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
