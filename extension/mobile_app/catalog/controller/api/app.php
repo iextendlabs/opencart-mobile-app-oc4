@@ -525,6 +525,9 @@ class App extends \Opencart\System\Engine\Controller
         $password = $data['password'] ?? '';
         $cart = $data['cart'] ?? [];
 
+        if(isset($data['session_id'])) {
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "cart` WHERE `session_id` = '" . $this->db->escape($data['session_id']) . "'");
+        }
         // Login user if credentials provided
         if ($email && $password) {
             $this->load->model('account/customer');
