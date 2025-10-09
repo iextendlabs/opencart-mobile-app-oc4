@@ -540,13 +540,26 @@ class App extends \Opencart\System\Engine\Controller
             }
         }
 
-        // Add products to cart
         if (!empty($cart) && is_array($cart)) {
             foreach ($cart as $item) {
                 $product_id = (int)($item['product_id'] ?? 0);
                 $quantity = (int)($item['quantity'] ?? 1);
                 if ($product_id > 0 && $quantity > 0) {
-                    $this->cart->add($product_id, $quantity);
+                    $options = $item['option'] ?? $item['options'] ?? [];
+                    if (!is_array($options) && is_string($options)) {
+                        $decoded = json_decode($options, true);
+                        $options = is_array($decoded) ? $decoded : [];
+                    }
+
+                    $subscription_plan_id = (int)($item['subscription_plan_id'] ?? $item['subscription_id'] ?? 0);
+
+                    $override = $item['override'] ?? [];
+                    if (!is_array($override) && is_string($override)) {
+                        $decoded = json_decode($override, true);
+                        $override = is_array($decoded) ? $decoded : [];
+                    }
+
+                    $this->cart->add($product_id, $quantity, (array)$options, $subscription_plan_id, (array)$override);
                 }
             }
         }
