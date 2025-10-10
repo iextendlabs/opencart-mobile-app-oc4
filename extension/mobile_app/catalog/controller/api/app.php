@@ -916,8 +916,7 @@ class App extends \Opencart\System\Engine\Controller
 
                 $json['addresses'][] = [
                     'address_id' => $result['address_id'],
-                    'address'    => str_replace(["\r\n", "\r", "\n"], '<br/>', preg_replace(["/\\s\\s+/", "/\r\r+/", "/\n\n+/"], '<br/>', trim(str_replace($find, $replace, $result['address_format'])))),
-                    'default'    => $result['address_id'] == $this->customer->getAddressId()
+                    'address'    => str_replace(["\r\n", "\r", "\n"], '<br/>', preg_replace(["/\\s\\s+/", "/\r\r+/", "/\n\n+/"], '<br/>', trim(str_replace($find, $replace, $result['address_format']))))
                 ];
             }
         }
