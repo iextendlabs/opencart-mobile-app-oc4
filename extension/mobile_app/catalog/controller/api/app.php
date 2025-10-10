@@ -950,8 +950,8 @@ class App extends \Opencart\System\Engine\Controller
                     'address_2'      => $address_info['address_2'],
                     'postcode'       => $address_info['postcode'],
                     'city'           => $address_info['city'],
-                    'zone'          => $address_info['zone'],
-                    'country'       => $address_info['country'],
+                    'zone_id'        => $address_info['zone_id'],
+                    'country_id'     => $address_info['country_id'],
                 ];
                 $json['success'] = true;
             } else {
