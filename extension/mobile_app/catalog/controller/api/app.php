@@ -45,7 +45,7 @@ class App extends \Opencart\System\Engine\Controller
             }
             foreach ($banner_images as $banner) {
                 if (!empty($banner['image'])) {
-                    $image_path = $this->model_tool_image->resize($banner['image'], 300, 300);
+                    $image_path = $this->model_tool_image->resize($banner['image'], 400, 400);
                     $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
                 } else {
                     $image_url = '';
