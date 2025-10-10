@@ -525,7 +525,7 @@ class App extends \Opencart\System\Engine\Controller
         $password = $data['password'] ?? '';
         $cart = $data['cart'] ?? [];
 
-        if(isset($data['session_id'])) {
+        if (isset($data['session_id'])) {
             $this->db->query("DELETE FROM `" . DB_PREFIX . "cart` WHERE `session_id` = '" . $this->db->escape($data['session_id']) . "'");
         }
         // Login user if credentials provided
@@ -842,7 +842,8 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    public function logout(): void {
+    public function logout(): void
+    {
         // Initialize the response array
         $json = [];
 
@@ -863,6 +864,249 @@ class App extends \Opencart\System\Engine\Controller
 
         $json['success'] = true;
         $json['message'] = 'You have been successfully logged out';
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getAddresses(): void
+    {
+        $this->load->language('account/address');
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true) ?: [];
+
+        $customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+        } else {
+            $this->load->model('account/address');
+
+            $results = $this->model_account_address->getAddresses($customer_id);
+            $json['addresses'] = [];
+
+            foreach ($results as $result) {
+                $find = [
+                    '{firstname}',
+                    '{lastname}',
+                    '{company}',
+                    '{address_1}',
+                    '{address_2}',
+                    '{city}',
+                    '{postcode}',
+                    '{zone}',
+                    '{zone_code}',
+                    '{country}'
+                ];
+
+                $replace = [
+                    'firstname' => $result['firstname'],
+                    'lastname'  => $result['lastname'],
+                    'company'   => $result['company'],
+                    'address_1' => $result['address_1'],
+                    'address_2' => $result['address_2'],
+                    'city'      => $result['city'],
+                    'postcode'  => $result['postcode'],
+                    'zone'      => $result['zone'],
+                    'zone_code' => $result['zone_code'],
+                    'country'   => $result['country']
+                ];
+
+                $json['addresses'][] = [
+                    'address_id' => $result['address_id'],
+                    'address'    => str_replace(["\r\n", "\r", "\n"], '<br/>', preg_replace(["/\\s\\s+/", "/\r\r+/", "/\n\n+/"], '<br/>', trim(str_replace($find, $replace, $result['address_format'])))),
+                    'default'    => $result['address_id'] == $this->customer->getAddressId()
+                ];
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function editAddress(): void
+    {
+        $this->load->language('account/address');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true) ?: [];
+
+        // Get customer ID from request
+        $customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+        } else {
+            $required = [
+                'firstname'  => '',
+                'lastname'   => '',
+                'address_1'  => '',
+                'address_2'  => '',
+                'city'       => '',
+                'postcode'   => '',
+                'country_id' => 0,
+                'zone_id'    => 0
+            ];
+
+            $request_body = file_get_contents('php://input');
+            $data = json_decode($request_body, true) + $required;
+
+            if (!oc_validate_length((string)$data['firstname'], 1, 32)) {
+                $json['error']['firstname'] = $this->language->get('error_firstname');
+            }
+
+            if (!oc_validate_length((string)$data['lastname'], 1, 32)) {
+                $json['error']['lastname'] = $this->language->get('error_lastname');
+            }
+
+            if (!oc_validate_length((string)$data['address_1'], 3, 128)) {
+                $json['error']['address_1'] = $this->language->get('error_address_1');
+            }
+
+            if (!oc_validate_length((string)$data['city'], 2, 128)) {
+                $json['error']['city'] = $this->language->get('error_city');
+            }
+
+            // Country
+            $this->load->model('localisation/country');
+            $country_info = $this->model_localisation_country->getCountry((int)$data['country_id']);
+
+            if ($country_info && $country_info['postcode_required'] && !oc_validate_length((string)$data['postcode'], 2, 10)) {
+                $json['error']['postcode'] = $this->language->get('error_postcode');
+            }
+
+            if (!$country_info) {
+                $json['error']['country'] = $this->language->get('error_country');
+            }
+
+            // Zone
+            $this->load->model('localisation/zone');
+            $zone_total = $this->model_localisation_zone->getTotalZonesByCountryId((int)$data['country_id']);
+
+            if ($zone_total && !$data['zone_id']) {
+                $json['error']['zone'] = $this->language->get('error_zone');
+            }
+
+            if (!$json) {
+                $this->load->model('account/address');
+
+                // Add Address
+                if (!isset($data['address_id'])) {
+                    $json['address_id'] = $this->model_account_address->addAddress($customer_id, $data);
+                    $json['success'] = $this->language->get('text_add');
+                }
+
+                // Edit Address
+                if (isset($data['address_id'])) {
+                    $this->model_account_address->editAddress($customer_id, (int)$data['address_id'], $data);
+                    $json['success'] = $this->language->get('text_edit');
+                }
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function deleteAddress(): void
+    {
+        $this->load->language('account/address');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true) ?: [];
+
+        // Get customer ID and address ID from request
+        $customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+
+        $address_id = isset($data['address_id']) ? (int)$data['address_id'] : 0;
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+        } elseif (!$address_id) {
+            $json['error'] = 'Address ID is required';
+        } else {
+
+            // Load customer model to check default address
+            $this->load->model('account/customer');
+
+            $this->load->model('account/address');
+
+            if ($this->model_account_address->getTotalAddresses($this->customer->getId()) == 1) {
+                $json['error'] = $this->language->get('error_delete');
+            }
+
+            $this->load->model('account/subscription');
+            $subscription_total = $this->model_account_subscription->getTotalSubscriptionByShippingAddressId($address_id);
+            if ($subscription_total) {
+                $json['error'] = sprintf($this->language->get('error_subscription'), $subscription_total);
+            }
+
+            $subscription_total = $this->model_account_subscription->getTotalSubscriptionByPaymentAddressId($address_id);
+            if ($subscription_total) {
+                $json['error'] = sprintf($this->language->get('error_subscription'), $subscription_total);
+            }
+
+            if (!$json) {
+                $this->model_account_address->deleteAddress($this->customer->getId(), $address_id);
+                $json['success'] = $this->language->get('text_delete');
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getCountries(): void
+    {
+        $this->load->model('localisation/country');
+
+        $json = [];
+
+        $results = $this->model_localisation_country->getCountries();
+
+        $json['countries'] = [];
+
+        foreach ($results as $result) {
+            $json['countries'][] = [
+                'country_id' => $result['country_id'],
+                'name'       => $result['name'],
+            ];
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getZones(): void
+    {
+        $this->load->model('localisation/zone');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true) ?: [];
+        $country_id = isset($data['country_id']) ? (int)$data['country_id'] : 0;
+
+        if (!$country_id) {
+            $json['error'] = 'Country ID is required';
+        } else {
+            $results = $this->model_localisation_zone->getZonesByCountryId($country_id);
+
+            $json['zones'] = [];
+
+            foreach ($results as $result) {
+                $json['zones'][] = [
+                    'zone_id'    => $result['zone_id'],
+                    'name'       => $result['name'],
+                ];
+            }
+        }
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
