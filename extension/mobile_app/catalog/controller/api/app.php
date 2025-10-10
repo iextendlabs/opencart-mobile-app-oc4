@@ -98,7 +98,7 @@ class App extends \Opencart\System\Engine\Controller
                 foreach ($product_ids as $product_id) {
                     $product_info = $this->model_catalog_product->getProduct($product_id);
                     if ($product_info) {
-                        $card = $this->formatProductCard($product_info);
+                        $card = $this->formatProductCard($product_info, 200, 150);
                         $deal['products'][] = $card;
                     }
                 }
@@ -126,7 +126,7 @@ class App extends \Opencart\System\Engine\Controller
                         foreach ($item['product'] as $product_id) {
                             $product_info = $this->model_catalog_product->getProduct($product_id);
                             if ($product_info) {
-                                $card = $this->formatProductCard($product_info);
+                                $card = $this->formatProductCard($product_info, 200, 250);
                                 $products[] = $card;
                             }
                         }
@@ -193,7 +193,7 @@ class App extends \Opencart\System\Engine\Controller
         $products = $this->model_catalog_product->getProducts($filter_data);
         $json['products'] = [];
         foreach ($products as $product) {
-            $card = $this->formatProductCard($product);
+            $card = $this->formatProductCard($product, 200, 150);
             $json['products'][] = $card;
         }
         $this->response->addHeader('Content-Type: application/json');
@@ -368,7 +368,7 @@ class App extends \Opencart\System\Engine\Controller
             if ($related_id) {
                 $related_info = $this->model_catalog_product->getProduct($related_id);
                 if ($related_info) {
-                    $card = $this->formatProductCard($related_info);
+                    $card = $this->formatProductCard($related_info, 200, 150);
                     $json['related'][] = $card;
                 }
             }
@@ -442,7 +442,7 @@ class App extends \Opencart\System\Engine\Controller
         $products = $this->model_catalog_product->getProducts($filter_data);
         $json['products'] = [];
         foreach ($products as $product) {
-            $card = $this->formatProductCard($product);
+            $card = $this->formatProductCard($product, 200, 150);
             $json['products'][] = $card;
         }
 
@@ -467,12 +467,12 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    protected function formatProductCard(array $product): array
+    protected function formatProductCard(array $product, int $width = 250, int $height = 250): array
     {
         $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
 
         if (!empty($product['image'])) {
-            $image_path = $this->model_tool_image->resize($product['image'], 250, 250);
+            $image_path = $this->model_tool_image->resize($product['image'], $width, $height);
             $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
         } else {
             $image_url = '';
@@ -500,7 +500,7 @@ class App extends \Opencart\System\Engine\Controller
         $server = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? $this->config->get('config_ssl') : $this->config->get('config_url');
 
         if (!empty($category['image'])) {
-            $image_path = $this->model_tool_image->resize($category['image'], 100, 100);
+            $image_path = $this->model_tool_image->resize($category['image'], 80, 80);
             $image_url = (strpos($image_path, 'http') === 0) ? $image_path : $server . ltrim($image_path, '/');
         } else {
             $image_url = '';
