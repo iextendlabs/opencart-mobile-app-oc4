@@ -925,6 +925,46 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
+    public function getAddress(): void
+    {
+        $this->load->language('extension/mobile_app/api/app');
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+        $address_id = isset($data['address_id']) ? (int)$data['address_id'] : 0;
+        $customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+
+        $this->load->model('account/address');
+        
+        if ($address_id && $customer_id) {
+            $address_info = $this->model_account_address->getAddress($customer_id,$address_id);
+
+            if ($address_info && $address_info['customer_id'] == $customer_id) {
+                $json['address'] = [
+                    'address_id'     => $address_info['address_id'],
+                    'firstname'      => $address_info['firstname'],
+                    'lastname'       => $address_info['lastname'],
+                    'company'        => $address_info['company'],
+                    'address_1'      => $address_info['address_1'],
+                    'address_2'      => $address_info['address_2'],
+                    'postcode'       => $address_info['postcode'],
+                    'city'           => $address_info['city'],
+                    'zone'          => $address_info['zone'],
+                    'country'       => $address_info['country'],
+                ];
+                $json['success'] = true;
+            } else {
+                $json['error'] = $this->language->get('error_address');
+            }
+        } else {
+            $json['error'] = $this->language->get('error_address_id');
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function editAddress(): void
     {
         $this->load->language('account/address');
