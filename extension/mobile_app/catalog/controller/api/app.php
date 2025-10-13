@@ -592,7 +592,7 @@ class App extends \Opencart\System\Engine\Controller
     public function syncCart(): void
     {
         $this->load->language('extension/mobile_app/api/app');
-        
+
         $json = [
             'success' => false,
             'all_product_ids' => [],
@@ -601,9 +601,9 @@ class App extends \Opencart\System\Engine\Controller
 
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
-        
+
         $session_id = $data['session_id'] ?? '';
-        
+
         if (empty($session_id)) {
             $json['error'] = 'Session ID is required';
             $this->response->addHeader('Content-Type: application/json');
@@ -612,24 +612,24 @@ class App extends \Opencart\System\Engine\Controller
         }
 
         $cart_query = $this->db->query("SELECT product_id, quantity FROM `" . DB_PREFIX . "cart` WHERE `session_id` = '" . $this->db->escape($session_id) . "'");
-        
+
         if ($cart_query->num_rows) {
             $this->load->model('catalog/product');
-            
+
             foreach ($cart_query->rows as $cart) {
                 $product_id = (string)$cart['product_id'];
                 $quantity = (int)$cart['quantity'];
                 $json['all_product_ids'][] = $product_id;
                 $json['update_ids'][$product_id] = $quantity;
             }
-            
+
             $json['success'] = true;
         }
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
-    
+
     // User Profile
     public function getProfile(): void
     {
@@ -911,6 +911,175 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
+    public function getOrders(): void
+    {
+        $this->load->language('extension/mobile_app/api/app');
+        $this->load->model('account/order');
+        $this->load->model('extension/mobile_app/api/app');
+        $this->load->model('localisation/order_status');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+
+        $customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $orders = $this->model_extension_mobile_app_api_app->getOrders($customer_id, 0, 999999);
+
+        $json['orders'] = [];
+        foreach ($orders as $order) {
+            $product_total = $this->model_extension_mobile_app_api_app->getTotalProductsByOrderId($order['order_id']);
+
+            $order_status_info = $this->model_localisation_order_status->getOrderStatus($order['order_status_id']);
+
+            if ($order_status_info) {
+                $order_status = $order_status_info['name'];
+            } else {
+                $order_status = '';
+            }
+            $json['orders'][] = [
+                'order_id' => $order['order_id'],
+                'status' => $order_status,
+                'products' => $product_total,
+                'total' => $this->currency->format($order['total'], $order['currency_code'], $order['currency_value']),
+                'date_added' => $order['date_added'],
+            ];
+        }
+
+        usort($json['orders'], function ($a, $b) {
+            return strtotime($b['date_added']) - strtotime($a['date_added']);
+        });
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getOrder(): void
+    {
+        $this->load->language('extension/mobile_app/api/app');
+        $this->load->model('account/order');
+        $this->load->model('extension/mobile_app/api/app');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+
+        $order_id = isset($data['order_id']) ? (int)$data['order_id'] : 0;
+        $customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+
+        if (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $order_info = $this->model_extension_mobile_app_api_app->getOrder($order_id, $customer_id);
+
+        if (!$order_info || $order_info['customer_id'] != $customer_id) {
+            $json['error'] = 'Order not found or access denied';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('catalog/product');
+        $this->load->model('tool/upload');
+
+        $json['products'] = [];
+        $products = $this->model_extension_mobile_app_api_app->getProducts($order_id);
+
+        foreach ($products as $product) {
+            $option_data = [];
+            $options = $this->model_extension_mobile_app_api_app->getOptions($order_id, $product['order_product_id']);
+
+            foreach ($options as $option) {
+                if ($option['type'] != 'file') {
+                    $value = $option['value'];
+                } else {
+                    $upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+                    $value = $upload_info ? $upload_info['name'] : '';
+                }
+
+                $option_data[] = [
+                    'name'  => $option['name'],
+                    'value' => $value
+                ];
+            }
+
+            $json['products'][] = [
+                'name'     => $product['name'],
+                'model'    => $product['model'],
+                'option'   => $option_data,
+                'quantity' => $product['quantity'],
+                'price'    => $this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value']),
+                'total'    => $this->currency->format($product['total'], $order_info['currency_code'], $order_info['currency_value'])
+            ];
+        }
+
+        $json['order'] = [
+            'order_id'         => $order_info['order_id'],
+            'invoice_no'       => $order_info['invoice_no'] ? $order_info['invoice_prefix'] . $order_info['invoice_no'] : '',
+            'payment_method'   => $order_info['payment_method'],
+            'shipping_method'  => $order_info['shipping_method']
+        ];
+
+        $json['addresses'] = [
+            'shipping' => [
+                'firstname'      => $order_info['shipping_firstname'],
+                'lastname'       => $order_info['shipping_lastname'],
+                'company'        => $order_info['shipping_company'],
+                'address_1'      => $order_info['shipping_address_1'],
+                'address_2'      => $order_info['shipping_address_2'],
+                'city'          => $order_info['shipping_city'],
+                'postcode'      => $order_info['shipping_postcode'],
+                'zone'          => $order_info['shipping_zone'],
+                'zone_code'     => $order_info['shipping_zone_code'],
+                'country'       => $order_info['shipping_country']
+            ]
+        ];
+
+        $json['totals'] = [];
+        $totals = $this->model_extension_mobile_app_api_app->getTotals($order_id);
+
+        foreach ($totals as $total) {
+            $json['totals'][] = [
+                'title' => $total['title'],
+                'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value'])
+            ];
+        }
+
+        $json['history'] = [];
+        $histories = $this->model_extension_mobile_app_api_app->getHistories($order_id);
+
+        foreach ($histories as $history) {
+            $json['history'][] = [
+                'date_added' => $history['date_added'],
+                'status'     => $history['status'],
+                'comment'    => $history['comment']
+            ];
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function getAddresses(): void
     {
         $this->load->language('account/address');
@@ -978,9 +1147,9 @@ class App extends \Opencart\System\Engine\Controller
         $customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
 
         $this->load->model('account/address');
-        
+
         if ($address_id && $customer_id) {
-            $address_info = $this->model_account_address->getAddress($customer_id,$address_id);
+            $address_info = $this->model_account_address->getAddress($customer_id, $address_id);
 
             if ($address_info && $address_info['customer_id'] == $customer_id) {
                 $json['address'] = [
