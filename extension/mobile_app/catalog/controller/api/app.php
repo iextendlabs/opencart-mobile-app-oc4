@@ -588,6 +588,48 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
+
+    public function syncCart(): void
+    {
+        $this->load->language('extension/mobile_app/api/app');
+        
+        $json = [
+            'success' => false,
+            'all_product_ids' => [],
+            'update_ids' => []
+        ];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+        
+        $session_id = $data['session_id'] ?? '';
+        
+        if (empty($session_id)) {
+            $json['error'] = 'Session ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $cart_query = $this->db->query("SELECT product_id, quantity FROM `" . DB_PREFIX . "cart` WHERE `session_id` = '" . $this->db->escape($session_id) . "'");
+        
+        if ($cart_query->num_rows) {
+            $this->load->model('catalog/product');
+            
+            foreach ($cart_query->rows as $cart) {
+                $product_id = (string)$cart['product_id'];
+                $quantity = (int)$cart['quantity'];
+                $json['all_product_ids'][] = $product_id;
+                $json['update_ids'][$product_id] = $quantity;
+            }
+            
+            $json['success'] = true;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+    
     // User Profile
     public function getProfile(): void
     {
