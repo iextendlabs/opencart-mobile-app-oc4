@@ -1409,6 +1409,7 @@ class App extends \Opencart\System\Engine\Controller
         $this->load->language('account/wishlist');
         $this->load->model('account/wishlist');
         $this->load->model('catalog/product');
+        $this->load->language('extension/mobile_app/api/app');
 
         $json = [];
 
