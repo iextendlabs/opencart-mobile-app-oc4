@@ -1,14 +1,31 @@
 <?php
 // Text
 $_['text_success']           = 'Success';
-$_['text_add_address']      = 'Your address has been successfully added';
-$_['text_edit_address']     = 'Your address has been successfully updated';
-$_['text_delete_address']   = 'Your address has been successfully deleted';
+$_['text_login_success']     = 'You have successfully logged in';
+$_['text_logout_success']    = 'You have been successfully logged out';
+$_['text_register_success']  = 'User registered successfully';
+$_['text_profile_updated']   = 'Profile updated successfully';
+$_['text_password_reset']    = 'Password reset link sent to your email';
+$_['text_add_address']       = 'Your address has been successfully added';
+$_['text_edit_address']      = 'Your address has been successfully updated';
+$_['text_delete_address']    = 'Your address has been successfully deleted';
+$_['text_wishlist']          = 'Success: You have added %s to your wishlist!';
+$_['text_order_success']     = 'Order has been successfully processed';
+$_['text_order_status']      = 'Order status updated successfully';
 
 // Error
-$_['error_login']           = 'Warning: No match for E-Mail Address and/or Password.';
-$_['error_permission']      = 'Warning: You do not have permission to access the API!';
-$_['error_customer']        = 'Customer ID is required!';
+$_['error_login']            = 'Warning: No match for E-Mail Address and/or Password';
+$_['error_permission']       = 'Warning: You do not have permission to access the API!';
+$_['error_customer']         = 'Customer ID is required!';
+$_['error_product_id']       = 'Product ID is required';
+$_['error_category_id']      = 'Category ID is required';
+$_['error_product_not_found']= 'Product not found';
+$_['error_category_not_found']= 'Category not found';
+$_['error_session_id']       = 'Session ID is required';
+$_['error_product_name']     = 'Product name is required';
+$_['error_not_found']        = 'Warning: E-Mail Address was not found';
+$_['error_order_id']         = 'Order ID is required';
+$_['error_order_not_found']  = 'Order not found or access denied';
 $_['error_address']         = 'Warning: Address not found or does not belong to your account!';
 $_['error_not_logged']      = 'Warning: You must be logged in to access address information!';
 $_['error_address_id']      = 'Address ID or Customer ID is required!';
