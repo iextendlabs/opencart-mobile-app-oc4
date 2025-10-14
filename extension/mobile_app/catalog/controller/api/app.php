@@ -1404,4 +1404,90 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
+
+    public function addToWishlist(): void {
+        $this->load->language('account/wishlist');
+        $this->load->model('account/wishlist');
+        $this->load->model('catalog/product');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+
+        if (!isset($data['customer_id'])) {
+            $json['error'] = 'Customer ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        if (!isset($data['product_id'])) {
+            $json['error'] = 'Product ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $customer_id = (int)$data['customer_id'];
+        $product_id = (int)$data['product_id'];
+
+        // Check if product exists
+        $product_info = $this->model_catalog_product->getProduct($product_id);
+        if (!$product_info) {
+            $json['error'] = 'Product not found';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Add to wishlist
+        $this->model_account_wishlist->addWishlist($customer_id, $product_id);
+
+        $json['success'] = true;
+        $json['total'] = $this->model_account_wishlist->getTotalWishlist($customer_id);
+        $json['message'] = $this->language->get('text_success');
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getWishlist(): void {
+        $this->load->language('account/wishlist');
+        $this->load->model('account/wishlist');
+        $this->load->model('catalog/product');
+        $this->load->model('tool/image');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+
+        if (!isset($data['customer_id'])) {
+            $json['error'] = 'Customer ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $customer_id = (int)$data['customer_id'];
+        
+        $results = $this->model_account_wishlist->getWishlist($customer_id);
+        
+        $json['products'] = [];
+        
+        foreach ($results as $result) {
+            $product_info = $this->model_catalog_product->getProduct($result['product_id']);
+
+            if ($product_info) {
+                $card = $this->formatProductCard($product_info, 200, 150);
+                $json['products'][] = $card;
+            }
+        }
+
+        $json['total'] = $this->model_account_wishlist->getTotalWishlist($customer_id);
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 }
