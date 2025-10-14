@@ -1400,7 +1400,6 @@ class App extends \Opencart\System\Engine\Controller
             }
         }
         
-        $json['active_currency'] = isset($this->request->server['HTTP_X_CURRENCY']) ? $this->request->server['HTTP_X_CURRENCY'] : $this->config->get('config_currency');
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
