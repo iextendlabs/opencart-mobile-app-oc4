@@ -19,17 +19,11 @@ class App extends \Opencart\System\Engine\Controller
     private function initCurrency(): void {
         $this->load->model('localisation/currency');
         
-        // Check currency from header first
-        $currency_code = isset($this->request->server['HTTP_X_CURRENCY']) ? $this->request->server['HTTP_X_CURRENCY'] : '';
-        
-        // If no header, check from request parameter
-        if (!$currency_code && isset($this->request->get['currency'])) {
-            $currency_code = $this->request->get['currency'];
-        }
-        
-        // If currency code is provided, validate it
-        if ($currency_code) {
+        // Check currency from header
+        if (isset($this->request->server['HTTP_X_CURRENCY'])) {
+            $currency_code = $this->request->server['HTTP_X_CURRENCY'];
             $currency_info = $this->model_localisation_currency->getCurrencyByCode($currency_code);
+            
             if ($currency_info && $currency_info['status']) {
                 $this->session->data['currency'] = $currency_code;
                 return;
@@ -1393,7 +1387,6 @@ class App extends \Opencart\System\Engine\Controller
     }
 
     public function getCurrencies(): void {
-        $this->load->language('common/currency');
         $this->load->model('localisation/currency');
         
         $json = [];
@@ -1403,72 +1396,12 @@ class App extends \Opencart\System\Engine\Controller
         
         foreach ($results as $result) {
             if ($result['status']) {
-                $json['currencies'][$result['code']] = [
-                    'title'        => $result['title'],
-                    'code'         => $result['code'],
-                    'symbol_left'  => $result['symbol_left'],
-                    'symbol_right' => $result['symbol_right']
-                ];
+                $json['currencies'][] = $result['code'];
             }
         }
         
-        $code = $this->session->data['currency'];
-        
-        $json['code'] = $code;
-        $json['active_currency'] = [
-            'title'        => $results[$code]['title'],
-            'code'         => $code,
-            'symbol_left'  => $results[$code]['symbol_left'],
-            'symbol_right' => $results[$code]['symbol_right']
-        ];
+        $json['active_currency'] = isset($this->request->server['HTTP_X_CURRENCY']) ? $this->request->server['HTTP_X_CURRENCY'] : $this->config->get('config_currency');
 
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
-    public function setCurrency(): void {
-        $this->load->language('common/currency');
-        
-        $json = [];
-        
-        if (!isset($this->request->post['code'])) {
-            $json['error'] = $this->language->get('error_currency');
-        }
-        
-        $this->load->model('localisation/currency');
-        
-        $currency_info = $this->model_localisation_currency->getCurrencyByCode($this->request->post['code']);
-        
-        if (!$currency_info) {
-            $json['error'] = $this->language->get('error_currency');
-        }
-        
-        if (!$json) {
-            $this->session->data['currency'] = $this->request->post['code'];
-            
-            // Clear shipping methods when currency is changed
-            unset($this->session->data['shipping_method']);
-            unset($this->session->data['shipping_methods']);
-            
-            // Set currency cookie
-            $option = [
-                'expires'  => time() + 60 * 60 * 24 * 30,
-                'path'     => '/',
-                'SameSite' => 'Lax'
-            ];
-            
-            setcookie('currency', $this->session->data['currency'], $option);
-            
-            // Return updated currency info
-            $json['success'] = true;
-            $json['currency'] = [
-                'code'         => $currency_info['code'],
-                'title'        => $currency_info['title'],
-                'symbol_left'  => $currency_info['symbol_left'],
-                'symbol_right' => $currency_info['symbol_right']
-            ];
-        }
-        
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
