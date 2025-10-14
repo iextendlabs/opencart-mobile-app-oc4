@@ -10,6 +10,7 @@ $_['text_add_address']       = 'Your address has been successfully added';
 $_['text_edit_address']      = 'Your address has been successfully updated';
 $_['text_delete_address']    = 'Your address has been successfully deleted';
 $_['text_wishlist']          = 'Success: You have added %s to your wishlist!';
+$_['text_remove_wishlist']   = 'Success: You have removed the product from your wishlist!';
 $_['text_order_success']     = 'Order has been successfully processed';
 $_['text_order_status']      = 'Order status updated successfully';
 

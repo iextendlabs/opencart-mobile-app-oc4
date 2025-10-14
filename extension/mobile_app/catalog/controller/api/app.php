@@ -1453,6 +1453,53 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
+    public function removeFromWishlist(): void {
+        $this->load->language('account/wishlist');
+        $this->load->model('account/wishlist');
+        $this->load->model('catalog/product');
+
+        $json = [];
+
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+
+        if (!isset($data['customer_id'])) {
+            $json['error'] = $this->language->get('error_customer');
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        if (!isset($data['product_id'])) {
+            $json['error'] = $this->language->get('error_product_id');
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $customer_id = (int)$data['customer_id'];
+        $product_id = (int)$data['product_id'];
+
+        // Check if product exists
+        $product_info = $this->model_catalog_product->getProduct($product_id);
+        if (!$product_info) {
+            $json['error'] = $this->language->get('error_product_not_found');
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Remove from wishlist
+        $this->model_account_wishlist->deleteWishlist($customer_id,$product_id);
+
+        $json['success'] = true;
+        $json['total'] = $this->model_account_wishlist->getTotalWishlist($customer_id);
+        $json['message'] = $this->language->get('text_remove_wishlist');
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function getWishlist(): void {
         $this->load->language('account/wishlist');
         $this->load->model('account/wishlist');
