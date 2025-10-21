@@ -1297,3 +1297,111 @@ Backtrace: 3
 File: D:\wamp64\www\opencart\mobile_app\admin\index.php
 Line: 20
 Function: require_once
+2025-10-21 11:38:37 - Raw input: {
+  "username": "admin",
+  "password": "admin"
+}
+2025-10-21 11:38:37 - POST data: Array
+(
+)
+
+2025-10-21 11:41:16 - Error: Error: Table 'opencart-app.oc_api_session' doesn't exist<br/>Error No: 1146<br/>UPDATE oc_api_session SET status = '0' WHERE user_id = '1'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 13
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: saveApiToken
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 22
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: login
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-21 13:24:24 - Error: Error: Unknown column 'status' in 'field list'<br/>Error No: 1054<br/>UPDATE oc_api_session SET status = '0' WHERE user_id = '1'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 13
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: saveApiToken
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 22
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: login
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
