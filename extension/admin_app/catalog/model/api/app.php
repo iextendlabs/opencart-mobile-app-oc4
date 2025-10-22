@@ -23,7 +23,7 @@ class App extends \Opencart\System\Engine\Model {
     }
     
     public function getTotalOrders() {
-        $query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order`");
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` WHERE `order_status_id` > '0'");
         return (int)$query->row['total'];
     }
     
@@ -50,6 +50,8 @@ class App extends \Opencart\System\Engine\Model {
             CONCAT(o.firstname, ' ', o.lastname) AS customer_name,
             o.total,
             o.date_added,
+            o.currency_code,
+            o.currency_value,
             os.name AS status,
             CONCAT(UPPER(LEFT(o.firstname, 1)), UPPER(LEFT(o.lastname, 1))) AS initials
             FROM `" . DB_PREFIX . "order` o
@@ -71,6 +73,8 @@ class App extends \Opencart\System\Engine\Model {
             CONCAT(o.firstname, ' ', o.lastname) AS customer_name,
             o.total,
             o.date_added,
+            o.currency_code,
+            o.currency_value,
             o.order_status_id,
             os.name AS status,
             CONCAT(UPPER(LEFT(o.firstname, 1)), UPPER(LEFT(o.lastname, 1))) AS initials

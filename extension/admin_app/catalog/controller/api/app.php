@@ -9,12 +9,19 @@ class App extends \Opencart\System\Engine\Controller {
 
         $json['success'] = false;
 
-        if (isset($this->request->post['username']) && isset($this->request->post['password'])) {
+        // Get JSON input
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        // Check both POST and JSON input
+        $username = isset($this->request->post['username']) ? $this->request->post['username'] : (isset($input['username']) ? $input['username'] : '');
+        $password = isset($this->request->post['password']) ? $this->request->post['password'] : (isset($input['password']) ? $input['password'] : '');
+
+        if ($username && $password) {
             $this->load->model('extension/admin_app/api/app');
 
-            $user_info = $this->model_extension_admin_app_api_app->getUserByUsername($this->request->post['username']);
+            $user_info = $this->model_extension_admin_app_api_app->getUserByUsername($username);
 
-            if ($user_info && password_verify($this->request->post['password'], $user_info['password'])) {
+            if ($user_info && password_verify($password, $user_info['password'])) {
                 // Generate API token
                 $api_token = bin2hex(random_bytes(16));
                 
@@ -67,7 +74,7 @@ class App extends \Opencart\System\Engine\Controller {
             return [
                 'id' => (string)$order['order_id'],
                 'customer' => $order['customer_name'],
-                'total' => (float)$order['total'],
+                'total' => $this->currency->format($order['total'], $order['currency_code'], $order['currency_value']),
                 'status' => $order['status'],
                 'date' => date('Y-m-d H:i:s', strtotime($order['date_added'])),
                 'initials' => $order['initials']
@@ -351,7 +358,7 @@ class App extends \Opencart\System\Engine\Controller {
             return [
                 'id' => (string)$order['order_id'],
                 'customer' => $order['customer_name'],
-                'total' => (float)$order['total'],
+                'total' => $this->currency->format($order['total'], $order['currency_code'], $order['currency_value']),
                 'status' => $order['status'],
                 'date' => date('Y-m-d H:i:s', strtotime($order['date_added'])),
                 'initials' => $order['initials']
