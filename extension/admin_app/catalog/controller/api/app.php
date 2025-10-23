@@ -560,6 +560,9 @@ class App extends \Opencart\System\Engine\Controller {
         // Validate API token
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
             $this->response->addHeader('Content-Type: application/json');
             $this->response->setOutput(json_encode($json));
             return;
