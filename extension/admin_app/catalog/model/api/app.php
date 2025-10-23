@@ -87,6 +87,8 @@ class App extends \Opencart\System\Engine\Model {
             o.shipping_country,
             o.shipping_zone,
             o.email,
+            o.currency_code,
+            o.currency_value,
             o.telephone,
             os.name as status 
             FROM `" . DB_PREFIX . "order` o 
@@ -109,6 +111,9 @@ class App extends \Opencart\System\Engine\Model {
             
             // Remove invoice_prefix as it's already combined with invoice_no
             unset($order_data['invoice_prefix']);
+            
+            // Format the total
+            $order_data['total'] = $this->currency->format($order_data['total'], $order_data['currency_code'], $order_data['currency_value']);
 
             // Get Products
             $order_data['products'] = [];
@@ -120,8 +125,8 @@ class App extends \Opencart\System\Engine\Model {
                     'name'       => $product['name'],
                     'model'      => $product['model'],
                     'quantity'   => $product['quantity'],
-                    'price'      => $product['price'],
-                    'total'      => $product['total']
+                    'price'      => $this->currency->format($product['price'], $order_data['currency_code'], $order_data['currency_value']),
+                    'total'      => $this->currency->format($product['total'], $order_data['currency_code'], $order_data['currency_value'])
                 ];
             }
 
@@ -132,7 +137,7 @@ class App extends \Opencart\System\Engine\Model {
             foreach ($totals_query->rows as $total) {
                 $order_data['totals'][] = [
                     'title' => $total['title'],
-                    'value' => $total['value']
+                    'value' => $this->currency->format($total['value'], $order_data['currency_code'], $order_data['currency_value'])
                 ];
             }
 
