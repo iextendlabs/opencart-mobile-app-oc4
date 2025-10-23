@@ -26,6 +26,121 @@ class App extends \Opencart\System\Engine\Model {
         $query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` WHERE `order_status_id` > '0'");
         return (int)$query->row['total'];
     }
+
+    public function generateInvoiceNo($order_id) {
+        // First check if order exists and doesn't already have an invoice number
+        $order_query = $this->db->query("SELECT invoice_no FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");
+        
+        if (!$order_query->num_rows) {
+            return false;
+        }
+
+        if ($order_query->row['invoice_no']) {
+            $query = $this->db->query("SELECT invoice_prefix FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");
+            return [true, (string)$order_query->row['invoice_no'], $query->row['invoice_prefix']];
+        }
+
+        // Get the next invoice number
+        $query = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `" . DB_PREFIX . "order`");
+
+        if ($query->row['invoice_no']) {
+            $invoice_no = $query->row['invoice_no'] + 1;
+        } else {
+            $invoice_no = 1;
+        }
+
+        $invoice_prefix = 'INV-' . date('Y') . '-';
+        
+        // Update the order with new invoice number
+        $this->db->query("UPDATE `" . DB_PREFIX . "order` SET invoice_no = '" . (int)$invoice_no . "', invoice_prefix = '" . $this->db->escape($invoice_prefix) . "' WHERE order_id = '" . (int)$order_id . "'");
+
+        return [true, (string)$invoice_no, $invoice_prefix];
+    }
+
+    public function getOrder($order_id) {
+        $order_query = $this->db->query("SELECT 
+            o.order_id,
+            o.invoice_no,
+            o.invoice_prefix,
+            o.date_added,
+            o.date_modified,
+            o.payment_method,
+            o.shipping_method,
+            o.total,
+            o.comment,
+            o.payment_firstname,
+            o.payment_lastname,
+            o.payment_company,
+            o.payment_address_1,
+            o.payment_address_2,
+            o.payment_city,
+            o.payment_postcode,
+            o.payment_country,
+            o.payment_zone,
+            o.shipping_firstname,
+            o.shipping_lastname,
+            o.shipping_company,
+            o.shipping_address_1,
+            o.shipping_address_2,
+            o.shipping_city,
+            o.shipping_postcode,
+            o.shipping_country,
+            o.shipping_zone,
+            o.email,
+            o.telephone,
+            os.name as status 
+            FROM `" . DB_PREFIX . "order` o 
+            LEFT JOIN " . DB_PREFIX . "order_status os ON (o.order_status_id = os.order_status_id) 
+            WHERE o.order_id = '" . (int)$order_id . "' 
+            AND os.language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+        if ($order_query->num_rows) {
+            $order_data = $order_query->row;
+            
+            // Handle invoice number
+            $order_data['invoice_no'] = ($order_data['invoice_no'] == 0) ? '0' : $order_data['invoice_prefix'] . $order_data['invoice_no'];
+            
+            // Extract just the name from payment and shipping methods JSON
+            $payment_method = json_decode($order_data['payment_method'], true);
+            $shipping_method = json_decode($order_data['shipping_method'], true);
+            
+            $order_data['payment_method'] = isset($payment_method['name']) ? $payment_method['name'] : '';
+            $order_data['shipping_method'] = isset($shipping_method['name']) ? $shipping_method['name'] : '';
+            
+            // Remove invoice_prefix as it's already combined with invoice_no
+            unset($order_data['invoice_prefix']);
+
+            // Get Products
+            $order_data['products'] = [];
+            $products_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_product WHERE order_id = '" . (int)$order_id . "'");
+            
+            foreach ($products_query->rows as $product) {
+                $order_data['products'][] = [
+                    'product_id' => $product['product_id'],
+                    'name'       => $product['name'],
+                    'model'      => $product['model'],
+                    'quantity'   => $product['quantity'],
+                    'price'      => $product['price'],
+                    'total'      => $product['total']
+                ];
+            }
+
+            // Get Totals
+            $order_data['totals'] = [];
+            $totals_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_total WHERE order_id = '" . (int)$order_id . "' ORDER BY sort_order");
+            
+            foreach ($totals_query->rows as $total) {
+                $order_data['totals'][] = [
+                    'title' => $total['title'],
+                    'value' => $total['value']
+                ];
+            }
+
+            return $order_data;
+        }
+
+        return [];
+    }
     
     public function getTotalCustomers() {
         $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer");
@@ -45,6 +160,37 @@ class App extends \Opencart\System\Engine\Model {
     public function getOrderStatuses() {
         $query = $this->db->query("SELECT order_status_id, name FROM " . DB_PREFIX . "order_status WHERE language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY name");
         return $query->rows;
+    }
+
+    public function deleteOrder($order_id) {
+        $order_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");
+        
+        if ($order_query->num_rows) {
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "order_product` WHERE order_id = '" . (int)$order_id . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "order_option` WHERE order_id = '" . (int)$order_id . "'");
+		    $this->db->query("DELETE FROM `" . DB_PREFIX . "order_subscription` WHERE `order_id` = '" . (int)$order_id . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "order_history` WHERE order_id = '" . (int)$order_id . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "order_total` WHERE order_id = '" . (int)$order_id . "'");
+            $this->db->query("DELETE FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");
+            
+            return true;
+        }
+        
+        return false;
+    }
+
+    public function updateOrderStatus($order_id, $order_status_id) {
+        $order_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");
+        
+        if ($order_query->num_rows) {
+            $this->db->query("UPDATE `" . DB_PREFIX . "order` SET order_status_id = '" . (int)$order_status_id . "', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
+            
+            $this->db->query("INSERT INTO " . DB_PREFIX . "order_history SET order_id = '" . (int)$order_id . "', order_status_id = '" . (int)$order_status_id . "', notify = '0', comment = '', date_added = NOW()");
+            
+            return true;
+        }
+        
+        return false;
     }
 
     public function getLatestOrders($limit = 5) {

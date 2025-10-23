@@ -45,6 +45,86 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
+    public function deleteOrder() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : '');
+        
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'ORDER_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+            
+            if ($this->model_extension_admin_app_api_app->deleteOrder($order_id)) {
+                $json['success'] = true;
+                $json['message'] = 'Order deleted successfully';
+            } else {
+                $json['error'] = 'Order not found';
+                $json['status'] = 404;
+                $json['code'] = 'ORDER_NOT_FOUND';
+                $json['success'] = false;
+            }
+        }
+        
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function updateOrderStatus() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : '');
+        $order_status_id = isset($this->request->post['order_status_id']) ? $this->request->post['order_status_id'] : (isset($input['order_status_id']) ? $input['order_status_id'] : '');
+        
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'ORDER_ID_REQUIRED';
+            $json['success'] = false;
+        } elseif (!$order_status_id) {
+            $json['error'] = 'Order Status ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'STATUS_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+            
+            if ($this->model_extension_admin_app_api_app->updateOrderStatus($order_id, $order_status_id)) {
+                $json['success'] = true;
+                $json['message'] = 'Order status updated successfully';
+            } else {
+                $json['error'] = 'Order not found';
+                $json['status'] = 404;
+                $json['code'] = 'ORDER_NOT_FOUND';
+                $json['success'] = false;
+            }
+        }
+        
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function orderStatuses() {
         $json = [];
         
@@ -422,5 +502,96 @@ class App extends \Opencart\System\Engine\Controller {
         return false;
     }
 
+    public function generateInvoice() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        // Validate API token
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Get JSON input
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        // Get order_id from POST or JSON input
+        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : 0);
+
+        if (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'ORDER_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+        
+        list($success, $invoice_no, $invoice_prefix) = $this->model_extension_admin_app_api_app->generateInvoiceNo($order_id);
+        
+        if ($success) {
+            $json['success'] = true;
+            $json['full_invoice_no'] = $invoice_prefix . $invoice_no;
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Failed to generate invoice number';
+            $json['status'] = 500;
+            $json['code'] = 'INVOICE_GENERATION_FAILED';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getOrder() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        // Validate API token
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Get JSON input
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        // Get order_id from POST or JSON input
+        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : 0);
+
+        if (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+        
+        $order_info = $this->model_extension_admin_app_api_app->getOrder($order_id);
+        
+        if ($order_info) {
+            $json['success'] = true;
+            $json['order'] = $order_info;
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Order not found';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 
 }
