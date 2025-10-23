@@ -87,6 +87,8 @@ class App extends \Opencart\System\Engine\Model {
             o.shipping_country,
             o.shipping_zone,
             o.email,
+            o.firstname,
+            o.lastname,
             o.currency_code,
             o.currency_value,
             o.telephone,
