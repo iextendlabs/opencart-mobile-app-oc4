@@ -45,6 +45,29 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
+    public function orderStatuses() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+            
+            $order_statuses = $this->model_extension_admin_app_api_app->getOrderStatuses();
+            
+            $json['success'] = true;
+            $json['data'] = $order_statuses;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function dashboardData() {
         $json = [];
 

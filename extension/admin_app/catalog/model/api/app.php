@@ -42,6 +42,11 @@ class App extends \Opencart\System\Engine\Model {
         return (float)$query->row['total'];
     }
     
+    public function getOrderStatuses() {
+        $query = $this->db->query("SELECT order_status_id, name FROM " . DB_PREFIX . "order_status WHERE language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY name");
+        return $query->rows;
+    }
+
     public function getLatestOrders($limit = 5) {
         $query = $this->db->query("SELECT 
             o.order_id,
