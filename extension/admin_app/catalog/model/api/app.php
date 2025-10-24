@@ -273,6 +273,10 @@ class App extends \Opencart\System\Engine\Model {
         if (!empty($filter_data['status'])) {
             $sql .= " AND os.name LIKE '%" . $this->db->escape($filter_data['status']) . "%'";
         }
+
+        if (!empty($filter_data['customer_id'])) {
+            $sql .= " AND o.customer_id = '" . (int)$filter_data['customer_id'] . "'";
+        }
         
         $sql .= " ORDER BY o.order_id DESC LIMIT " . (int)$start . ", " . (int)$limit;
         
@@ -297,6 +301,10 @@ class App extends \Opencart\System\Engine\Model {
         
         if (!empty($filter_data['status'])) {
             $sql_total .= " AND os.name LIKE '%" . $this->db->escape($filter_data['status']) . "%'";
+        }
+
+        if (!empty($filter_data['customer_id'])) {
+            $sql_total .= " AND o.customer_id = '" . (int)$filter_data['customer_id'] . "'";
         }
         
         $total_query = $this->db->query($sql_total);

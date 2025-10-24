@@ -463,6 +463,7 @@ class App extends \Opencart\System\Engine\Controller {
         // Get filter parameters
         $filter_data = [
             'customer_name' => isset($input['customerName']) ? $input['customerName'] : '',
+            'customer_id' => isset($input['customerId']) ? $input['customerId'] : '',
             'order_id' => isset($input['orderId']) ? $input['orderId'] : '',
             'date' => isset($input['date']) ? $input['date'] : '',
             'status' => isset($input['status']) ? $input['status'] : ''
