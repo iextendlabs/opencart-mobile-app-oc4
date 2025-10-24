@@ -447,6 +447,17 @@ class App extends \Opencart\System\Engine\Controller {
 
         $this->load->model('extension/admin_app/api/app');
 
+        // Get JSON input for filters
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        // Get filter parameters
+        $filter_data = [
+            'customer_name' => isset($input['customerName']) ? $input['customerName'] : '',
+            'order_id' => isset($input['orderId']) ? $input['orderId'] : '',
+            'date' => isset($input['date']) ? $input['date'] : '',
+            'status' => isset($input['status']) ? $input['status'] : ''
+        ];
+
         // Get page number from request, default to 1 if not provided
         $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
         $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
@@ -455,7 +466,7 @@ class App extends \Opencart\System\Engine\Controller {
         $page = max(1, $page);
         $limit = max(1, min(100, $limit)); // Limit between 1 and 100
 
-        $orders_data = $this->model_extension_admin_app_api_app->getOrders($page, $limit);
+        $orders_data = $this->model_extension_admin_app_api_app->getOrders($page, $limit, $filter_data);
         
         $json['orders'] = array_map(function($order) {
             return [

@@ -221,10 +221,10 @@ class App extends \Opencart\System\Engine\Model {
         return $query->rows;
     }
 
-    public function getOrders($page = 1, $limit = 20) {
+    public function getOrders($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
-        $query = $this->db->query("SELECT 
+        $sql = "SELECT 
             o.order_id,
             o.firstname,
             o.lastname,
@@ -238,11 +238,51 @@ class App extends \Opencart\System\Engine\Model {
             CONCAT(UPPER(LEFT(o.firstname, 1)), UPPER(LEFT(o.lastname, 1))) AS initials
             FROM `" . DB_PREFIX . "order` o
             LEFT JOIN " . DB_PREFIX . "order_status os ON (o.order_status_id = os.order_status_id)
-            WHERE os.language_id = '" . (int)$this->config->get('config_language_id') . "'
-            ORDER BY o.order_id DESC
-            LIMIT " . (int)$start . ", " . (int)$limit);
+            WHERE os.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+        
+        // Apply filters
+        if (!empty($filter_data['customer_name'])) {
+            $sql .= " AND CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $this->db->escape($filter_data['customer_name']) . "%'";
+        }
+        
+        if (!empty($filter_data['order_id'])) {
+            $sql .= " AND o.order_id = '" . (int)$filter_data['order_id'] . "'";
+        }
+        
+        if (!empty($filter_data['date'])) {
+            $sql .= " AND DATE(o.date_added) = '" . $this->db->escape($filter_data['date']) . "'";
+        }
+        
+        if (!empty($filter_data['status'])) {
+            $sql .= " AND os.name LIKE '%" . $this->db->escape($filter_data['status']) . "%'";
+        }
+        
+        $sql .= " ORDER BY o.order_id DESC LIMIT " . (int)$start . ", " . (int)$limit;
+        
+        $query = $this->db->query($sql);
 
-        $total_query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order`");
+        // Build total query with same filters
+        $sql_total = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` o 
+            LEFT JOIN " . DB_PREFIX . "order_status os ON (o.order_status_id = os.order_status_id)
+            WHERE os.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+            
+        if (!empty($filter_data['customer_name'])) {
+            $sql_total .= " AND CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $this->db->escape($filter_data['customer_name']) . "%'";
+        }
+        
+        if (!empty($filter_data['order_id'])) {
+            $sql_total .= " AND o.order_id = '" . (int)$filter_data['order_id'] . "'";
+        }
+        
+        if (!empty($filter_data['date'])) {
+            $sql_total .= " AND DATE(o.date_added) = '" . $this->db->escape($filter_data['date']) . "'";
+        }
+        
+        if (!empty($filter_data['status'])) {
+            $sql_total .= " AND os.name LIKE '%" . $this->db->escape($filter_data['status']) . "%'";
+        }
+        
+        $total_query = $this->db->query($sql_total);
         
         return [
             'orders' => $query->rows,
