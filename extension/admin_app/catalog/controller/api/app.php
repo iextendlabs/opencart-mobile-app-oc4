@@ -208,17 +208,27 @@ class App extends \Opencart\System\Engine\Controller {
 
         $this->load->model('extension/admin_app/api/app');
         
+        // Get JSON input for filters
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        // Get filter parameters
+        $filter_data = [
+            'search' => isset($input['search']) ? $input['search'] : '', // Will search in both name and email
+            'status' => isset($input['status']) ? $input['status'] : '' // 0, 1, or undefined
+        ];
+        
         $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
         $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
         
         $page = max(1, $page);
         $limit = max(1, min(100, $limit));
 
-        $data = $this->model_extension_admin_app_api_app->getCustomers($page, $limit);
+        $data = $this->model_extension_admin_app_api_app->getCustomers($page, $limit, $filter_data);
         
         $json['customers'] = array_map(function($customer) {
             return [
                 'id' => (string)$customer['customer_id'],
+                'status' => (string)$customer['status'],
                 'name' => $customer['name'],
                 'email' => $customer['email'],
                 'initials' => $customer['initials']
@@ -557,6 +567,57 @@ class App extends \Opencart\System\Engine\Controller {
             $json['error'] = 'Failed to generate invoice number';
             $json['status'] = 500;
             $json['code'] = 'INVOICE_GENERATION_FAILED';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function toggleCustomerStatus() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        // Validate API token
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Get JSON input
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        // Get customer_id from POST or JSON input
+        $customer_id = isset($this->request->post['customer_id']) ? $this->request->post['customer_id'] : (isset($input['customer_id']) ? $input['customer_id'] : 0);
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CUSTOMER_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+        
+        $result = $this->model_extension_admin_app_api_app->toggleCustomerStatus($customer_id);
+        
+        if ($result !== false) {
+            $json['success'] = true;
+            $json['status'] = $result;
+            $json['message'] = 'Customer status updated successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Customer not found';
+            $json['status'] = 404;
+            $json['code'] = 'CUSTOMER_NOT_FOUND';
         }
 
         $this->response->addHeader('Content-Type: application/json');

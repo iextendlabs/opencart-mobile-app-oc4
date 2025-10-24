@@ -149,6 +149,23 @@ class App extends \Opencart\System\Engine\Model {
         return [];
     }
     
+    public function toggleCustomerStatus($customer_id) {
+        // First get current status
+        $query = $this->db->query("SELECT status FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$customer_id . "'");
+        
+        if ($query->num_rows) {
+            // Toggle the status (if 1 make it 0, if 0 or null make it 1)
+            $new_status = ($query->row['status'] == 1) ? 0 : 1;
+            
+            // Update the status
+            $this->db->query("UPDATE " . DB_PREFIX . "customer SET status = '" . (int)$new_status . "' WHERE customer_id = '" . (int)$customer_id . "'");
+            
+            return $new_status;
+        }
+        
+        return false;
+    }
+
     public function getTotalCustomers() {
         $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer");
         return (int)$query->row['total'];
@@ -290,19 +307,54 @@ class App extends \Opencart\System\Engine\Model {
         ];
     }
 
-    public function getCustomers($page = 1, $limit = 20) {
+    public function getCustomers($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
-        $query = $this->db->query("SELECT 
+        $sql = "SELECT 
             customer_id,
             CONCAT(firstname, ' ', lastname) AS name,
             email,
+            status,
             CONCAT(UPPER(LEFT(firstname, 1)), UPPER(LEFT(lastname, 1))) AS initials
             FROM " . DB_PREFIX . "customer
-            ORDER BY customer_id DESC
-            LIMIT " . (int)$start . ", " . (int)$limit);
+            WHERE 1 = 1";
+            
+        // Apply search filter (for both name and email)
+        if (!empty($filter_data['search'])) {
+            $sql .= " AND (CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($filter_data['search']) . "%'";
+            $sql .= " OR email LIKE '%" . $this->db->escape($filter_data['search']) . "%')";
+        }
+        
+        // Apply status filter
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            if ($filter_data['status'] === 'undefined') {
+                $sql .= " AND status IS NULL";
+            } else {
+                $sql .= " AND status = '" . (int)$filter_data['status'] . "'";
+            }
+        }
+        
+        $sql .= " ORDER BY customer_id DESC LIMIT " . (int)$start . ", " . (int)$limit;
+        
+        $query = $this->db->query($sql);
 
-        $total_query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer");
+        // Build total query with same filters
+        $sql_total = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer WHERE 1 = 1";
+        
+        if (!empty($filter_data['search'])) {
+            $sql_total .= " AND (CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($filter_data['search']) . "%'";
+            $sql_total .= " OR email LIKE '%" . $this->db->escape($filter_data['search']) . "%')";
+        }
+        
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            if ($filter_data['status'] === 'undefined') {
+                $sql_total .= " AND status IS NULL";
+            } else {
+                $sql_total .= " AND status = '" . (int)$filter_data['status'] . "'";
+            }
+        }
+        
+        $total_query = $this->db->query($sql_total);
         
         return [
             'customers' => $query->rows,
