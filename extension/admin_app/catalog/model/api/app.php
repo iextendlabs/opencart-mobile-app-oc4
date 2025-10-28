@@ -350,8 +350,8 @@ class App extends \Opencart\System\Engine\Model {
             'telephone' => $customer_info['telephone'],
             'customer_group_id' => (int)$customer_info['customer_group_id'],
             'customer_group' => $customer_info['customer_group'],
-            'status' => ($customer_info['status'] ? 'Enabled' : 'Disabled'),
-            'newsletter' => (bool)$customer_info['newsletter'],
+            'status' => (int)$customer_info['status'],
+            'newsletter' => (int)$customer_info['newsletter'],
             'date_added' => date('Y-m-d H:i:s', strtotime($customer_info['date_added'])),
             'customer_groups' => $customer_groups
         ];
@@ -485,8 +485,8 @@ class App extends \Opencart\System\Engine\Model {
             "lastname = '" . $this->db->escape($data['lastname']) . "'",
             "email = '" . $this->db->escape($data['email']) . "'",
             "telephone = '" . $this->db->escape($data['telephone']) . "'",
-            "newsletter = '" . (int)$data['newsletter'] . "'",
-            "status = '" . (int)$data['status'] . "'",
+            "newsletter = '" . ($data['newsletter'] ? 1 : 0) . "'",
+            "status = '" . ($data['status'] ? 1 : 0) . "'",
             "customer_group_id = '" . (int)$data['customer_group_id'] . "'"
         ];
         
