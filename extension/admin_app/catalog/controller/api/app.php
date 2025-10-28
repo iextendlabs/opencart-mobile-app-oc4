@@ -669,6 +669,50 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
+    public function deleteCustomer() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $customer_id = isset($this->request->post['customer_id']) ? (int)$this->request->post['customer_id'] : (isset($input['customer_id']) ? (int)$input['customer_id'] : 0);
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CUSTOMER_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+        
+        if ($this->model_extension_admin_app_api_app->deleteCustomer($customer_id)) {
+            $json['success'] = true;
+            $json['message'] = 'Customer deleted successfully';
+        } else {
+            $json['error'] = 'Customer not found';
+            $json['status'] = 404;
+            $json['code'] = 'CUSTOMER_NOT_FOUND';
+            $json['success'] = false;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function updateCustomer() {
         $json = [];
         

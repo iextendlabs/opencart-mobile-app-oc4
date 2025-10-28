@@ -471,7 +471,34 @@ class App extends \Opencart\System\Engine\Model {
         ];
     }
 
+    public function deleteCustomer($customer_id) {
+        // First check if customer exists
+        $customer_query = $this->db->query("SELECT customer_id FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$customer_id . "'");
+        
+        if ($customer_query->num_rows) {
+            // Delete customer activities
+            $this->db->query("DELETE FROM " . DB_PREFIX . "customer_activity WHERE customer_id = '" . (int)$customer_id . "'");
+            
+            // Delete customer addresses
+            $this->db->query("DELETE FROM " . DB_PREFIX . "address WHERE customer_id = '" . (int)$customer_id . "'");
+            
+            // Delete customer history
+            $this->db->query("DELETE FROM " . DB_PREFIX . "customer_history WHERE customer_id = '" . (int)$customer_id . "'");
+            
+            // Delete customer IP records
+            $this->db->query("DELETE FROM " . DB_PREFIX . "customer_ip WHERE customer_id = '" . (int)$customer_id . "'");
+            
+            // Finally delete customer
+            $this->db->query("DELETE FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$customer_id . "'");
+            
+            return true;
+        }
+        
+        return false;
+    }
+
     public function updateCustomer($data) {
+        // Validate email uniqueness (excluding current customer)
         $email_check = $this->db->query("SELECT customer_id FROM " . DB_PREFIX . "customer 
             WHERE email = '" . $this->db->escape($data['email']) . "' 
             AND customer_id != '" . (int)$data['customer_id'] . "'");
