@@ -724,8 +724,8 @@ class App extends \Opencart\System\Engine\Controller {
             'lastname' => $input['lastname'],
             'email' => $input['email'],
             'telephone' => $input['telephone'],
-            'newsletter' => isset($input['newsletter']) ? (bool)$input['newsletter'] : false,
-            'status' => isset($input['status']) ? (int)$input['status'] : 1,
+            'newsletter' => isset($input['newsletter']) ? ((int)$input['newsletter'] ? 1 : 0) : 0,
+            'status' => isset($input['status']) ? ((int)$input['status'] ? 1 : 0) : 1,
             'customer_group_id' => isset($input['customer_group_id']) ? (int)$input['customer_group_id'] : 1
         ];
         
