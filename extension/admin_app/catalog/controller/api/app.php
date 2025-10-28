@@ -227,7 +227,7 @@ class App extends \Opencart\System\Engine\Controller {
         
         $json['customers'] = array_map(function($customer) {
             return [
-                'id' => (string)$customer['customer_id'],
+                'customer_id' => (string)$customer['customer_id'],
                 'status' => (string)$customer['status'],
                 'name' => $customer['name'],
                 'email' => $customer['email'],
