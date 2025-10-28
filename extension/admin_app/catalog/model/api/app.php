@@ -315,6 +315,60 @@ class App extends \Opencart\System\Engine\Model {
         ];
     }
 
+    public function getCustomerDetails($customer_id) {
+        // Get basic customer information
+        $customer_query = $this->db->query("SELECT 
+            c.customer_id,
+            c.firstname,
+            c.lastname,
+            c.email,
+            c.telephone,
+            c.customer_group_id,
+            cgd.name as customer_group,
+            c.status,
+            c.newsletter,
+            c.date_added
+            FROM " . DB_PREFIX . "customer c
+            LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id)
+            WHERE c.customer_id = '" . (int)$customer_id . "'
+            AND cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+        if (!$customer_query->num_rows) {
+            return false;
+        }
+
+        $customer_info = $customer_query->row;
+
+        // Get all customer groups
+        $customer_groups = $this->getCustomerGroups();
+
+        return [
+            'customer_id' => (int)$customer_info['customer_id'],
+            'firstname' => $customer_info['firstname'],
+            'lastname' => $customer_info['lastname'],
+            'email' => $customer_info['email'],
+            'telephone' => $customer_info['telephone'],
+            'customer_group_id' => (int)$customer_info['customer_group_id'],
+            'customer_group' => $customer_info['customer_group'],
+            'status' => ($customer_info['status'] ? 'Enabled' : 'Disabled'),
+            'newsletter' => (bool)$customer_info['newsletter'],
+            'date_added' => date('Y-m-d H:i:s', strtotime($customer_info['date_added'])),
+            'customer_groups' => $customer_groups
+        ];
+    }
+
+    public function getCustomerGroups() {
+        $query = $this->db->query("SELECT 
+            cg.customer_group_id,
+            cgd.name
+            FROM " . DB_PREFIX . "customer_group cg
+            LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (cg.customer_group_id = cgd.customer_group_id)
+            WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'
+            ORDER BY cg.sort_order");
+
+        return $query->rows;
+    }
+
     public function getCustomers($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
@@ -415,6 +469,37 @@ class App extends \Opencart\System\Engine\Model {
             'categories' => $query->rows,
             'total' => (int)$total_query->row['total']
         ];
+    }
+
+    public function updateCustomer($data) {
+        $email_check = $this->db->query("SELECT customer_id FROM " . DB_PREFIX . "customer 
+            WHERE email = '" . $this->db->escape($data['email']) . "' 
+            AND customer_id != '" . (int)$data['customer_id'] . "'");
+            
+        if ($email_check->num_rows) {
+            return 'Email already exists';
+        }
+        
+        $update_fields = [
+            "firstname = '" . $this->db->escape($data['firstname']) . "'",
+            "lastname = '" . $this->db->escape($data['lastname']) . "'",
+            "email = '" . $this->db->escape($data['email']) . "'",
+            "telephone = '" . $this->db->escape($data['telephone']) . "'",
+            "newsletter = '" . (int)$data['newsletter'] . "'",
+            "status = '" . (int)$data['status'] . "'",
+            "customer_group_id = '" . (int)$data['customer_group_id'] . "'"
+        ];
+        
+        if (isset($data['password'])) {
+            $update_fields[] = "password = '" . $this->db->escape(password_hash($data['password'], PASSWORD_DEFAULT)) . "'";
+
+        }
+        
+        $this->db->query("UPDATE " . DB_PREFIX . "customer 
+            SET " . implode(', ', $update_fields) . "
+            WHERE customer_id = '" . (int)$data['customer_id'] . "'");
+        
+        return true;
     }
 
     public function getCoupons($page = 1, $limit = 20) {

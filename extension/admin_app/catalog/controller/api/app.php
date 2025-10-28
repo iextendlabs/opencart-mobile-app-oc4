@@ -440,6 +440,50 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
+    public function getCustomer() {
+        $json = [];
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $customer_id = isset($this->request->get['customer_id']) ? (int)$this->request->get['customer_id'] : (isset($input['customer_id']) ? (int)$input['customer_id'] : 0);
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CUSTOMER_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+        
+        $customer_info = $this->model_extension_admin_app_api_app->getCustomerDetails($customer_id);
+        
+        if ($customer_info) {
+            $json['success'] = true;
+            $json['customer'] = $customer_info;
+        } else {
+            $json['error'] = 'Customer not found';
+            $json['status'] = 404;
+            $json['code'] = 'CUSTOMER_NOT_FOUND';
+            $json['success'] = false;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function getOrders() {
         $json = [];
 
@@ -619,6 +663,90 @@ class App extends \Opencart\System\Engine\Controller {
             $json['error'] = 'Customer not found';
             $json['status'] = 404;
             $json['code'] = 'CUSTOMER_NOT_FOUND';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function updateCustomer() {
+        $json = [];
+        
+        $this->load->language('extension/admin_app/api/app');
+        
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        if (empty($input['customer_id'])) {
+            $json['error'] = 'Customer ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CUSTOMER_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Required fields validation
+        $required_fields = ['firstname', 'lastname', 'email', 'telephone'];
+        $missing_fields = [];
+        
+        foreach ($required_fields as $field) {
+            if (!isset($input[$field]) || trim($input[$field]) === '') {
+                $missing_fields[] = $field;
+            }
+        }
+        
+        if (!empty($missing_fields)) {
+            $json['error'] = 'Required fields missing: ' . implode(', ', $missing_fields);
+            $json['status'] = 400;
+            $json['code'] = 'REQUIRED_FIELDS_MISSING';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+        
+        $customer_data = [
+            'customer_id' => (int)$input['customer_id'],
+            'firstname' => $input['firstname'],
+            'lastname' => $input['lastname'],
+            'email' => $input['email'],
+            'telephone' => $input['telephone'],
+            'newsletter' => isset($input['newsletter']) ? (bool)$input['newsletter'] : false,
+            'status' => isset($input['status']) ? (int)$input['status'] : 1,
+            'customer_group_id' => isset($input['customer_group_id']) ? (int)$input['customer_group_id'] : 1
+        ];
+        
+        if (isset($input['password']) && !empty($input['password'])) {
+            $customer_data['password'] = $input['password'];
+        }
+        
+        $result = $this->model_extension_admin_app_api_app->updateCustomer($customer_data);
+        
+        if ($result === true) {
+            $json['success'] = true;
+            $json['message'] = 'Customer updated successfully';
+            
+            // Return updated customer data
+            $customer_info = $this->model_extension_admin_app_api_app->getCustomerDetails($customer_data['customer_id']);
+            $json['customer'] = $customer_info;
+        } else {
+            $json['success'] = false;
+            $json['error'] = $result;
+            $json['status'] = 400;
+            $json['code'] = 'UPDATE_FAILED';
         }
 
         $this->response->addHeader('Content-Type: application/json');
