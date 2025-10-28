@@ -738,10 +738,6 @@ class App extends \Opencart\System\Engine\Controller {
         if ($result === true) {
             $json['success'] = true;
             $json['message'] = 'Customer updated successfully';
-            
-            // Return updated customer data
-            $customer_info = $this->model_extension_admin_app_api_app->getCustomerDetails($customer_data['customer_id']);
-            $json['customer'] = $customer_info;
         } else {
             $json['success'] = false;
             $json['error'] = $result;
