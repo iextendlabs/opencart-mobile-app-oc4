@@ -564,7 +564,7 @@ class App extends \Opencart\System\Engine\Model {
             $sql .= " AND cd.name LIKE '%" . $this->db->escape($filter_data['name']) . "%'";
         }
 
-        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+        if (isset($filter_data['status']) && $filter_data['status'] !== '' && $filter_data['status'] != 'all') {
             $sql .= " AND c.status = '" . (int)$filter_data['status'] . "'";
         }
 
