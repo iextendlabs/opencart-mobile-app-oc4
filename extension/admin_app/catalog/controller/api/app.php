@@ -1211,52 +1211,6 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getCategory()
-    {
-        $json = [];
-
-        $this->load->language('extension/admin_app/api/app');
-
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $this->load->model('extension/admin_app/api/app');
-
-        $category_id = isset($this->request->get['category_id']) ? (int)$this->request->get['category_id'] : 0;
-
-        if (!$category_id) {
-            $json['error'] = 'Category ID is required';
-            $json['status'] = 400;
-            $json['code'] = 'CATEGORY_ID_REQUIRED';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $category_info = $this->model_extension_admin_app_api_app->getCategory($category_id);
-
-        if ($category_info) {
-            $json['success'] = true;
-            $json['category'] = $category_info;
-        } else {
-            $json['error'] = 'Category not found';
-            $json['status'] = 404;
-            $json['code'] = 'CATEGORY_NOT_FOUND';
-            $json['success'] = false;
-        }
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
     public function updateCategory()
     {
         $json = [];
