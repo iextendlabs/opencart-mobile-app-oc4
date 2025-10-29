@@ -869,6 +869,92 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
+    public function deleteProduct()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $product_id = isset($input['product_id']) ? (int)$input['product_id'] : 0;
+
+        if (!$product_id) {
+            $json['error'] = 'Product ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'PRODUCT_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        if ($this->model_extension_admin_app_api_app->deleteProduct($product_id)) {
+            $json['success'] = true;
+            $json['message'] = 'Product deleted successfully';
+        } else {
+            $json['error'] = 'Product not found';
+            $json['status'] = 404;
+            $json['code'] = 'PRODUCT_NOT_FOUND';
+            $json['success'] = false;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function toggleProductStatus()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $product_id = isset($input['product_id']) ? $input['product_id'] : '';
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$product_id) {
+            $json['error'] = 'Product ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'PRODUCT_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+
+            $result = $this->model_extension_admin_app_api_app->toggleProductStatus($product_id);
+
+            if ($result !== false) {
+                $json['success'] = true;
+                $json['status'] = $result;
+                $json['message'] = 'Product status updated successfully';
+            } else {
+                $json['error'] = 'Product not found';
+                $json['status'] = 404;
+                $json['code'] = 'PRODUCT_NOT_FOUND';
+                $json['success'] = false;
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function getStockStatuses() {
         $json = [];
 

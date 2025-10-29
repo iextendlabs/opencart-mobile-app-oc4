@@ -496,6 +496,57 @@ class App extends \Opencart\System\Engine\Model {
         ];
     }
 
+    public function deleteProduct($product_id) {
+        // Check if product exists
+        $product_query = $this->db->query("SELECT product_id FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$product_id . "'");
+
+        if ($product_query->num_rows) {
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_attribute WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_code WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_description WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_discount WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_download WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_filter WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_image WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_layout WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_option WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_option_value WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE related_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_reward WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_store WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_subscription WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "review WHERE product_id = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "seo_url WHERE `key` = 'product_id' AND `value` = '" . (int)$product_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "coupon_product WHERE product_id = '" . (int)$product_id . "'");
+
+            $this->cache->delete('product');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function toggleProductStatus($product_id) {
+        // First get current status
+        $query = $this->db->query("SELECT status FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$product_id . "'");
+        
+        if ($query->num_rows) {
+            // Toggle the status (if 1 make it 0, if 0 or null make it 1)
+            $new_status = ($query->row['status'] == 1) ? 0 : 1;
+            
+            // Update the status
+            $this->db->query("UPDATE " . DB_PREFIX . "product SET status = '" . (int)$new_status . "', date_modified = NOW() WHERE product_id = '" . (int)$product_id . "'");
+            
+            return $new_status;
+        }
+        
+        return false;
+    }
+
     public function getCategories($page = 1, $limit = 20) {
         $start = ($page - 1) * $limit;
         
