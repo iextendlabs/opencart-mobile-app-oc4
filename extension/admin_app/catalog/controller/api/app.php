@@ -1211,4 +1211,121 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
+    public function getCategory()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $category_id = isset($this->request->get['category_id']) ? (int)$this->request->get['category_id'] : 0;
+
+        if (!$category_id) {
+            $json['error'] = 'Category ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CATEGORY_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $category_info = $this->model_extension_admin_app_api_app->getCategory($category_id);
+
+        if ($category_info) {
+            $json['success'] = true;
+            $json['category'] = $category_info;
+        } else {
+            $json['error'] = 'Category not found';
+            $json['status'] = 404;
+            $json['code'] = 'CATEGORY_NOT_FOUND';
+            $json['success'] = false;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function updateCategory()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        if (empty($input['category_id'])) {
+            $json['error'] = 'Category ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CATEGORY_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Basic validation
+        $required_fields = ['name', 'sort_order'];
+        $missing_fields = [];
+
+        foreach ($required_fields as $field) {
+            if (!isset($input[$field])) {
+                $missing_fields[] = $field;
+            }
+        }
+
+        if (!empty($missing_fields)) {
+            $json['error'] = 'Required fields missing: ' . implode(', ', $missing_fields);
+            $json['status'] = 400;
+            $json['code'] = 'REQUIRED_FIELDS_MISSING';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $category_data = [
+            'category_id' => (int)$input['category_id'],
+            'name' => $input['name'],
+            'sort_order' => (int)$input['sort_order']
+        ];
+
+        $result = $this->model_extension_admin_app_api_app->updateCategory($category_data);
+
+        if ($result === true) {
+            $json['success'] = true;
+            $json['message'] = 'Category updated successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = $result;
+            $json['status'] = 400;
+            $json['code'] = 'UPDATE_FAILED';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 }

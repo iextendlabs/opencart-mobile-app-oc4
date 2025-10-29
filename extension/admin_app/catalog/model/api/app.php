@@ -821,4 +821,48 @@ class App extends \Opencart\System\Engine\Model {
 
         return false;
     }
+
+    public function getCategory($category_id) {
+        $query = $this->db->query("SELECT
+            cd.name,
+            c.sort_order
+            FROM " . DB_PREFIX . "category c
+            LEFT JOIN " . DB_PREFIX . "category_description cd ON (c.category_id = cd.category_id)
+            WHERE c.category_id = '" . (int)$category_id . "'
+            AND cd.language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+        if ($query->num_rows) {
+            $category_data = [
+                'name' => $query->row['name'],
+                'sort_order' => (int)$query->row['sort_order']
+            ];
+
+            return $category_data;
+        }
+
+        return false;
+    }
+
+    public function updateCategory($data) {
+        // Check if category exists
+        $category_query = $this->db->query("SELECT category_id FROM " . DB_PREFIX . "category WHERE category_id = '" . (int)$data['category_id'] . "'");
+
+        if (!$category_query->num_rows) {
+            return 'Category not found';
+        }
+
+        $this->db->query("UPDATE " . DB_PREFIX . "category SET " .
+            "sort_order = '" . (int)$data['sort_order'] . "' " .
+            "WHERE category_id = '" . (int)$data['category_id'] . "'");
+
+        $this->db->query("UPDATE " . DB_PREFIX . "category_description SET " .
+            "name = '" . $this->db->escape($data['name']) . "' " .
+            "WHERE category_id = '" . (int)$data['category_id'] . "' " .
+            "AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+        $this->cache->delete('category');
+
+        return true;
+    }
+
 }
