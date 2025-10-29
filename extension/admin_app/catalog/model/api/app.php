@@ -424,10 +424,10 @@ class App extends \Opencart\System\Engine\Model {
         ];
     }
 
-    public function getProducts($page = 1, $limit = 20) {
+    public function getProducts($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
-        $query = $this->db->query("SELECT 
+        $sql = "SELECT 
             p.product_id,
             pd.name,
             p.model,
@@ -435,14 +435,58 @@ class App extends \Opencart\System\Engine\Model {
             p.price,
             p.image,
             p.status,
+            p.stock_status_id,
             p.date_added
             FROM " . DB_PREFIX . "product p
             LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)
-            WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'
-            ORDER BY p.product_id DESC
-            LIMIT " . (int)$start . ", " . (int)$limit);
+            WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
-        $total_query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product");
+        // Add filters
+        if (!empty($filter_data['name'])) {
+            $sql .= " AND pd.name LIKE '%" . $this->db->escape($filter_data['name']) . "%'";
+        }
+
+        if(!empty($filter_data['status'])) {
+            $sql .= " AND p.status = '" . (int)$filter_data['status'] . "'";
+        }
+
+        if (!empty($filter_data['stock_status_id'])) {
+            $sql .= " AND p.stock_status_id = '" . (int)$filter_data['stock_status_id'] . "'";
+        }
+
+        if (isset($filter_data['minPrice']) && $filter_data['minPrice'] !== null) {
+            $sql .= " AND p.price >= '" . (float)$filter_data['minPrice'] . "'";
+        }
+
+        if (isset($filter_data['maxPrice']) && $filter_data['maxPrice'] !== null) {
+            $sql .= " AND p.price <= '" . (float)$filter_data['maxPrice'] . "'";
+        }
+
+        $sql .= " ORDER BY p.product_id DESC";
+        $sql .= " LIMIT " . (int)$start . ", " . (int)$limit;
+
+        $query = $this->db->query($sql);
+
+        // Build the total count query with the same filters
+        $total_sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+
+        if (!empty($filter_data['name'])) {
+            $total_sql .= " AND pd.name LIKE '%" . $this->db->escape($filter_data['name']) . "%'";
+        }
+
+        if (!empty($filter_data['stock_status_id'])) {
+            $total_sql .= " AND p.stock_status_id = '" . (int)$filter_data['stock_status_id'] . "'";
+        }
+
+        if (isset($filter_data['minPrice']) && $filter_data['minPrice'] !== null) {
+            $total_sql .= " AND p.price >= '" . (float)$filter_data['minPrice'] . "'";
+        }
+
+        if (isset($filter_data['maxPrice']) && $filter_data['maxPrice'] !== null) {
+            $total_sql .= " AND p.price <= '" . (float)$filter_data['maxPrice'] . "'";
+        }
+
+        $total_query = $this->db->query($total_sql);
         
         return [
             'products' => $query->rows,
@@ -595,5 +639,10 @@ class App extends \Opencart\System\Engine\Model {
         }
         
         return $stats;
+    }
+
+    public function getStockStatuses() {
+        $query = $this->db->query("SELECT stock_status_id, name FROM " . DB_PREFIX . "stock_status WHERE language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY name");
+        return $query->rows;
     }
 }

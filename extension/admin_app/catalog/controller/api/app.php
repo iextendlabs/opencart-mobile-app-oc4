@@ -821,13 +821,23 @@ class App extends \Opencart\System\Engine\Controller
 
         $this->load->model('extension/admin_app/api/app');
 
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $filter_data = [
+            'name' => isset($input['name']) ? $input['name'] : '',
+            'stock_status_id' => isset($input['stock_status_id']) ? $input['stock_status_id'] : '',
+            'status' => isset($input['status']) ? $input['status'] : '',
+            'minPrice' => isset($input['minPrice']) ? (float)$input['minPrice'] : null,
+            'maxPrice' => isset($input['maxPrice']) ? (float)$input['maxPrice'] : null
+        ];
+
         $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
         $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
 
         $page = max(1, $page);
         $limit = max(1, min(100, $limit));
 
-        $data = $this->model_extension_admin_app_api_app->getProducts($page, $limit);
+        $data = $this->model_extension_admin_app_api_app->getProducts($page, $limit, $filter_data);
 
         $this->load->model('tool/image');
 
@@ -853,6 +863,30 @@ class App extends \Opencart\System\Engine\Controller
         ];
 
         $json['success'] = true;
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getStockStatuses() {
+        $json = [];
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $stock_statuses = $this->model_extension_admin_app_api_app->getStockStatuses();
+
+        $json['success'] = true;
+        $json['stock_statuses'] = $stock_statuses;
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
