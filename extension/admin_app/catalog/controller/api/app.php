@@ -1,8 +1,11 @@
 <?php
+
 namespace Opencart\Catalog\Controller\Extension\AdminApp\Api;
 
-class App extends \Opencart\System\Engine\Controller {
-    public function login() {
+class App extends \Opencart\System\Engine\Controller
+{
+    public function login()
+    {
         $json = [];
 
         $this->load->language('extension/admin_app/api/app');
@@ -11,7 +14,7 @@ class App extends \Opencart\System\Engine\Controller {
 
         // Get JSON input
         $input = json_decode(file_get_contents('php://input'), true);
-        
+
         // Check both POST and JSON input
         $username = isset($this->request->post['username']) ? $this->request->post['username'] : (isset($input['username']) ? $input['username'] : '');
         $password = isset($this->request->post['password']) ? $this->request->post['password'] : (isset($input['password']) ? $input['password'] : '');
@@ -24,7 +27,7 @@ class App extends \Opencart\System\Engine\Controller {
             if ($user_info && password_verify($password, $user_info['password'])) {
                 // Generate API token
                 $api_token = bin2hex(random_bytes(16));
-                
+
                 // Save token to database with expiry
                 $this->model_extension_admin_app_api_app->saveApiToken($user_info['user_id'], $api_token);
 
@@ -45,114 +48,12 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
-    public function deleteOrder() {
-        $json = [];
-        
-        $this->load->language('extension/admin_app/api/app');
-        
-        $input = json_decode(file_get_contents('php://input'), true);
-        
-        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : '');
-        
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-        } elseif (!$order_id) {
-            $json['error'] = 'Order ID is required';
-            $json['status'] = 400;
-            $json['code'] = 'ORDER_ID_REQUIRED';
-            $json['success'] = false;
-        } else {
-            $this->load->model('extension/admin_app/api/app');
-            
-            if ($this->model_extension_admin_app_api_app->deleteOrder($order_id)) {
-                $json['success'] = true;
-                $json['message'] = 'Order deleted successfully';
-            } else {
-                $json['error'] = 'Order not found';
-                $json['status'] = 404;
-                $json['code'] = 'ORDER_NOT_FOUND';
-                $json['success'] = false;
-            }
-        }
-        
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
-    public function updateOrderStatus() {
-        $json = [];
-        
-        $this->load->language('extension/admin_app/api/app');
-        
-        $input = json_decode(file_get_contents('php://input'), true);
-        
-        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : '');
-        $order_status_id = isset($this->request->post['order_status_id']) ? $this->request->post['order_status_id'] : (isset($input['order_status_id']) ? $input['order_status_id'] : '');
-        
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-        } elseif (!$order_id) {
-            $json['error'] = 'Order ID is required';
-            $json['status'] = 400;
-            $json['code'] = 'ORDER_ID_REQUIRED';
-            $json['success'] = false;
-        } elseif (!$order_status_id) {
-            $json['error'] = 'Order Status ID is required';
-            $json['status'] = 400;
-            $json['code'] = 'STATUS_ID_REQUIRED';
-            $json['success'] = false;
-        } else {
-            $this->load->model('extension/admin_app/api/app');
-            
-            if ($this->model_extension_admin_app_api_app->updateOrderStatus($order_id, $order_status_id)) {
-                $json['success'] = true;
-                $json['message'] = 'Order status updated successfully';
-            } else {
-                $json['error'] = 'Order not found';
-                $json['status'] = 404;
-                $json['code'] = 'ORDER_NOT_FOUND';
-                $json['success'] = false;
-            }
-        }
-        
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
-    public function orderStatuses() {
-        $json = [];
-        
-        $this->load->language('extension/admin_app/api/app');
-        
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-        } else {
-            $this->load->model('extension/admin_app/api/app');
-            
-            $order_statuses = $this->model_extension_admin_app_api_app->getOrderStatuses();
-            
-            $json['success'] = true;
-            $json['data'] = $order_statuses;
-        }
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
-    public function dashboardData() {
+    public function dashboardData()
+    {
         $json = [];
 
         $this->load->language('extension/admin_app/api/app');
-        
+
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
             $json['status'] = 401; // Unauthorized status code
@@ -164,16 +65,16 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         // Get total statistics
         $json['totalProducts'] = $this->model_extension_admin_app_api_app->getTotalProducts();
         $json['totalOrders'] = $this->model_extension_admin_app_api_app->getTotalOrders();
         $json['totalClients'] = $this->model_extension_admin_app_api_app->getTotalCustomers();
         $json['totalRevenue'] = $this->model_extension_admin_app_api_app->getTotalRevenue();
-        
+
         // Get latest 5 orders
         $latest_orders = $this->model_extension_admin_app_api_app->getLatestOrders(5);
-        $json['orders'] = array_map(function($order) {
+        $json['orders'] = array_map(function ($order) {
             return [
                 'id' => (string)$order['order_id'],
                 'customer' => $order['customer_name'],
@@ -183,73 +84,18 @@ class App extends \Opencart\System\Engine\Controller {
                 'initials' => $order['initials']
             ];
         }, $latest_orders);
-        
+
         // Get weekly statistics
         $json['weeklyStats'] = $this->model_extension_admin_app_api_app->getWeeklyStats();
 
         $json['success'] = true;
 
         $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));    
-    }
-
-    public function getCustomers() {
-        $json = [];
-
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $this->load->model('extension/admin_app/api/app');
-        
-        // Get JSON input for filters
-        $input = json_decode(file_get_contents('php://input'), true);
-
-        // Get filter parameters
-        $filter_data = [
-            'search' => isset($input['search']) ? $input['search'] : '', // Will search in both name and email
-            'status' => isset($input['status']) ? $input['status'] : '' // 0, 1, or undefined
-        ];
-        
-        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
-        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-        
-        $page = max(1, $page);
-        $limit = max(1, min(100, $limit));
-
-        $data = $this->model_extension_admin_app_api_app->getCustomers($page, $limit, $filter_data);
-        
-        $json['customers'] = array_map(function($customer) {
-            return [
-                'customer_id' => (string)$customer['customer_id'],
-                'status' => (string)$customer['status'],
-                'name' => $customer['name'],
-                'email' => $customer['email'],
-                'initials' => $customer['initials']
-            ];
-        }, $data['customers']);
-
-        $json['pagination'] = [
-            'total' => $data['total'],
-            'page' => $page,
-            'limit' => $limit,
-            'pages' => ceil($data['total'] / $limit),
-            'hasMore' => ($page * $limit) < $data['total']
-        ];
-
-        $json['success'] = true;
-        
-        $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getProducts() {
+    public function getCategories()
+    {
         $json = [];
 
         if (!$this->validateToken()) {
@@ -263,70 +109,18 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
         $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-        
-        $page = max(1, $page);
-        $limit = max(1, min(100, $limit));
 
-        $data = $this->model_extension_admin_app_api_app->getProducts($page, $limit);
-        
-        $this->load->model('tool/image');
-        
-        $json['products'] = array_map(function($product) {
-            return [
-                'id' => (string)$product['product_id'],
-                'name' => $product['name'],
-                'model' => $product['model'],
-                'quantity' => (int)$product['quantity'],
-                'price' => (float)$product['price'],
-                'image' => $product['image'] ? $this->model_tool_image->resize($product['image'], 100, 100) : '',
-                'status' => (int)$product['status'],
-                'dateAdded' => $product['date_added']
-            ];
-        }, $data['products']);
-
-        $json['pagination'] = [
-            'total' => $data['total'],
-            'page' => $page,
-            'limit' => $limit,
-            'pages' => ceil($data['total'] / $limit),
-            'hasMore' => ($page * $limit) < $data['total']
-        ];
-
-        $json['success'] = true;
-        
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
-    public function getCategories() {
-        $json = [];
-
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $this->load->model('extension/admin_app/api/app');
-        
-        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
-        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-        
         $page = max(1, $page);
         $limit = max(1, min(100, $limit));
 
         $data = $this->model_extension_admin_app_api_app->getCategories($page, $limit);
-        
+
         $this->load->model('tool/image');
-        
-        $json['categories'] = array_map(function($category) {
+
+        $json['categories'] = array_map(function ($category) {
             return [
                 'id' => (string)$category['category_id'],
                 'name' => $category['name'],
@@ -343,12 +137,13 @@ class App extends \Opencart\System\Engine\Controller {
         ];
 
         $json['success'] = true;
-        
+
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getCoupons() {
+    public function getCoupons()
+    {
         $json = [];
 
         if (!$this->validateToken()) {
@@ -362,16 +157,16 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
         $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-        
+
         $page = max(1, $page);
         $limit = max(1, min(100, $limit));
 
         $data = $this->model_extension_admin_app_api_app->getCoupons($page, $limit);
-        
-        $json['coupons'] = array_map(function($coupon) {
+
+        $json['coupons'] = array_map(function ($coupon) {
             return [
                 'id' => (string)$coupon['coupon_id'],
                 'code' => $coupon['code'],
@@ -388,12 +183,13 @@ class App extends \Opencart\System\Engine\Controller {
         ];
 
         $json['success'] = true;
-        
+
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getReviews() {
+    public function getReviews()
+    {
         $json = [];
 
         if (!$this->validateToken()) {
@@ -407,16 +203,16 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
         $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-        
+
         $page = max(1, $page);
         $limit = max(1, min(100, $limit));
 
         $data = $this->model_extension_admin_app_api_app->getReviews($page, $limit);
-        
-        $json['reviews'] = array_map(function($review) {
+
+        $json['reviews'] = array_map(function ($review) {
             return [
                 'id' => (string)$review['review_id'],
                 'customer' => $review['customer'],
@@ -435,60 +231,38 @@ class App extends \Opencart\System\Engine\Controller {
         ];
 
         $json['success'] = true;
-        
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
-    public function getCustomer() {
-        $json = [];
-
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $input = json_decode(file_get_contents('php://input'), true);
-        $customer_id = isset($this->request->get['customer_id']) ? (int)$this->request->get['customer_id'] : (isset($input['customer_id']) ? (int)$input['customer_id'] : 0);
-
-        if (!$customer_id) {
-            $json['error'] = 'Customer ID is required';
-            $json['status'] = 400;
-            $json['code'] = 'CUSTOMER_ID_REQUIRED';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $this->load->model('extension/admin_app/api/app');
-        
-        $customer_info = $this->model_extension_admin_app_api_app->getCustomerDetails($customer_id);
-        
-        if ($customer_info) {
-            $json['success'] = true;
-            $json['customer'] = $customer_info;
-        } else {
-            $json['error'] = 'Customer not found';
-            $json['status'] = 404;
-            $json['code'] = 'CUSTOMER_NOT_FOUND';
-            $json['success'] = false;
-        }
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getOrders() {
+    private function validateToken()
+    {
+        if (isset($this->request->get['token']) || isset($this->request->server['HTTP_AUTHORIZATION'])) {
+            $token = isset($this->request->get['token']) ? $this->request->get['token'] : '';
+
+            if (empty($token) && isset($this->request->server['HTTP_AUTHORIZATION'])) {
+                $parts = explode(' ', $this->request->server['HTTP_AUTHORIZATION']);
+                if (count($parts) == 2 && strcasecmp($parts[0], 'Bearer') == 0) {
+                    $token = $parts[1];
+                }
+            }
+
+            if ($token) {
+                $this->load->model('extension/admin_app/api/app');
+                return $this->model_extension_admin_app_api_app->validateApiToken($token);
+            }
+        }
+
+        return false;
+    }
+
+    public function getOrders()
+    {
         $json = [];
 
         $this->load->language('extension/admin_app/api/app');
-        
+
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
             $json['status'] = 401;
@@ -522,8 +296,8 @@ class App extends \Opencart\System\Engine\Controller {
         $limit = max(1, min(100, $limit)); // Limit between 1 and 100
 
         $orders_data = $this->model_extension_admin_app_api_app->getOrders($page, $limit, $filter_data);
-        
-        $json['orders'] = array_map(function($order) {
+
+        $json['orders'] = array_map(function ($order) {
             return [
                 'id' => (string)$order['order_id'],
                 'customer' => $order['customer_name'],
@@ -548,31 +322,12 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
-    private function validateToken() {
-        if (isset($this->request->get['token']) || isset($this->request->server['HTTP_AUTHORIZATION'])) {
-            $token = isset($this->request->get['token']) ? $this->request->get['token'] : '';
-            
-            if (empty($token) && isset($this->request->server['HTTP_AUTHORIZATION'])) {
-                $parts = explode(' ', $this->request->server['HTTP_AUTHORIZATION']);
-                if (count($parts) == 2 && strcasecmp($parts[0], 'Bearer') == 0) {
-                    $token = $parts[1];
-                }
-            }
-            
-            if ($token) {
-                $this->load->model('extension/admin_app/api/app');
-                return $this->model_extension_admin_app_api_app->validateApiToken($token);
-            }
-        }
-        
-        return false;
-    }
-
-    public function generateInvoice() {
+    public function getOrder()
+    {
         $json = [];
-        
+
         $this->load->language('extension/admin_app/api/app');
-        
+
         // Validate API token
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
@@ -586,7 +341,159 @@ class App extends \Opencart\System\Engine\Controller {
 
         // Get JSON input
         $input = json_decode(file_get_contents('php://input'), true);
-        
+
+        // Get order_id from POST or JSON input
+        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : 0);
+
+        if (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $order_info = $this->model_extension_admin_app_api_app->getOrder($order_id);
+
+        if ($order_info) {
+            $json['success'] = true;
+            $json['order'] = $order_info;
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Order not found';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function deleteOrder()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : '');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'ORDER_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+
+            if ($this->model_extension_admin_app_api_app->deleteOrder($order_id)) {
+                $json['success'] = true;
+                $json['message'] = 'Order deleted successfully';
+            } else {
+                $json['error'] = 'Order not found';
+                $json['status'] = 404;
+                $json['code'] = 'ORDER_NOT_FOUND';
+                $json['success'] = false;
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function updateOrderStatus()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : '');
+        $order_status_id = isset($this->request->post['order_status_id']) ? $this->request->post['order_status_id'] : (isset($input['order_status_id']) ? $input['order_status_id'] : '');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$order_id) {
+            $json['error'] = 'Order ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'ORDER_ID_REQUIRED';
+            $json['success'] = false;
+        } elseif (!$order_status_id) {
+            $json['error'] = 'Order Status ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'STATUS_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+
+            if ($this->model_extension_admin_app_api_app->updateOrderStatus($order_id, $order_status_id)) {
+                $json['success'] = true;
+                $json['message'] = 'Order status updated successfully';
+            } else {
+                $json['error'] = 'Order not found';
+                $json['status'] = 404;
+                $json['code'] = 'ORDER_NOT_FOUND';
+                $json['success'] = false;
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function orderStatuses()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+
+            $order_statuses = $this->model_extension_admin_app_api_app->getOrderStatuses();
+
+            $json['success'] = true;
+            $json['data'] = $order_statuses;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function generateInvoice()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        // Validate API token
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Get JSON input
+        $input = json_decode(file_get_contents('php://input'), true);
+
         // Get order_id from POST or JSON input
         $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : 0);
 
@@ -601,9 +508,9 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         list($success, $invoice_no, $invoice_prefix) = $this->model_extension_admin_app_api_app->generateInvoiceNo($order_id);
-        
+
         if ($success) {
             $json['success'] = true;
             $json['full_invoice_no'] = $invoice_prefix . $invoice_no;
@@ -618,11 +525,114 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
-    public function toggleCustomerStatus() {
+    public function getCustomers()
+    {
         $json = [];
-        
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        // Get JSON input for filters
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        // Get filter parameters
+        $filter_data = [
+            'search' => isset($input['search']) ? $input['search'] : '', // Will search in both name and email
+            'status' => isset($input['status']) ? $input['status'] : '' // 0, 1, or undefined
+        ];
+
+        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
+        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
+
+        $page = max(1, $page);
+        $limit = max(1, min(100, $limit));
+
+        $data = $this->model_extension_admin_app_api_app->getCustomers($page, $limit, $filter_data);
+
+        $json['customers'] = array_map(function ($customer) {
+            return [
+                'customer_id' => (string)$customer['customer_id'],
+                'status' => (string)$customer['status'],
+                'name' => $customer['name'],
+                'email' => $customer['email'],
+                'initials' => $customer['initials']
+            ];
+        }, $data['customers']);
+
+        $json['pagination'] = [
+            'total' => $data['total'],
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($data['total'] / $limit),
+            'hasMore' => ($page * $limit) < $data['total']
+        ];
+
+        $json['success'] = true;
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getCustomer()
+    {
+        $json = [];
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $customer_id = isset($this->request->get['customer_id']) ? (int)$this->request->get['customer_id'] : (isset($input['customer_id']) ? (int)$input['customer_id'] : 0);
+
+        if (!$customer_id) {
+            $json['error'] = 'Customer ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CUSTOMER_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $customer_info = $this->model_extension_admin_app_api_app->getCustomerDetails($customer_id);
+
+        if ($customer_info) {
+            $json['success'] = true;
+            $json['customer'] = $customer_info;
+        } else {
+            $json['error'] = 'Customer not found';
+            $json['status'] = 404;
+            $json['code'] = 'CUSTOMER_NOT_FOUND';
+            $json['success'] = false;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function toggleCustomerStatus()
+    {
+        $json = [];
+
         $this->load->language('extension/admin_app/api/app');
-        
+
         // Validate API token
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
@@ -636,7 +646,7 @@ class App extends \Opencart\System\Engine\Controller {
 
         // Get JSON input
         $input = json_decode(file_get_contents('php://input'), true);
-        
+
         // Get customer_id from POST or JSON input
         $customer_id = isset($this->request->post['customer_id']) ? $this->request->post['customer_id'] : (isset($input['customer_id']) ? $input['customer_id'] : 0);
 
@@ -651,9 +661,9 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         $result = $this->model_extension_admin_app_api_app->toggleCustomerStatus($customer_id);
-        
+
         if ($result !== false) {
             $json['success'] = true;
             $json['status'] = $result;
@@ -669,11 +679,12 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
-    public function deleteCustomer() {
+    public function deleteCustomer()
+    {
         $json = [];
-        
+
         $this->load->language('extension/admin_app/api/app');
-        
+
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
             $json['status'] = 401;
@@ -698,7 +709,7 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         if ($this->model_extension_admin_app_api_app->deleteCustomer($customer_id)) {
             $json['success'] = true;
             $json['message'] = 'Customer deleted successfully';
@@ -713,11 +724,12 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
-    public function updateCustomer() {
+    public function updateCustomer()
+    {
         $json = [];
-        
+
         $this->load->language('extension/admin_app/api/app');
-        
+
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
             $json['status'] = 401;
@@ -729,7 +741,7 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $input = json_decode(file_get_contents('php://input'), true);
-        
+
         if (empty($input['customer_id'])) {
             $json['error'] = 'Customer ID is required';
             $json['status'] = 400;
@@ -743,13 +755,13 @@ class App extends \Opencart\System\Engine\Controller {
         // Required fields validation
         $required_fields = ['firstname', 'lastname', 'email', 'telephone'];
         $missing_fields = [];
-        
+
         foreach ($required_fields as $field) {
             if (!isset($input[$field]) || trim($input[$field]) === '') {
                 $missing_fields[] = $field;
             }
         }
-        
+
         if (!empty($missing_fields)) {
             $json['error'] = 'Required fields missing: ' . implode(', ', $missing_fields);
             $json['status'] = 400;
@@ -761,7 +773,7 @@ class App extends \Opencart\System\Engine\Controller {
         }
 
         $this->load->model('extension/admin_app/api/app');
-        
+
         $customer_data = [
             'customer_id' => (int)$input['customer_id'],
             'firstname' => $input['firstname'],
@@ -772,13 +784,13 @@ class App extends \Opencart\System\Engine\Controller {
             'status' => isset($input['status']) ? ((int)$input['status'] ? 1 : 0) : 1,
             'customer_group_id' => isset($input['customer_group_id']) ? (int)$input['customer_group_id'] : 1
         ];
-        
+
         if (isset($input['password']) && !empty($input['password'])) {
             $customer_data['password'] = $input['password'];
         }
-        
+
         $result = $this->model_extension_admin_app_api_app->updateCustomer($customer_data);
-        
+
         if ($result === true) {
             $json['success'] = true;
             $json['message'] = 'Customer updated successfully';
@@ -793,12 +805,10 @@ class App extends \Opencart\System\Engine\Controller {
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getOrder() {
+    public function getProducts()
+    {
         $json = [];
-        
-        $this->load->language('extension/admin_app/api/app');
-        
-        // Validate API token
+
         if (!$this->validateToken()) {
             $json['error'] = $this->language->get('error_token');
             $json['status'] = 401;
@@ -809,33 +819,42 @@ class App extends \Opencart\System\Engine\Controller {
             return;
         }
 
-        // Get JSON input
-        $input = json_decode(file_get_contents('php://input'), true);
-        
-        // Get order_id from POST or JSON input
-        $order_id = isset($this->request->post['order_id']) ? $this->request->post['order_id'] : (isset($input['order_id']) ? $input['order_id'] : 0);
-
-        if (!$order_id) {
-            $json['error'] = 'Order ID is required';
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
         $this->load->model('extension/admin_app/api/app');
-        
-        $order_info = $this->model_extension_admin_app_api_app->getOrder($order_id);
-        
-        if ($order_info) {
-            $json['success'] = true;
-            $json['order'] = $order_info;
-        } else {
-            $json['success'] = false;
-            $json['error'] = 'Order not found';
-        }
+
+        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
+        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
+
+        $page = max(1, $page);
+        $limit = max(1, min(100, $limit));
+
+        $data = $this->model_extension_admin_app_api_app->getProducts($page, $limit);
+
+        $this->load->model('tool/image');
+
+        $json['products'] = array_map(function ($product) {
+            return [
+                'id' => (string)$product['product_id'],
+                'name' => $product['name'],
+                'model' => $product['model'],
+                'quantity' => (int)$product['quantity'],
+                'price' => (float)$product['price'],
+                'image' => $product['image'] ? $this->model_tool_image->resize($product['image'], 100, 100) : '',
+                'status' => (int)$product['status'],
+                'dateAdded' => $product['date_added']
+            ];
+        }, $data['products']);
+
+        $json['pagination'] = [
+            'total' => $data['total'],
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($data['total'] / $limit),
+            'hasMore' => ($page * $limit) < $data['total']
+        ];
+
+        $json['success'] = true;
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
-
 }
