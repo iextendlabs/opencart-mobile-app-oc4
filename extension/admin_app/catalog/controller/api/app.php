@@ -94,54 +94,6 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getCategories()
-    {
-        $json = [];
-
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $this->load->model('extension/admin_app/api/app');
-
-        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
-        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-
-        $page = max(1, $page);
-        $limit = max(1, min(100, $limit));
-
-        $data = $this->model_extension_admin_app_api_app->getCategories($page, $limit);
-
-        $this->load->model('tool/image');
-
-        $json['categories'] = array_map(function ($category) {
-            return [
-                'id' => (string)$category['category_id'],
-                'name' => $category['name'],
-                'image' => $category['image'] ? $this->model_tool_image->resize($category['image'], 100, 100) : ''
-            ];
-        }, $data['categories']);
-
-        $json['pagination'] = [
-            'total' => $data['total'],
-            'page' => $page,
-            'limit' => $limit,
-            'pages' => ceil($data['total'] / $limit),
-            'hasMore' => ($page * $limit) < $data['total']
-        ];
-
-        $json['success'] = true;
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
     public function getCoupons()
     {
         $json = [];
@@ -1100,4 +1052,163 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
+
+    public function getCategories()
+    {
+        $json = [];
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $filter_data = [
+            'name' => isset($input['name']) ? $input['name'] : '',
+            'status' => isset($input['status']) ? $input['status'] : ''
+        ];
+
+        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
+        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
+
+        $page = max(1, $page);
+        $limit = max(1, min(100, $limit));
+
+        $data = $this->model_extension_admin_app_api_app->getCategories($page, $limit, $filter_data);
+
+        $this->load->model('tool/image');
+
+        $json['categories'] = array_map(function ($category) {
+            return [
+                'id' => (string)$category['category_id'],
+                'name' => $category['name'],
+                'image' => $category['image'] ? $this->model_tool_image->resize($category['image'], 100, 100) : '',
+                'status' => (int)$category['status'],
+                'sort_order' => (int)$category['sort_order']
+            ];
+        }, $data['categories']);
+
+        $json['pagination'] = [
+            'total' => $data['total'],
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($data['total'] / $limit),
+            'hasMore' => ($page * $limit) < $data['total']
+        ];
+
+        $json['success'] = true;
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function toggleCategoryStatus()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        // Validate API token
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Get JSON input
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        // Get category_id from POST or JSON input
+        $category_id = isset($this->request->post['category_id']) ? $this->request->post['category_id'] : (isset($input['category_id']) ? $input['category_id'] : 0);
+
+        if (!$category_id) {
+            $json['error'] = 'Category ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CATEGORY_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $result = $this->model_extension_admin_app_api_app->toggleCategoryStatus($category_id);
+
+        if ($result !== false) {
+            $json['success'] = true;
+            $json['status'] = $result;
+            $json['message'] = 'Category status updated successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Category not found';
+            $json['status'] = 404;
+            $json['code'] = 'CATEGORY_NOT_FOUND';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function deleteCategory()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        // Validate API token
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Get JSON input
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        // Get category_id from POST or JSON input
+        $category_id = isset($this->request->post['category_id']) ? $this->request->post['category_id'] : (isset($input['category_id']) ? $input['category_id'] : 0);
+
+        if (!$category_id) {
+            $json['error'] = 'Category ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'CATEGORY_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        if ($this->model_extension_admin_app_api_app->deleteCategory($category_id)) {
+            $json['success'] = true;
+            $json['message'] = 'Category deleted successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Category not found';
+            $json['status'] = 404;
+            $json['code'] = 'CATEGORY_NOT_FOUND';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
 }

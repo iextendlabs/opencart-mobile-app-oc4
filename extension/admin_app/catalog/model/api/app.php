@@ -547,20 +547,46 @@ class App extends \Opencart\System\Engine\Model {
         return false;
     }
 
-    public function getCategories($page = 1, $limit = 20) {
+    public function getCategories($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
-        $query = $this->db->query("SELECT 
+        $sql = "SELECT 
             c.category_id,
             cd.name,
-            c.image
+            c.image,
+            c.status,
+            c.sort_order
             FROM " . DB_PREFIX . "category c
             LEFT JOIN " . DB_PREFIX . "category_description cd ON (c.category_id = cd.category_id)
-            WHERE cd.language_id = '" . (int)$this->config->get('config_language_id') . "'
-            ORDER BY c.sort_order, cd.name
-            LIMIT " . (int)$start . ", " . (int)$limit);
+            WHERE cd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
-        $total_query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "category");
+        if (!empty($filter_data['name'])) {
+            $sql .= " AND cd.name LIKE '%" . $this->db->escape($filter_data['name']) . "%'";
+        }
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            $sql .= " AND c.status = '" . (int)$filter_data['status'] . "'";
+        }
+
+        $sql .= " ORDER BY c.sort_order, cd.name";
+        $sql .= " LIMIT " . (int)$start . ", " . (int)$limit;
+
+        $query = $this->db->query($sql);
+
+        // Build total query with same filters
+        $sql_total = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "category c
+            LEFT JOIN " . DB_PREFIX . "category_description cd ON (c.category_id = cd.category_id)
+            WHERE cd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+
+        if (!empty($filter_data['name'])) {
+            $sql_total .= " AND cd.name LIKE '%" . $this->db->escape($filter_data['name']) . "%'";
+        }
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            $sql_total .= " AND c.status = '" . (int)$filter_data['status'] . "'";
+        }
+
+        $total_query = $this->db->query($sql_total);
         
         return [
             'categories' => $query->rows,
@@ -755,5 +781,44 @@ class App extends \Opencart\System\Engine\Model {
         $this->cache->delete('product');
 
         return true;
+    }
+
+    public function toggleCategoryStatus($category_id) {
+        // First get current status
+        $query = $this->db->query("SELECT status FROM " . DB_PREFIX . "category WHERE category_id = '" . (int)$category_id . "'");
+
+        if ($query->num_rows) {
+            // Toggle the status (if 1 make it 0, if 0 or null make it 1)
+            $new_status = ($query->row['status'] == 1) ? 0 : 1;
+
+            // Update the status
+            $this->db->query("UPDATE " . DB_PREFIX . "category SET status = '" . (int)$new_status . "' WHERE category_id = '" . (int)$category_id . "'");
+
+            return $new_status;
+        }
+
+        return false;
+    }
+
+    public function deleteCategory($category_id) {
+        // Check if category exists
+        $category_query = $this->db->query("SELECT category_id FROM " . DB_PREFIX . "category WHERE category_id = '" . (int)$category_id . "'");
+
+        if ($category_query->num_rows) {
+            $this->db->query("DELETE FROM " . DB_PREFIX . "category WHERE category_id = '" . (int)$category_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "category_description WHERE category_id = '" . (int)$category_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "category_path WHERE category_id = '" . (int)$category_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "category_path WHERE path_id = '" . (int)$category_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "category_to_store WHERE category_id = '" . (int)$category_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "category_to_layout WHERE category_id = '" . (int)$category_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE category_id = '" . (int)$category_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "seo_url WHERE `key` = 'category_id' AND `value` = '" . (int)$category_id . "'");
+
+            $this->cache->delete('category');
+
+            return true;
+        }
+
+        return false;
     }
 }
