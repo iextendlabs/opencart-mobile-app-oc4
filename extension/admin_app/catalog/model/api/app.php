@@ -436,9 +436,11 @@ class App extends \Opencart\System\Engine\Model {
             p.image,
             p.status,
             p.stock_status_id,
+            ss.name AS stock_status_name,
             p.date_added
             FROM " . DB_PREFIX . "product p
             LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)
+            LEFT JOIN " . DB_PREFIX . "stock_status ss ON (p.stock_status_id = ss.stock_status_id AND ss.language_id = '" . (int)$this->config->get('config_language_id') . "')
             WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
         // Add filters

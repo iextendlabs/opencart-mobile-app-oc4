@@ -850,6 +850,7 @@ class App extends \Opencart\System\Engine\Controller
                 'price' => (float)$product['price'],
                 'image' => $product['image'] ? $this->model_tool_image->resize($product['image'], 100, 100) : '',
                 'status' => (int)$product['status'],
+                'stock_status_name' => $product['stock_status_name'],
                 'dateAdded' => $product['date_added']
             ];
         }, $data['products']);
