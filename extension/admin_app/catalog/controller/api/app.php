@@ -978,4 +978,126 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
+
+    public function getProduct()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $product_id = isset($this->request->get['product_id']) ? (int)$this->request->get['product_id'] : 0;
+
+        if (!$product_id) {
+            $json['error'] = 'Product ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'PRODUCT_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $product_info = $this->model_extension_admin_app_api_app->getProduct($product_id);
+
+        if ($product_info) {
+            $json['success'] = true;
+            $json['product'] = $product_info;
+        } else {
+            $json['error'] = 'Product not found';
+            $json['status'] = 404;
+            $json['code'] = 'PRODUCT_NOT_FOUND';
+            $json['success'] = false;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function updateProduct()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        if (empty($input['product_id'])) {
+            $json['error'] = 'Product ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'PRODUCT_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Basic validation
+        $required_fields = ['name', 'model', 'price', 'quantity', 'status', 'stock_status_id'];
+        $missing_fields = [];
+
+        foreach ($required_fields as $field) {
+            if (!isset($input[$field])) {
+                $missing_fields[] = $field;
+            }
+        }
+
+        if (!empty($missing_fields)) {
+            $json['error'] = 'Required fields missing: ' . implode(', ', $missing_fields);
+            $json['status'] = 400;
+            $json['code'] = 'REQUIRED_FIELDS_MISSING';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $product_data = [
+            'product_id' => (int)$input['product_id'],
+            'name' => $input['name'],
+            'model' => $input['model'],
+            'price' => (float)$input['price'],
+            'quantity' => (int)$input['quantity'],
+            'status' => (int)$input['status'],
+            'stock_status_id' => (int)$input['stock_status_id']
+        ];
+
+        $result = $this->model_extension_admin_app_api_app->updateProduct($product_data);
+
+        if ($result === true) {
+            $json['success'] = true;
+            $json['message'] = 'Product updated successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = $result;
+            $json['status'] = 400;
+            $json['code'] = 'UPDATE_FAILED';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 }

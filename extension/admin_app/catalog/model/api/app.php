@@ -698,4 +698,62 @@ class App extends \Opencart\System\Engine\Model {
         $query = $this->db->query("SELECT stock_status_id, name FROM " . DB_PREFIX . "stock_status WHERE language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY name");
         return $query->rows;
     }
+
+    public function getProduct($product_id) {
+        $query = $this->db->query("SELECT 
+            pd.name,
+            p.model,
+            p.price,
+            p.quantity,
+            p.status,
+            p.stock_status_id,
+            ss.name AS stock_status
+            FROM " . DB_PREFIX . "product p
+            LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)
+            LEFT JOIN " . DB_PREFIX . "stock_status ss ON (p.stock_status_id = ss.stock_status_id)
+            WHERE p.product_id = '" . (int)$product_id . "'
+            AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "'
+            AND ss.language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+        if ($query->num_rows) {
+            return [
+                'name' => $query->row['name'],
+                'model' => $query->row['model'],
+                'price' => (float)$query->row['price'],
+                'quantity' => (int)$query->row['quantity'],
+                'status' => (int)$query->row['status'],
+                'stock_status_id' => (int)$query->row['stock_status_id'],
+                'stock_status' => $query->row['stock_status']
+            ];
+        }
+
+        return false;
+    }
+
+    public function updateProduct($data) {
+        // Check if product exists
+        $product_query = $this->db->query("SELECT product_id FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$data['product_id'] . "'");
+
+        if (!$product_query->num_rows) {
+            return 'Product not found';
+        }
+
+        $this->db->query("UPDATE " . DB_PREFIX . "product SET " .
+            "model = '" . $this->db->escape($data['model']) . "', " .
+            "quantity = '" . (int)$data['quantity'] . "', " .
+            "price = '" . (float)$data['price'] . "', " .
+            "status = '" . (int)$data['status'] . "', " .
+            "stock_status_id = '" . (int)$data['stock_status_id'] . "', " .
+            "date_modified = NOW() " .
+            "WHERE product_id = '" . (int)$data['product_id'] . "'");
+
+        $this->db->query("UPDATE " . DB_PREFIX . "product_description SET " .
+            "name = '" . $this->db->escape($data['name']) . "' " .
+            "WHERE product_id = '" . (int)$data['product_id'] . "' " .
+            "AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+        $this->cache->delete('product');
+
+        return true;
+    }
 }
