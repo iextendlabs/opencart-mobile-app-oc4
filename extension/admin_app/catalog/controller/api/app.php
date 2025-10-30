@@ -140,54 +140,6 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getReviews()
-    {
-        $json = [];
-
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $this->load->model('extension/admin_app/api/app');
-
-        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
-        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-
-        $page = max(1, $page);
-        $limit = max(1, min(100, $limit));
-
-        $data = $this->model_extension_admin_app_api_app->getReviews($page, $limit);
-
-        $json['reviews'] = array_map(function ($review) {
-            return [
-                'id' => (string)$review['review_id'],
-                'customer' => $review['customer'],
-                'rating' => (int)$review['rating'],
-                'review' => $review['review'],
-                'status' => (int)$review['status']
-            ];
-        }, $data['reviews']);
-
-        $json['pagination'] = [
-            'total' => $data['total'],
-            'page' => $page,
-            'limit' => $limit,
-            'pages' => ceil($data['total'] / $limit),
-            'hasMore' => ($page * $limit) < $data['total']
-        ];
-
-        $json['success'] = true;
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
     private function validateToken()
     {
         if (isset($this->request->get['token']) || isset($this->request->server['HTTP_AUTHORIZATION'])) {
@@ -1276,6 +1228,282 @@ class App extends \Opencart\System\Engine\Controller
             $json['success'] = false;
             $json['error'] = $result;
             $json['status'] = 400;
+            $json['code'] = 'UPDATE_FAILED';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getReviews()
+    {
+        $json = [];
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $filter_data = [
+            'author' => isset($input['author']) ? $input['author'] : '',
+            'status' => isset($input['status']) ? $input['status'] : ''
+        ];
+
+        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
+        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
+
+        $page = max(1, $page);
+        $limit = max(1, min(100, $limit));
+
+        $data = $this->model_extension_admin_app_api_app->getReviews($page, $limit, $filter_data);
+
+        $json['reviews'] = array_map(function ($review) {
+            return [
+                'id' => (string)$review['review_id'],
+                'author' => $review['author'],
+                'product_name' => $review['product_name'],
+                'rating' => (int)$review['rating'],
+                'status' => (int)$review['status']
+            ];
+        }, $data['reviews']);
+
+        $json['pagination'] = [
+            'total' => $data['total'],
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($data['total'] / $limit),
+            'hasMore' => ($page * $limit) < $data['total']
+        ];
+
+        $json['success'] = true;
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function toggleReviewStatus()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $review_id = isset($input['review_id']) ? (int)$input['review_id'] : 0;
+
+        if (!$review_id) {
+            $json['error'] = 'Review ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'REVIEW_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $result = $this->model_extension_admin_app_api_app->toggleReviewStatus($review_id);
+
+        if ($result !== false) {
+            $json['success'] = true;
+            $json['status'] = $result;
+            $json['message'] = 'Review status updated successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Review not found';
+            $json['status'] = 404;
+            $json['code'] = 'REVIEW_NOT_FOUND';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function deleteReview()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $review_id = isset($input['review_id']) ? (int)$input['review_id'] : 0;
+
+        if (!$review_id) {
+            $json['error'] = 'Review ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'REVIEW_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        if ($this->model_extension_admin_app_api_app->deleteReview($review_id)) {
+            $json['success'] = true;
+            $json['message'] = 'Review deleted successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Review not found';
+            $json['status'] = 404;
+            $json['code'] = 'REVIEW_NOT_FOUND';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getReview()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $review_id = isset($input['review_id']) ? (int)$input['review_id'] : (isset($this->request->get['review_id']) ? (int)$this->request->get['review_id'] : 0);
+
+        if (!$review_id) {
+            $json['error'] = 'Review ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'REVIEW_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $review_info = $this->model_extension_admin_app_api_app->getReview($review_id);
+
+        if ($review_info) {
+            $json['success'] = true;
+            $json['review'] = [
+                'review_id' => (int)$review_info['review_id'],
+                'author' => $review_info['author'],
+                'content' => $review_info['text'],
+                'rating' => (int)$review_info['rating'],
+                'status' => (int)$review_info['status'],
+                'date_added' => $review_info['date_added']
+            ];
+        } else {
+            $json['success'] = false;
+            $json['error'] = 'Review not found';
+            $json['status'] = 404;
+            $json['code'] = 'REVIEW_NOT_FOUND';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function updateReview()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $review_id = isset($input['review_id']) ? (int)$input['review_id'] : 0;
+
+        if (!$review_id) {
+            $json['error'] = 'Review ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'REVIEW_ID_REQUIRED';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Basic validation
+        $required_fields = ['author', 'content', 'rating', 'status'];
+        $missing_fields = [];
+
+        foreach ($required_fields as $field) {
+            if (!isset($input[$field])) {
+                $missing_fields[] = $field;
+            }
+        }
+
+        if (!empty($missing_fields)) {
+            $json['error'] = 'Required fields missing: ' . implode(', ', $missing_fields);
+            $json['status'] = 400;
+            $json['code'] = 'REQUIRED_FIELDS_MISSING';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $review_data = [
+            'author' => $input['author'],
+            'content' => $input['content'],
+            'rating' => (int)$input['rating'],
+            'status' => (int)$input['status']
+        ];
+
+        $result = $this->model_extension_admin_app_api_app->updateReview($review_id, $review_data);
+
+        if ($result === true) {
+            $json['success'] = true;
+            $json['message'] = 'Review updated successfully';
+        } else {
+            $json['success'] = false;
+            $json['error'] = $result; // This will contain 'Review not found'
+            $json['status'] = 404;
             $json['code'] = 'UPDATE_FAILED';
         }
 

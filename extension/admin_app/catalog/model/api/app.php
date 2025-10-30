@@ -671,21 +671,48 @@ class App extends \Opencart\System\Engine\Model {
         ];
     }
 
-    public function getReviews($page = 1, $limit = 20) {
+    public function getReviews($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
-        $query = $this->db->query("SELECT 
+        $sql = "SELECT 
             r.review_id,
-            CONCAT(c.firstname, ' ', c.lastname) as customer,
+            r.author,
+            pd.name AS product_name,
             r.rating,
-            r.text as review,
+            r.text AS review,
             r.status
             FROM " . DB_PREFIX . "review r
-            LEFT JOIN " . DB_PREFIX . "customer c ON (r.customer_id = c.customer_id)
-            ORDER BY r.date_added DESC
-            LIMIT " . (int)$start . ", " . (int)$limit);
+            LEFT JOIN " . DB_PREFIX . "product_description pd ON (r.product_id = pd.product_id)
+            WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
-        $total_query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "review");
+        // Add filters
+        if (!empty($filter_data['author'])) {
+            $sql .= " AND r.author LIKE '%%" . $this->db->escape($filter_data['author']) . "%%'";
+        }
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            $sql .= " AND r.status = '" . (int)$filter_data['status'] . "'";
+        }
+
+        $sql .= " ORDER BY r.date_added DESC";
+        $sql .= " LIMIT " . (int)$start . ", " . (int)$limit;
+            
+        $query = $this->db->query($sql);
+
+        // Build total query with same filters
+        $sql_total = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "review r 
+            LEFT JOIN " . DB_PREFIX . "product_description pd ON (r.product_id = pd.product_id) 
+            WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+
+        if (!empty($filter_data['author'])) {
+            $sql_total .= " AND r.author LIKE '%%" . $this->db->escape($filter_data['author']) . "%%'";
+        }
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            $sql_total .= " AND r.status = '" . (int)$filter_data['status'] . "'";
+        }
+        
+        $total_query = $this->db->query($sql_total);
         
         return [
             'reviews' => $query->rows,
@@ -844,4 +871,71 @@ class App extends \Opencart\System\Engine\Model {
         return true;
     }
 
+    public function toggleReviewStatus($review_id) {
+        // First get current status
+        $query = $this->db->query("SELECT status FROM " . DB_PREFIX . "review WHERE review_id = '" . (int)$review_id . "'");
+        
+        if ($query->num_rows) {
+            // Toggle the status (if 1 make it 0, if 0 or null make it 1)
+            $new_status = ($query->row['status'] == 1) ? 0 : 1;
+            
+            // Update the status
+            $this->db->query("UPDATE " . DB_PREFIX . "review SET status = '" . (int)$new_status . "' WHERE review_id = '" . (int)$review_id . "'");
+            
+            return $new_status;
+        }
+        
+        return false;
+    }
+
+    public function deleteReview($review_id) {
+        // Check if review exists
+        $review_query = $this->db->query("SELECT review_id FROM " . DB_PREFIX . "review WHERE review_id = '" . (int)$review_id . "'");
+
+        if ($review_query->num_rows) {
+            $this->db->query("DELETE FROM " . DB_PREFIX . "review WHERE review_id = '" . (int)$review_id . "'");
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getReview($review_id) {
+        $query = $this->db->query("SELECT review_id, author, text, rating, status, date_added FROM " . DB_PREFIX . "review WHERE review_id = '" . (int)$review_id . "'");
+
+        if ($query->num_rows) {
+            return $query->row;
+        }
+
+        return false;
+    }
+
+    public function updateReview($review_id, $data) {
+        // Check if review exists
+        $review_query = $this->db->query("SELECT review_id FROM " . DB_PREFIX . "review WHERE review_id = '" . (int)$review_id . "'");
+
+        if (!$review_query->num_rows) {
+            return 'Review not found';
+        }
+
+        $update_fields = [];
+        if (isset($data['author'])) {
+            $update_fields[] = "author = '" . $this->db->escape($data['author']) . "'";
+        }
+        if (isset($data['content'])) {
+            $update_fields[] = "text = '" . $this->db->escape($data['content']) . "'";
+        }
+        if (isset($data['rating'])) {
+            $update_fields[] = "rating = '" . (int)$data['rating'] . "'";
+        }
+        if (isset($data['status'])) {
+            $update_fields[] = "status = '" . (int)$data['status'] . "'";
+        }
+
+        if ($update_fields) {
+            $this->db->query("UPDATE " . DB_PREFIX . "review SET " . implode(', ', $update_fields) . ", date_modified = NOW() WHERE review_id = '" . (int)$review_id . "'");
+        }
+
+        return true;
+    }
 }
