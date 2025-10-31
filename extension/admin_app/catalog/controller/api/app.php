@@ -98,52 +98,6 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    public function getCoupons()
-    {
-        $json = [];
-
-        if (!$this->validateToken()) {
-            $json['error'] = $this->language->get('error_token');
-            $json['status'] = 401;
-            $json['code'] = 'TOKEN_INVALID';
-            $json['success'] = false;
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
-            return;
-        }
-
-        $this->load->model('extension/admin_app/api/app');
-
-        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
-        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
-
-        $page = max(1, $page);
-        $limit = max(1, min(100, $limit));
-
-        $data = $this->model_extension_admin_app_api_app->getCoupons($page, $limit);
-
-        $json['coupons'] = array_map(function ($coupon) {
-            return [
-                'id' => (string)$coupon['coupon_id'],
-                'code' => $coupon['code'],
-                'discount' => $coupon['discount']
-            ];
-        }, $data['coupons']);
-
-        $json['pagination'] = [
-            'total' => $data['total'],
-            'page' => $page,
-            'limit' => $limit,
-            'pages' => ceil($data['total'] / $limit),
-            'hasMore' => ($page * $limit) < $data['total']
-        ];
-
-        $json['success'] = true;
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
     private function validateToken()
     {
         if (isset($this->request->get['token']) || isset($this->request->server['HTTP_AUTHORIZATION'])) {
@@ -1509,6 +1463,146 @@ class App extends \Opencart\System\Engine\Controller
             $json['error'] = $result; // This will contain 'Review not found'
             $json['status'] = 404;
             $json['code'] = 'UPDATE_FAILED';
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function getCoupons()
+    {
+        $json = [];
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        $this->load->model('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $filter_data = [
+            'search' => isset($input['search']) ? $input['search'] : '',
+            'status' => isset($input['status']) ? $input['status'] : ''
+        ];
+
+        $page = isset($this->request->get['page']) ? (int)$this->request->get['page'] : 1;
+        $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 20;
+
+        $page = max(1, $page);
+        $limit = max(1, min(100, $limit));
+
+        $data = $this->model_extension_admin_app_api_app->getCoupons($page, $limit, $filter_data);
+
+        $json['coupons'] = array_map(function ($coupon) {
+            return [
+                'id' => (string)$coupon['coupon_id'],
+                'name' => $coupon['name'],
+                'code' => $coupon['code'],
+                'discount' => (float)$coupon['discount'],
+                'type' => $coupon['type'],
+                'uses_total' => (int)$coupon['uses_total'],
+                'uses_customer' => (int)$coupon['uses_customer'],
+                'date_start' => $coupon['date_start'],
+                'date_end' => $coupon['date_end'],
+                'status' => (int)$coupon['status'],
+                'date_added' => $coupon['date_added']
+            ];
+        }, $data['coupons']);
+
+        $json['pagination'] = [
+            'total' => $data['total'],
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($data['total'] / $limit),
+            'hasMore' => ($page * $limit) < $data['total']
+        ];
+
+        $json['success'] = true;
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+    
+    public function toggleCouponStatus()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $coupon_id = isset($input['coupon_id']) ? $input['coupon_id'] : '';
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$coupon_id) {
+            $json['error'] = 'Coupon ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'COUPON_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+
+            $result = $this->model_extension_admin_app_api_app->toggleCouponStatus($coupon_id);
+
+            if ($result !== false) {
+                $json['success'] = true;
+                $json['status'] = $result;
+                $json['message'] = 'Coupon status updated successfully';
+            } else {
+                $json['error'] = 'Coupon not found';
+                $json['status'] = 404;
+                $json['code'] = 'COUPON_NOT_FOUND';
+                $json['success'] = false;
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function deleteCoupon()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $coupon_id = isset($input['coupon_id']) ? $input['coupon_id'] : '';
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$coupon_id) {
+            $json['error'] = 'Coupon ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'COUPON_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+
+            if ($this->model_extension_admin_app_api_app->deleteCoupon($coupon_id)) {
+                $json['success'] = true;
+                $json['message'] = 'Coupon deleted successfully';
+            } else {
+                $json['error'] = 'Coupon not found';
+                $json['status'] = 404;
+                $json['code'] = 'COUPON_NOT_FOUND';
+                $json['success'] = false;
+            }
         }
 
         $this->response->addHeader('Content-Type: application/json');

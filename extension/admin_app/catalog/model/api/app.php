@@ -652,23 +652,84 @@ class App extends \Opencart\System\Engine\Model {
         return true;
     }
 
-    public function getCoupons($page = 1, $limit = 20) {
+    public function getCoupons($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
-        $query = $this->db->query("SELECT 
+        $sql = "SELECT 
             coupon_id,
+            name,
             code,
-            CONCAT(type, ' ', discount) as discount
+            discount,
+            type,
+            uses_total,
+            uses_customer,
+            date_start,
+            date_end,
+            status,
+            date_added
             FROM " . DB_PREFIX . "coupon
-            ORDER BY coupon_id DESC
-            LIMIT " . (int)$start . ", " . (int)$limit);
+            WHERE 1=1";
 
-        $total_query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "coupon");
+        if (!empty($filter_data['search'])) {
+            $sql .= " AND (name LIKE '%%" . $this->db->escape($filter_data['search']) . "%%' OR code LIKE '%%" . $this->db->escape($filter_data['search']) . "%%')";
+        }
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            $sql .= " AND status = '" . (int)$filter_data['status'] . "'";
+        }
+
+        $sql .= " ORDER BY coupon_id DESC
+            LIMIT " . (int)$start . ", " . (int)$limit;
+            
+        $query = $this->db->query($sql);
+
+        $sql_total = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "coupon WHERE 1=1";
+
+        if (!empty($filter_data['search'])) {
+            $sql_total .= " AND (name LIKE '%%" . $this->db->escape($filter_data['search']) . "%%' OR code LIKE '%%" . $this->db->escape($filter_data['search']) . "%%')";
+        }
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+            $sql_total .= " AND status = '" . (int)$filter_data['status'] . "'";
+        }
+
+        $total_query = $this->db->query($sql_total);
         
         return [
             'coupons' => $query->rows,
             'total' => (int)$total_query->row['total']
         ];
+    }
+
+    public function toggleCouponStatus($coupon_id) {
+        // First get current status
+        $query = $this->db->query("SELECT status FROM " . DB_PREFIX . "coupon WHERE coupon_id = '" . (int)$coupon_id . "'");
+        
+        if ($query->num_rows) {
+            // Toggle the status (if 1 make it 0, if 0 or null make it 1)
+            $new_status = ($query->row['status'] == 1) ? 0 : 1;
+            
+            // Update the status
+            $this->db->query("UPDATE " . DB_PREFIX . "coupon SET status = '" . (int)$new_status . "' WHERE coupon_id = '" . (int)$coupon_id . "'");
+            
+            return $new_status;
+        }
+        
+        return false;
+    }
+
+    public function deleteCoupon($coupon_id) {
+        // Check if coupon exists
+        $coupon_query = $this->db->query("SELECT coupon_id FROM " . DB_PREFIX . "coupon WHERE coupon_id = '" . (int)$coupon_id . "'");
+
+        if ($coupon_query->num_rows) {
+            $this->db->query("DELETE FROM " . DB_PREFIX . "coupon WHERE coupon_id = '" . (int)$coupon_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "coupon_history WHERE coupon_id = '" . (int)$coupon_id . "'");
+            $this->db->query("DELETE FROM " . DB_PREFIX . "coupon_product WHERE coupon_id = '" . (int)$coupon_id . "'");
+            return true;
+        }
+
+        return false;
     }
 
     public function getReviews($page = 1, $limit = 20, $filter_data = []) {
