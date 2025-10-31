@@ -72,6 +72,10 @@ class App extends \Opencart\System\Engine\Controller
         $json['totalClients'] = $this->model_extension_admin_app_api_app->getTotalCustomers();
         $json['totalRevenue'] = $this->model_extension_admin_app_api_app->getTotalRevenue();
 
+        $json['lowStockProducts'] = $this->model_extension_admin_app_api_app->getLowStockProductsCount();
+        $json['totalReviews'] = $this->model_extension_admin_app_api_app->getTotalReviews();
+        $json['pendingReviews'] = $this->model_extension_admin_app_api_app->getTotalPendingReviews();
+
         // Get latest 5 orders
         $latest_orders = $this->model_extension_admin_app_api_app->getLatestOrders(5);
         $json['orders'] = array_map(function ($order) {

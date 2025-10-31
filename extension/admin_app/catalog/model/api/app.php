@@ -938,4 +938,19 @@ class App extends \Opencart\System\Engine\Model {
 
         return true;
     }
+
+    public function getLowStockProductsCount() {
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product WHERE quantity = 0");
+        return (int)$query->row['total'];
+    }
+
+    public function getTotalReviews() {
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "review");
+        return (int)$query->row['total'];
+    }
+
+    public function getTotalPendingReviews() {
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "review WHERE status = 0");
+        return (int)$query->row['total'];
+    }
 }
