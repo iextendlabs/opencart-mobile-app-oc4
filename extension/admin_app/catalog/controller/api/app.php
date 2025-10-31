@@ -1608,4 +1608,44 @@ class App extends \Opencart\System\Engine\Controller
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
+
+    public function updateCoupon()
+    {
+        $json = [];
+
+        $this->load->language('extension/admin_app/api/app');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $coupon_id = isset($input['coupon_id']) ? $input['coupon_id'] : '';
+
+        if (!$this->validateToken()) {
+            $json['error'] = $this->language->get('error_token');
+            $json['status'] = 401;
+            $json['code'] = 'TOKEN_INVALID';
+            $json['success'] = false;
+        } elseif (!$coupon_id) {
+            $json['error'] = 'Coupon ID is required';
+            $json['status'] = 400;
+            $json['code'] = 'COUPON_ID_REQUIRED';
+            $json['success'] = false;
+        } else {
+            $this->load->model('extension/admin_app/api/app');
+
+            $result = $this->model_extension_admin_app_api_app->updateCoupon($coupon_id, $input);
+
+            if ($result === true) {
+                $json['success'] = true;
+                $json['message'] = 'Coupon updated successfully';
+            } else {
+                $json['error'] = $result; // Error message from model
+                $json['status'] = 400;
+                $json['code'] = 'UPDATE_FAILED';
+                $json['success'] = false;
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 }

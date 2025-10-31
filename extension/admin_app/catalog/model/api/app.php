@@ -732,6 +732,58 @@ class App extends \Opencart\System\Engine\Model {
         return false;
     }
 
+    public function updateCoupon($coupon_id, $data) {
+        // Check if coupon exists
+        $coupon_query = $this->db->query("SELECT coupon_id FROM " . DB_PREFIX . "coupon WHERE coupon_id = '" . (int)$coupon_id . "'");
+
+        if (!$coupon_query->num_rows) {
+            return 'Coupon not found';
+        }
+
+        // Check if code is unique
+        if (isset($data['code'])) {
+            $code_query = $this->db->query("SELECT coupon_id FROM " . DB_PREFIX . "coupon WHERE code = '" . $this->db->escape($data['code']) . "' AND coupon_id != '" . (int)$coupon_id . "'");
+            if ($code_query->num_rows) {
+                return 'Coupon code already exists';
+            }
+        }
+
+        $update_fields = [];
+        if (isset($data['name'])) {
+            $update_fields[] = "name = '" . $this->db->escape($data['name']) . "'";
+        }
+        if (isset($data['code'])) {
+            $update_fields[] = "code = '" . $this->db->escape($data['code']) . "'";
+        }
+        if (isset($data['discount'])) {
+            $update_fields[] = "discount = '" . (float)$data['discount'] . "'";
+        }
+        if (isset($data['type'])) {
+            $update_fields[] = "type = '" . $this->db->escape($data['type']) . "'";
+        }
+        if (isset($data['uses_total'])) {
+            $update_fields[] = "uses_total = '" . (int)$data['uses_total'] . "'";
+        }
+        if (isset($data['uses_customer'])) {
+            $update_fields[] = "uses_customer = '" . (int)$data['uses_customer'] . "'";
+        }
+        if (isset($data['date_start'])) {
+            $update_fields[] = "date_start = '" . $this->db->escape($data['date_start']) . "'";
+        }
+        if (isset($data['date_end'])) {
+            $update_fields[] = "date_end = '" . $this->db->escape($data['date_end']) . "'";
+        }
+        if (isset($data['status'])) {
+            $update_fields[] = "status = '" . (int)$data['status'] . "'";
+        }
+
+        if ($update_fields) {
+            $this->db->query("UPDATE " . DB_PREFIX . "coupon SET " . implode(', ', $update_fields) . " WHERE coupon_id = '" . (int)$coupon_id . "'");
+        }
+
+        return true;
+    }
+
     public function getReviews($page = 1, $limit = 20, $filter_data = []) {
         $start = ($page - 1) * $limit;
         
