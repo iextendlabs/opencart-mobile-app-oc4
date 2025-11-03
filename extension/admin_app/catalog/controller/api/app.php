@@ -4,6 +4,15 @@ namespace Opencart\Catalog\Controller\Extension\AdminApp\Api;
 
 class App extends \Opencart\System\Engine\Controller
 {
+    public function ping() {
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode([
+            'success' => true,
+            'message' => 'App API is installed and working',
+            'version' => '1.0'
+        ]));
+    }
+
     public function login()
     {
         $json = [];
