@@ -689,6 +689,7 @@ class App extends \Opencart\System\Engine\Controller
             'name' => isset($input['name']) ? $input['name'] : '',
             'stock_status_id' => isset($input['stock_status_id']) ? $input['stock_status_id'] : '',
             'status' => isset($input['status']) ? $input['status'] : '',
+            'quantity' => isset($input['quantity']) ? $input['quantity'] : '',
             'minPrice' => isset($input['minPrice']) ? (float)$input['minPrice'] : null,
             'maxPrice' => isset($input['maxPrice']) ? (float)$input['maxPrice'] : null
         ];

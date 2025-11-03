@@ -448,9 +448,14 @@ class App extends \Opencart\System\Engine\Model {
             $sql .= " AND pd.name LIKE '%" . $this->db->escape($filter_data['name']) . "%'";
         }
 
-        if(!empty($filter_data['status'])) {
-            $sql .= " AND p.status = '" . (int)$filter_data['status'] . "'";
-        }
+        if (isset($filter_data['quantity']) && $filter_data['quantity'] !== '') {
+			$sql .= " AND `p`.`quantity` = '" . (int)$filter_data['quantity'] . "'";
+		}
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+			$sql .= " AND `p`.`status` = '" . (int)$filter_data['status'] . "'";
+		}
+
 
         if (!empty($filter_data['stock_status_id'])) {
             $sql .= " AND p.stock_status_id = '" . (int)$filter_data['stock_status_id'] . "'";
@@ -475,6 +480,14 @@ class App extends \Opencart\System\Engine\Model {
         if (!empty($filter_data['name'])) {
             $total_sql .= " AND pd.name LIKE '%" . $this->db->escape($filter_data['name']) . "%'";
         }
+
+        if (isset($filter_data['quantity']) && $filter_data['quantity'] !== '') {
+			$total_sql .= " AND `p`.`quantity` = '" . (int)$filter_data['quantity'] . "'";
+		}
+
+        if (isset($filter_data['status']) && $filter_data['status'] !== '') {
+			$total_sql .= " AND `p`.`status` = '" . (int)$filter_data['status'] . "'";
+		}
 
         if (!empty($filter_data['stock_status_id'])) {
             $total_sql .= " AND p.stock_status_id = '" . (int)$filter_data['stock_status_id'] . "'";
