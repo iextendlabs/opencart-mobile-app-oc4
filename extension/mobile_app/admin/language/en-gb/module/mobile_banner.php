@@ -8,6 +8,7 @@ $_['text_success']     = 'Success: You have modified the mobile banner module!';
 $_['text_edit']        = 'Edit mobile banner module';
 $_['text_form']        = 'Mobile Banner Form';
 $_['text_home']        = 'Home';
+$_['text_app_index']   = 'Mobile App Settings';
 
 // Entry
 $_['entry_name']       = 'Module Name';
@@ -34,6 +35,7 @@ $_['button_remove']    = 'Remove';
 $_['button_edit']      = 'Edit';
 $_['button_clear']     = 'Clear';
 $_['button_back']      = 'Back';
+$_['button_app_index'] = 'App Index';
 
 // Error
 $_['error_permission'] = 'Warning: You do not have permission to modify the banner module!';

@@ -5,6 +5,8 @@ $_['text_extension']   = 'Extensions';
 $_['text_success']     = 'Success: You have modified Mobile App Trust Badges module!';
 $_['text_edit']        = 'Edit Mobile App Trust Badges Module';
 $_['text_form']        = 'Mobile App Trust Badges Form';
+$_['text_app_index']    = 'Mobile App Settings';
+$_['button_app_index']  = 'App Index';
 // Entry
 $_['entry_status']     = 'Status';
 $_['error_permission'] = 'Warning: You do not have permission to modify Mobile App Trust Badges module!';

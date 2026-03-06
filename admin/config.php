@@ -3,11 +3,11 @@
 define('APPLICATION', 'Admin');
 
 // HTTP
-define('HTTP_SERVER', 'http://localhost/opencart/mobile_app/admin/');
-define('HTTP_CATALOG', 'http://localhost/opencart/mobile_app/');
+define('HTTP_SERVER', 'http://localhost/admin/');
+define('HTTP_CATALOG', 'http://localhost/');
 
 // DIR
-define('DIR_OPENCART', 'D:/wamp64/www/opencart/mobile_app/');
+define('DIR_OPENCART', '/Users/saqibashraf/Desktop/oc/');
 define('DIR_APPLICATION', DIR_OPENCART . 'admin/');
 define('DIR_EXTENSION', DIR_OPENCART . 'extension/');
 define('DIR_IMAGE', DIR_OPENCART . 'image/');
@@ -27,8 +27,8 @@ define('DIR_UPLOAD', DIR_STORAGE . 'upload/');
 define('DB_DRIVER', 'mysqli');
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_DATABASE', 'mobile_app');
+define('DB_PASSWORD', 'mysql');
+define('DB_DATABASE', 'opencart-app');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
 

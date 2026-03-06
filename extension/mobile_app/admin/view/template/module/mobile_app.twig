@@ -28,6 +28,16 @@
             </div>
           </div>
         </form>
+
+        <hr/>
+
+        <h5>{{ text_app_links }}</h5>
+
+        <div class="d-flex flex-wrap gap-2">
+          {% for app_link in app_links %}
+            <a href="{{ app_link.href }}" class="btn btn-outline-primary">{{ app_link.name }}</a>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>

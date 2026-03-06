@@ -1405,3 +1405,1130 @@ Backtrace: 7
 File: /Users/saqibashraf/Desktop/oc/index.php
 Line: 20
 Function: require_once
+2025-10-22 12:01:47 - PHP Warning:  Undefined array key "currency_code" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 77
+2025-10-22 12:01:47 - PHP Warning:  Undefined array key "currency_value" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 77
+2025-10-22 12:01:47 - PHP Warning:  Undefined array key "file" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 78
+2025-10-22 12:01:47 - PHP Warning:  Undefined array key "line" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 79
+2025-10-22 12:01:47 - Error: Opencart\System\Library\Cart\Currency::format(): Argument #2 ($currency) must be of type string, null given, called in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 77
+File: /Users/saqibashraf/Desktop/oc/system/library/cart/currency.php
+Line: 59
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 77
+Class: Opencart\System\Library\Cart\Currency
+Function: format
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: Opencart\Catalog\Controller\Extension\AdminApp\Api\{closure}
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 73
+Function: array_map
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: dashboardData
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "customer_name" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 76
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "status" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 78
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "initials" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 80
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "customer_name" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 76
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "status" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 78
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "initials" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 80
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "customer_name" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 76
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "status" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 78
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "initials" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 80
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "customer_name" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 76
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "status" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 78
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "initials" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 80
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "customer_name" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 76
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "status" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 78
+2025-10-22 12:02:30 - PHP Warning:  Undefined array key "initials" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 80
+2025-10-23 13:59:47 - PHP Warning:  Undefined array key "file" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 78
+2025-10-23 13:59:47 - PHP Warning:  Undefined array key "line" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 79
+2025-10-23 13:59:47 - Error: syntax error, unexpected identifier "order"
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 130
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/engine/autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/factory.php
+Line: 66
+Function: class_exists
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 139
+Class: Opencart\System\Engine\Factory
+Function: model
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 603
+Class: Opencart\System\Engine\Loader
+Function: model
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 59
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: validateToken
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrderDetail
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 8
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 14:55:13 - PHP Warning:  Undefined array key "mask" in /Users/saqibashraf/Desktop/oc/admin/controller/sale/order.php on line 796
+2025-10-23 14:56:50 - Error: Cannot access offset of type string on string
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 543
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: generateInvoice
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 15:03:36 - Error: Error: Could not call registry key model_tool_image!
+File: /Users/saqibashraf/Desktop/oc/system/engine/controller.php
+Line: 43
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 536
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: printInvoice
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 15:05:19 - PHP Warning:  foreach() argument must be of type array|object, string given in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 613
+2025-10-23 15:05:19 - Error: Error: Could not call registry key model_tool_image!
+File: /Users/saqibashraf/Desktop/oc/system/engine/controller.php
+Line: 43
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 650
+Class: Opencart\System\Engine\Controller
+Function: __get
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: printShippingList
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 15:13:09 - PHP Warning:  Undefined array key "currency_code" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 588
+2025-10-23 15:13:09 - PHP Warning:  Undefined array key "currency_value" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 588
+2025-10-23 15:13:09 - Error: Opencart\System\Library\Cart\Currency::format(): Argument #2 ($currency) must be of type string, null given, called in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 588
+File: /Users/saqibashraf/Desktop/oc/system/library/cart/currency.php
+Line: 59
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 588
+Class: Opencart\System\Library\Cart\Currency
+Function: format
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 15:18:39 - PHP Warning:  Undefined array key "total" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php on line 115
+2025-10-23 15:18:39 - Error: Opencart\System\Library\Cart\Currency::format(): Argument #1 ($number) must be of type float, null given, called in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php on line 115
+File: /Users/saqibashraf/Desktop/oc/system/library/cart/currency.php
+Line: 59
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 115
+Class: Opencart\System\Library\Cart\Currency
+Function: format
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 583
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 16:18:55 - Error: Error: Unknown column 'o.name' in 'field list'<br/>Error No: 1054<br/>SELECT 
+            o.order_id,
+            o.invoice_no,
+            o.invoice_prefix,
+            o.date_added,
+            o.date_modified,
+            o.payment_method,
+            o.shipping_method,
+            o.total,
+            o.comment,
+            o.payment_firstname,
+            o.payment_lastname,
+            o.payment_company,
+            o.payment_address_1,
+            o.payment_address_2,
+            o.payment_city,
+            o.payment_postcode,
+            o.payment_country,
+            o.payment_zone,
+            o.shipping_firstname,
+            o.shipping_lastname,
+            o.shipping_company,
+            o.shipping_address_1,
+            o.shipping_address_2,
+            o.shipping_city,
+            o.shipping_postcode,
+            o.shipping_country,
+            o.shipping_zone,
+            o.email,
+            o.name,
+            o.currency_code,
+            o.currency_value,
+            o.telephone,
+            os.name as status 
+            FROM `oc_order` o 
+            LEFT JOIN oc_order_status os ON (o.order_status_id = os.order_status_id) 
+            WHERE o.order_id = '5' 
+            AND os.language_id = '2'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 61
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 586
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 16:19:12 - Error: Error: Unknown column 'o.customer_name' in 'field list'<br/>Error No: 1054<br/>SELECT 
+            o.order_id,
+            o.invoice_no,
+            o.invoice_prefix,
+            o.date_added,
+            o.date_modified,
+            o.payment_method,
+            o.shipping_method,
+            o.total,
+            o.comment,
+            o.payment_firstname,
+            o.payment_lastname,
+            o.payment_company,
+            o.payment_address_1,
+            o.payment_address_2,
+            o.payment_city,
+            o.payment_postcode,
+            o.payment_country,
+            o.payment_zone,
+            o.shipping_firstname,
+            o.shipping_lastname,
+            o.shipping_company,
+            o.shipping_address_1,
+            o.shipping_address_2,
+            o.shipping_city,
+            o.shipping_postcode,
+            o.shipping_country,
+            o.shipping_zone,
+            o.email,
+            o.customer_name,
+            o.currency_code,
+            o.currency_value,
+            o.telephone,
+            os.name as status 
+            FROM `oc_order` o 
+            LEFT JOIN oc_order_status os ON (o.order_status_id = os.order_status_id) 
+            WHERE o.order_id = '5' 
+            AND os.language_id = '2'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 61
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 586
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 16:33:45 - Error: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as status 
+            FROM `oc_order`
+            WHERE o.order_id = '5' 
+     ' at line 2<br/>Error No: 1064<br/>SELECT 
+            * as status 
+            FROM `oc_order`
+            WHERE o.order_id = '5' 
+            AND os.language_id = '2'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 61
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 586
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 16:34:03 - Error: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as status 
+            FROM `oc_order`
+            WHERE o.order_id = '5'' at line 2<br/>Error No: 1064<br/>SELECT 
+            * as status 
+            FROM `oc_order`
+            WHERE o.order_id = '5' 
+            
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 61
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 586
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-23 16:34:11 - Error: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as status 
+            FROM `oc_order`
+            WHERE order_id = '5'' at line 2<br/>Error No: 1064<br/>SELECT 
+            * as status 
+            FROM `oc_order`
+            WHERE order_id = '5' 
+            
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 61
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 586
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getOrder
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-28 09:00:49 - Error: Error: Unknown column 'c.name' in 'field list'<br/>Error No: 1054<br/>SELECT 
+            a.address_id,
+            a.firstname,
+            a.lastname,
+            a.address_1,
+            a.city,
+            a.postcode,
+            c.name as country
+            FROM oc_address a
+            LEFT JOIN oc_country c ON (a.country_id = c.country_id)
+            WHERE a.customer_id = '7'
+            ORDER BY a.address_id ASC
+            LIMIT 1
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 342
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getCustomerDetails
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 471
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getCustomer
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-28 09:04:34 - Error: Error: Unknown column 'c.nicename' in 'field list'<br/>Error No: 1054<br/>SELECT 
+            a.address_id,
+            a.firstname,
+            a.lastname,
+            a.address_1,
+            a.city,
+            a.postcode,
+            c.nicename as country
+            FROM oc_address a
+            LEFT JOIN oc_country c ON (a.country_id = c.country_id)
+            WHERE a.customer_id = '7'
+            ORDER BY a.address_id ASC
+            LIMIT 1
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 342
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getCustomerDetails
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 471
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getCustomer
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-28 09:15:33 - Error: Error: Unknown column 'z.name' in 'field list'<br/>Error No: 1054<br/>SELECT 
+            a.address_id,
+            a.firstname,
+            a.lastname,
+            a.company,
+            a.address_1,
+            a.address_2,
+            a.city,
+            a.postcode,
+            a.zone_id,
+            a.country_id,
+            cd.name as country,
+            z.name as zone,
+            a.custom_field
+            FROM oc_address a
+            LEFT JOIN oc_country c ON (a.country_id = c.country_id)
+            LEFT JOIN oc_country_description cd ON (c.country_id = cd.country_id)
+            LEFT JOIN oc_zone z ON (a.zone_id = z.zone_id)
+            WHERE a.customer_id = '7'
+            AND cd.language_id = '2'
+            ORDER BY a.address_id ASC
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 342
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: getCustomerDetails
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 471
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: getCustomer
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-28 09:18:18 - PHP Warning:  Undefined array key "customer_group_id" in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php on line 400
+2025-10-28 12:16:15 - Error: Error: Unknown column 'date_modified' in 'field list'<br/>Error No: 1054<br/>UPDATE oc_customer 
+            SET firstname = 'Hamza', lastname = 'Ali', email = 'miang@gmail.com', telephone = '+923234870276', newsletter = '1', status = '1', customer_group_id = '1', date_modified = NOW(), password = '$2y$10$UKGUEDc.LjE4FKtZVphniuPUdpkCOTlVRPP35HcI6T6HVeykaPYSC', salt = ''
+            WHERE customer_id = '7'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 486
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: updateCustomer
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 736
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: updateCustomer
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-28 12:17:43 - Error: Error: Unknown column 'salt' in 'field list'<br/>Error No: 1054<br/>UPDATE oc_customer 
+            SET firstname = 'Hamza', lastname = 'Ali', email = 'miang@gmail.com', telephone = '+923234870276', newsletter = '1', status = '1', customer_group_id = '1', password = '$2y$10$nbnyGOyvdwhHk2rxDD.MyOq7b8UjaZZocsr3oFD8pbSymFgNO/5Y2', salt = ''
+            WHERE customer_id = '7'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 485
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: updateCustomer
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 736
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: updateCustomer
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-29 10:47:45 - Error: Error: Table 'opencart-app.oc_product_special' doesn't exist<br/>Error No: 1146<br/>DELETE FROM oc_product_special WHERE product_id = '32'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 515
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: deleteProduct
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 903
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: deleteProduct
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-29 12:09:54 - PHP Warning:  Undefined array key "file" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 78
+2025-10-29 12:09:54 - PHP Warning:  Undefined array key "line" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 79
+2025-10-29 12:09:54 - Error: Unmatched '}'
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 1104
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/engine/autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/factory.php
+Line: 44
+Function: class_exists
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 81
+Class: Opencart\System\Engine\Factory
+Function: controller
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-29 12:50:38 - PHP Warning:  Undefined array key "file" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 78
+2025-10-29 12:50:38 - PHP Warning:  Undefined array key "line" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 79
+2025-10-29 12:50:38 - Error: syntax error, unexpected token "public", expecting end of file
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 1158
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/engine/autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/factory.php
+Line: 44
+Function: class_exists
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 81
+Class: Opencart\System\Engine\Factory
+Function: controller
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-29 12:51:28 - Error: Error: Unknown column 'date_modified' in 'field list'<br/>Error No: 1054<br/>UPDATE oc_category SET status = '1', date_modified = NOW() WHERE category_id = '46'
+File: /Users/saqibashraf/Desktop/oc/system/library/db/mysqli.php
+Line: 122
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/library/db.php
+Line: 54
+Class: Opencart\System\Library\DB\MySQLi
+Function: query
+
+Backtrace: 1
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/model/api/app.php
+Line: 795
+Class: Opencart\System\Library\DB
+Function: query
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/loader.php
+Line: 343
+Class: Opencart\Catalog\Model\Extension\AdminApp\Api\App
+Function: toggleCategoryStatus
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/proxy.php
+Line: 87
+Class: Opencart\System\Engine\Loader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 1091
+Class: Opencart\System\Engine\Proxy
+Function: __call
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 96
+Class: Opencart\Catalog\Controller\Extension\AdminApp\Api\App
+Function: toggleCategoryStatus
+
+Backtrace: 6
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 7
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-29 13:29:52 - PHP Warning:  Undefined array key "file" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 78
+2025-10-29 13:29:52 - PHP Warning:  Undefined array key "line" in /Users/saqibashraf/Desktop/oc/catalog/controller/startup/error.php on line 79
+2025-10-29 13:29:52 - Error: Unmatched '}'
+File: /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php
+Line: 1332
+
+Backtrace: 0
+File: /Users/saqibashraf/Desktop/oc/system/engine/autoloader.php
+Line: 26
+Class: Opencart\System\Engine\Autoloader
+Function: load
+
+Backtrace: 1
+File: 
+Line: 
+Class: Opencart\System\Engine\Autoloader
+Function: Opencart\System\Engine\{closure}
+
+Backtrace: 2
+File: /Users/saqibashraf/Desktop/oc/system/engine/factory.php
+Line: 44
+Function: class_exists
+
+Backtrace: 3
+File: /Users/saqibashraf/Desktop/oc/system/engine/action.php
+Line: 81
+Class: Opencart\System\Engine\Factory
+Function: controller
+
+Backtrace: 4
+File: /Users/saqibashraf/Desktop/oc/system/framework.php
+Line: 259
+Class: Opencart\System\Engine\Action
+Function: execute
+
+Backtrace: 5
+File: /Users/saqibashraf/Desktop/oc/index.php
+Line: 20
+Function: require_once
+2025-10-30 13:31:03 - PHP Warning:  Undefined array key "review
+                " in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 1275
+2025-10-30 13:31:03 - PHP Warning:  Undefined array key "review
+                " in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 1275
+2025-10-30 13:31:36 - PHP Warning:  Undefined array key "review
+                " in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 1275
+2025-10-30 13:31:36 - PHP Warning:  Undefined array key "review
+                " in /Users/saqibashraf/Desktop/oc/extension/admin_app/catalog/controller/api/app.php on line 1275

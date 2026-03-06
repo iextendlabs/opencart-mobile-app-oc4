@@ -40,6 +40,31 @@ class MobileApp extends \Opencart\System\Engine\Controller
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
 
+		$data['text_app_links'] = $this->language->get('text_app_links');
+
+		$data['app_links'] = [
+			[
+				'name' => $this->language->get('text_general_settings'),
+				'href' => $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token'])
+			],
+			[
+				'name' => $this->language->get('text_banner_settings'),
+				'href' => $this->url->link('extension/mobile_app/module/mobile_app.banner', 'user_token=' . $this->session->data['user_token'])
+			],
+			[
+				'name' => $this->language->get('text_deal_settings'),
+				'href' => $this->url->link('extension/mobile_app/module/mobile_app.deal', 'user_token=' . $this->session->data['user_token'])
+			],
+			[
+				'name' => $this->language->get('text_feature_category_settings'),
+				'href' => $this->url->link('extension/mobile_app/module/mobile_app.feature_category', 'user_token=' . $this->session->data['user_token'])
+			],
+			[
+				'name' => $this->language->get('text_trust_badges_settings'),
+				'href' => $this->url->link('extension/mobile_app/module/mobile_app.trust_badges', 'user_token=' . $this->session->data['user_token'])
+			]
+		];
+
 		$data['module_mobile_app_status'] = $this->config->get('module_mobile_app_status');
 
 		$data['header'] = $this->load->controller('common/header');
@@ -102,12 +127,18 @@ class MobileApp extends \Opencart\System\Engine\Controller
 			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module')
 		];
 		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_app_index'),
+			'href' => $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token'])
+		];
+		$data['breadcrumbs'][] = [
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('extension/mobile_app/module/mobile_banner', 'user_token=' . $this->session->data['user_token'])
+			'href' => $this->url->link('extension/mobile_app/module/mobile_app.banner', 'user_token=' . $this->session->data['user_token'])
 		];
 
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.banner_save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
+		$data['app_index'] = $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token']);
+		$data['button_app_index'] = $this->language->get('button_app_index');
 
 		$data['user_token'] = $this->session->data['user_token'];
 		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 300, 300);
@@ -225,20 +256,27 @@ class MobileApp extends \Opencart\System\Engine\Controller
 			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module')
 		];
 
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_app_index'),
+			'href' => $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token'])
+		];
+
 		if (!isset($this->request->get['module_id'])) {
 			$data['breadcrumbs'][] = [
 				'text' => $this->language->get('heading_title'),
-				'href' => $this->url->link('extension/mobile_app/module/mobile_app_deal', 'user_token=' . $this->session->data['user_token'])
+				'href' => $this->url->link('extension/mobile_app/module/mobile_app.deal', 'user_token=' . $this->session->data['user_token'])
 			];
 		} else {
 			$data['breadcrumbs'][] = [
 				'text' => $this->language->get('heading_title'),
-				'href' => $this->url->link('extension/mobile_app/module/mobile_app_deal', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id'])
+				'href' => $this->url->link('extension/mobile_app/module/mobile_app.deal', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id'])
 			];
 		}
 
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.deal_save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
+		$data['app_index'] = $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token']);
+		$data['button_app_index'] = $this->language->get('button_app_index');
 
 		$data['module_mobile_app_deal_end_date']   = $this->config->get('module_mobile_app_deal_end_date') ?? '';
 		$data['module_mobile_app_deal_status']     = $this->config->get('module_mobile_app_deal_status') ?? '0';
@@ -380,6 +418,10 @@ class MobileApp extends \Opencart\System\Engine\Controller
 			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module')
 		];
 		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_app_index'),
+			'href' => $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token'])
+		];
+		$data['breadcrumbs'][] = [
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('extension/mobile_app/module/mobile_app.feature_category', 'user_token=' . $this->session->data['user_token'])
 		];
@@ -420,6 +462,8 @@ class MobileApp extends \Opencart\System\Engine\Controller
 
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.feature_category_save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
+		$data['app_index'] = $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token']);
+		$data['button_app_index'] = $this->language->get('button_app_index');
 		$data['user_token'] = $this->session->data['user_token'];
 
 		$data['header'] = $this->load->controller('common/header');
@@ -514,12 +558,19 @@ class MobileApp extends \Opencart\System\Engine\Controller
 		];
 
 		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_app_index'),
+			'href' => $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token'])
+		];
+
+		$data['breadcrumbs'][] = [
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('extension/mobile_app/module/mobile_app.trust_badges', 'user_token=' . $this->session->data['user_token'])
 		];
 
 		$data['save'] = $this->url->link('extension/mobile_app/module/mobile_app.trust_badges_save', 'user_token=' . $this->session->data['user_token']);
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
+		$data['app_index'] = $this->url->link('extension/mobile_app/module/mobile_app', 'user_token=' . $this->session->data['user_token']);
+		$data['button_app_index'] = $this->language->get('button_app_index');
 		$data['user_token'] = $this->session->data['user_token'];
 
 		$data['module_mobile_app_trust_badges_status'] = $this->config->get('module_mobile_app_trust_badges_status');

@@ -8,6 +8,8 @@ $_['text_success']     = 'Success: You have modified Mobile App Deal module!';
 $_['text_edit']        = 'Edit Mobile App Deal Module';
 $_['text_horizontal']  = 'Horizontal';
 $_['text_vertical']    = 'Vertical';
+$_['text_app_index']    = 'Mobile App Settings';
+$_['button_app_index']  = 'App Index';
 
 // Entry
 $_['entry_name']       = 'Module Name';
